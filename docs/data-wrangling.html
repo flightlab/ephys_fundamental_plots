@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Data wrangling | Fundamental plots for electrophysiological data</title>
+  <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Data wrangling | Fundamental plots for electrophysiological data" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
+  <meta name="github-repo" content="flightlab/ephys_fundamental_plots" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Data wrangling | Fundamental plots for electrophysiological data" />
+  
+  <meta name="twitter:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
+  
+
+<meta name="author" content="Vikram B. Baliga" />
+
+
+<meta name="date" content="2023-02-24" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="raw-data-and-spike-sorted-traces.html"/>
+<link rel="next" href="raster-and-mean-spike-rate-plots.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Fundamental plots for electrophysiological data</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i>Citation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html"><i class="fa fa-check"></i><b>2</b> Raw data and spike sorted traces</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html#including-plots"><i class="fa fa-check"></i><b>2.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-wrangling.html"><a href="data-wrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-wrangling.html"><a href="data-wrangling.html#packages"><i class="fa fa-check"></i><b>3.1</b> Packages</a></li>
+<li class="chapter" data-level="3.2" data-path="data-wrangling.html"><a href="data-wrangling.html#not_in"><i class="fa fa-check"></i><b>3.2</b> <code>%not_in%</code></a></li>
+<li class="chapter" data-level="3.3" data-path="data-wrangling.html"><a href="data-wrangling.html#import-example-file-and-metadata"><i class="fa fa-check"></i><b>3.3</b> Import example file and metadata</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="data-wrangling.html"><a href="data-wrangling.html#identify-files-to-import"><i class="fa fa-check"></i><b>3.3.1</b> Identify files to import</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-wrangling.html"><a href="data-wrangling.html#data-import-and-preliminary-labeling"><i class="fa fa-check"></i><b>3.3.2</b> Data import and preliminary labeling</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html"><i class="fa fa-check"></i><b>4</b> Raster and mean spike rate plots</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-1"><i class="fa fa-check"></i><b>4.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>5</b> Spatiotemporal tuning</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>5.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>6</b> Histological verification</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-3"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Fundamental plots for electrophysiological data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-wrangling" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Data wrangling<a href="data-wrangling.html#data-wrangling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Once data have been spike sorted, we are ready to begin working in <code>R</code>. To get
+to a point where meaningful preliminary plots can be produced, a few things need
+to be addressed:</p>
+<ol style="list-style-type: decimal">
+<li><p>Labeling the time series of spike &amp; photodiode data based on the stimulus
+that appears on screen (i.e., matching the log file to the data file). This
+includes labeling phases (like “blank”, “stationary”, and “moving”) along with
+experimental metadata such as SF, TF, and stimulus orientation (direction).</p></li>
+<li><p>Re-organizing the spike &amp; photodiode so that separate replicates of a
+stimulus run are uniquely labelled and then arranged together.</p></li>
+<li><p>Binning the data into 10- and 100-ms data sets, and then exporting CSVs of
+the unbinned, 10-ms-binned, and 100-ms-binned data. This will be highly useful
+for situations where you are handling multiple data files (e.g., from different
+recording days), in which case it is likely that your machine will not be able
+to store all objects in RAM.</p></li>
+</ol>
+<div id="packages" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Packages<a href="data-wrangling.html#packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The packages listed below will be necessary at some point over the course of
+this book. I recommend installing them all now. The block of code below is
+designed to first check if each of the listed packages is already installed on
+your computer. If any are missing, then an attempt is made to install it from
+CRAN. Finally, all of the packages are loaded into the environment.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-wrangling.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Specify the packages you&#39;ll use in the script</span></span>
+<span id="cb3-2"><a href="data-wrangling.html#cb3-2" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;tidyverse&quot;</span>,</span>
+<span id="cb3-3"><a href="data-wrangling.html#cb3-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;readxl&quot;</span>,</span>
+<span id="cb3-4"><a href="data-wrangling.html#cb3-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;zoo&quot;</span>,</span>
+<span id="cb3-5"><a href="data-wrangling.html#cb3-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;gridExtra&quot;</span>,</span>
+<span id="cb3-6"><a href="data-wrangling.html#cb3-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;R.matlab&quot;</span>,</span>
+<span id="cb3-7"><a href="data-wrangling.html#cb3-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;cowplot&quot;</span>,</span>
+<span id="cb3-8"><a href="data-wrangling.html#cb3-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;easystats&quot;</span>,</span>
+<span id="cb3-9"><a href="data-wrangling.html#cb3-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;circular&quot;</span>,</span>
+<span id="cb3-10"><a href="data-wrangling.html#cb3-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;splines&quot;</span>,</span>
+<span id="cb3-11"><a href="data-wrangling.html#cb3-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;MESS&quot;</span>, <span class="do">## area under curve</span></span>
+<span id="cb3-12"><a href="data-wrangling.html#cb3-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;zoo&quot;</span> <span class="do">## rolling means</span></span>
+<span id="cb3-13"><a href="data-wrangling.html#cb3-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-14"><a href="data-wrangling.html#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Now for each package listed, first check to see if the package is already</span></span>
+<span id="cb3-15"><a href="data-wrangling.html#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">## installed. If it is installed, it&#39;s simply loaded. If not, it&#39;s downloaded </span></span>
+<span id="cb3-16"><a href="data-wrangling.html#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## from CRAN and then installed and loaded.</span></span>
+<span id="cb3-17"><a href="data-wrangling.html#cb3-17" aria-hidden="true" tabindex="-1"></a>package.check <span class="ot">&lt;-</span> <span class="fu">lapply</span>(packages,</span>
+<span id="cb3-18"><a href="data-wrangling.html#cb3-18" aria-hidden="true" tabindex="-1"></a>                        <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-19"><a href="data-wrangling.html#cb3-19" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb3-20"><a href="data-wrangling.html#cb3-20" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-21"><a href="data-wrangling.html#cb3-21" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">library</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-22"><a href="data-wrangling.html#cb3-22" aria-hidden="true" tabindex="-1"></a>                          }</span>
+<span id="cb3-23"><a href="data-wrangling.html#cb3-23" aria-hidden="true" tabindex="-1"></a>                        }</span>
+<span id="cb3-24"><a href="data-wrangling.html#cb3-24" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>I will use the <code>sessionInfo()</code> command to detail the specific versions of
+packages I am using (along with other information about my R session).</p>
+<pre><code>## R version 4.2.0 (2022-04-22 ucrt)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 19045)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.utf8 
+## [2] LC_CTYPE=English_United States.utf8   
+## [3] LC_MONETARY=English_United States.utf8
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.utf8    
+## 
+## attached base packages:
+## [1] splines   stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
+## 
+## other attached packages:
+##  [1] MESS_0.5.9         circular_0.4-95    report_0.5.5       see_0.7.2         
+##  [5] correlation_0.8.2  modelbased_0.8.5   effectsize_0.7.0.5 parameters_0.18.2 
+##  [9] performance_0.9.2  bayestestR_0.12.1  datawizard_0.6.0   insight_0.18.2    
+## [13] easystats_0.4.3    cowplot_1.1.1      R.matlab_3.6.2     gridExtra_2.3     
+## [17] zoo_1.8-10         readxl_1.4.0       forcats_0.5.1      stringr_1.4.0     
+## [21] dplyr_1.0.9        purrr_0.3.4        readr_2.1.2        tidyr_1.2.0       
+## [25] tibble_3.1.7       ggplot2_3.4.0      tidyverse_1.3.2   
+## 
+## loaded via a namespace (and not attached):
+##  [1] fs_1.5.2            lubridate_1.8.0     httr_1.4.3         
+##  [4] tools_4.2.0         backports_1.4.1     bslib_0.3.1        
+##  [7] utf8_1.2.2          R6_2.5.1            DBI_1.1.2          
+## [10] colorspace_2.0-3    withr_2.5.0         tidyselect_1.1.2   
+## [13] emmeans_1.7.5       compiler_4.2.0      cli_3.4.1          
+## [16] rvest_1.0.2         xml2_1.3.3          sandwich_3.0-2     
+## [19] bookdown_0.32       sass_0.4.1          mosaicCore_0.9.0   
+## [22] scales_1.2.0        mvtnorm_1.1-3       ggridges_0.5.3     
+## [25] digest_0.6.29       ggformula_0.10.1    rmarkdown_2.14.2   
+## [28] R.utils_2.12.0      pkgconfig_2.0.3     htmltools_0.5.2    
+## [31] labelled_2.9.1      geeM_0.10.1         dbplyr_2.2.0       
+## [34] fastmap_1.1.0       highr_0.9           rlang_1.0.6        
+## [37] rstudioapi_0.13     farver_2.1.0        jquerylib_0.1.4    
+## [40] generics_0.1.2      jsonlite_1.8.0      R.oo_1.25.0        
+## [43] googlesheets4_1.0.0 magrittr_2.0.3      Matrix_1.4-1       
+## [46] Rcpp_1.0.8.3        munsell_0.5.0       fansi_1.0.3        
+## [49] geepack_1.3.4       lifecycle_1.0.3     R.methodsS3_1.8.2  
+## [52] stringi_1.7.6       multcomp_1.4-19     yaml_2.3.5         
+## [55] MASS_7.3-56         ggstance_0.3.5      plyr_1.8.7         
+## [58] grid_4.2.0          crayon_1.5.1        lattice_0.20-45    
+## [61] haven_2.5.0         hms_1.1.1           knitr_1.39         
+## [64] pillar_1.7.0        boot_1.3-28         estimability_1.3   
+## [67] codetools_0.2-18    reprex_2.0.1        glue_1.6.2         
+## [70] evaluate_0.15       modelr_0.1.8        tweenr_1.0.2       
+## [73] vctrs_0.5.0         tzdb_0.3.0          cellranger_1.1.0   
+## [76] polyclip_1.10-0     gtable_0.3.0        assertthat_0.2.1   
+## [79] ggforce_0.3.3       xfun_0.31           xtable_1.8-4       
+## [82] broom_0.8.0         coda_0.19-4         survival_3.3-1     
+## [85] googledrive_2.0.0   gargle_1.2.0        TH.data_1.1-1      
+## [88] ellipsis_0.3.2</code></pre>
+</div>
+<div id="not_in" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> <code>%not_in%</code><a href="data-wrangling.html#not_in" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This guide will also rely on this handy function, which you should add to your
+code:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-wrangling.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">%not_in%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">Negate</span>(<span class="st">`</span><span class="at">%in%</span><span class="st">`</span>)</span></code></pre></div>
+<p>This simple operator allows you to determine if an element does not appear in a
+target object.</p>
+</div>
+<div id="import-example-file-and-metadata" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Import example file and metadata<a href="data-wrangling.html#import-example-file-and-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will use a recently-collected data file and its corresponding metadata file
+to showcase the fundamentals of wrangling ephys data into a more easily
+plot-able format.</p>
+<div id="identify-files-to-import" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Identify files to import<a href="data-wrangling.html#identify-files-to-import" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The following code is based on the assumptions that:
+1) Your files are stored in a directory entitled <code>/data</code>
+2) The basename of each file (i.e., the name of the file, excluding the file
+extension) is identical for each set of spike sorted data and corresponding
+metadata log file (e.g., <code>04132022_009m.mat</code> and <code>04132022_009m</code> have the same
+basename, which is <code>04132022_009m</code>).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-wrangling.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## List all files of each file type</span></span>
+<span id="cb6-2"><a href="data-wrangling.html#cb6-2" aria-hidden="true" tabindex="-1"></a>csv_files <span class="ot">&lt;-</span></span>
+<span id="cb6-3"><a href="data-wrangling.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="st">&quot;./data&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;.csv&quot;</span>,</span>
+<span id="cb6-4"><a href="data-wrangling.html#cb6-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-5"><a href="data-wrangling.html#cb6-5" aria-hidden="true" tabindex="-1"></a>mat_files <span class="ot">&lt;-</span></span>
+<span id="cb6-6"><a href="data-wrangling.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="st">&quot;./data&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;.mat&quot;</span>,</span>
+<span id="cb6-7"><a href="data-wrangling.html#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-8"><a href="data-wrangling.html#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="data-wrangling.html#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Generate metadata tibbles for each file type</span></span>
+<span id="cb6-10"><a href="data-wrangling.html#cb6-10" aria-hidden="true" tabindex="-1"></a>csv_file_info <span class="ot">&lt;-</span></span>
+<span id="cb6-11"><a href="data-wrangling.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb6-12"><a href="data-wrangling.html#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">csv_files =</span> csv_files,</span>
+<span id="cb6-13"><a href="data-wrangling.html#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Extract the basename by removing the file extension</span></span>
+<span id="cb6-14"><a href="data-wrangling.html#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">basename =</span>  <span class="fu">basename</span>(csv_files) <span class="sc">%&gt;%</span> <span class="fu">str_remove</span>(<span class="st">&quot;.csv&quot;</span>),</span>
+<span id="cb6-15"><a href="data-wrangling.html#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="do">## </span><span class="al">NOTE</span><span class="do">: PLEASE ADJUST THE FOLLOWING LINE TO BE ABLE TO EXCTRACT OUT THE</span></span>
+<span id="cb6-16"><a href="data-wrangling.html#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="do">## DATE BASED ON YOUR NAMING CONVENTION</span></span>
+<span id="cb6-17"><a href="data-wrangling.html#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">basedate =</span>  <span class="fu">basename</span>(csv_files) <span class="sc">%&gt;%</span> <span class="fu">str_sub</span>(<span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">12</span>)</span>
+<span id="cb6-18"><a href="data-wrangling.html#cb6-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-19"><a href="data-wrangling.html#cb6-19" aria-hidden="true" tabindex="-1"></a>mat_file_info <span class="ot">&lt;-</span></span>
+<span id="cb6-20"><a href="data-wrangling.html#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb6-21"><a href="data-wrangling.html#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">mat_files =</span> mat_files,</span>
+<span id="cb6-22"><a href="data-wrangling.html#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Extract the basename by removing the file extension</span></span>
+<span id="cb6-23"><a href="data-wrangling.html#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">basename =</span>  <span class="fu">basename</span>(mat_files) <span class="sc">%&gt;%</span> <span class="fu">str_remove</span>(<span class="st">&quot;.mat&quot;</span>),</span>
+<span id="cb6-24"><a href="data-wrangling.html#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="do">## </span><span class="al">NOTE</span><span class="do">: AGAIN, PLEASE ADJUST THE FOLLOWING LINE TO BE ABLE TO EXCTRACT OUT</span></span>
+<span id="cb6-25"><a href="data-wrangling.html#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="do">## THE DATE BASED ON YOUR NAMING CONVENTION</span></span>
+<span id="cb6-26"><a href="data-wrangling.html#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">basedate =</span>  <span class="fu">basename</span>(mat_files) <span class="sc">%&gt;%</span> <span class="fu">str_sub</span>(<span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">12</span>)</span>
+<span id="cb6-27"><a href="data-wrangling.html#cb6-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-28"><a href="data-wrangling.html#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="data-wrangling.html#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Matchmake between .MAT data and .CSV log files</span></span>
+<span id="cb6-30"><a href="data-wrangling.html#cb6-30" aria-hidden="true" tabindex="-1"></a>csv_mat_filejoin <span class="ot">&lt;-</span></span>
+<span id="cb6-31"><a href="data-wrangling.html#cb6-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(csv_file_info, mat_file_info, <span class="at">by =</span> <span class="st">&quot;basename&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-32"><a href="data-wrangling.html#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="do">## OPTIONAL STEP: remove any rows where either the .MAT or .CSV is missing</span></span>
+<span id="cb6-33"><a href="data-wrangling.html#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb6-34"><a href="data-wrangling.html#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="data-wrangling.html#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="do">## Store a vector of basenames in the environment. This will become useful later</span></span>
+<span id="cb6-36"><a href="data-wrangling.html#cb6-36" aria-hidden="true" tabindex="-1"></a>base_names <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename</span>
+<span id="cb6-37"><a href="data-wrangling.html#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="data-wrangling.html#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="do">## Your end products from this code block should look something like:</span></span>
+<span id="cb6-39"><a href="data-wrangling.html#cb6-39" aria-hidden="true" tabindex="-1"></a>csv_mat_filejoin</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 5
+##   csv_files                basename      basedate.x   mat_files       basedate.y
+##   &lt;chr&gt;                    &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;           &lt;chr&gt;     
+## 1 ./data/04132022_009m.csv 04132022_009m 04132022_009 ./data/0413202… 04132022_…</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-wrangling.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## and:</span></span>
+<span id="cb8-2"><a href="data-wrangling.html#cb8-2" aria-hidden="true" tabindex="-1"></a>base_names</span></code></pre></div>
+<pre><code>## [1] &quot;04132022_009m&quot;</code></pre>
+</div>
+<div id="data-import-and-preliminary-labeling" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Data import and preliminary labeling<a href="data-wrangling.html#data-import-and-preliminary-labeling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will now use the <code>R.matlab</code> package to import the <code>.mat</code> file into R and then
+label the spike and photodiode time series based on the information in the
+<code>.csv</code> log file</p>
+<p>Because <code>.mat</code> files can be large, data import can take several minutes.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-wrangling.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up how R has been using RAM by running garbage collection</span></span>
+<span id="cb10-2"><a href="data-wrangling.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<pre><code>##           used  (Mb) gc trigger  (Mb) max used  (Mb)
+## Ncells 2525141 134.9    4715652 251.9  3601402 192.4
+## Vcells 4313966  33.0   10146329  77.5  6658626  50.9</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-wrangling.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set up empty vectors that will collect sets of replicates that we will be</span></span>
+<span id="cb12-2"><a href="data-wrangling.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## splitting up</span></span>
+<span id="cb12-3"><a href="data-wrangling.html#cb12-3" aria-hidden="true" tabindex="-1"></a>metadata_sets <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb12-4"><a href="data-wrangling.html#cb12-4" aria-hidden="true" tabindex="-1"></a>meta_splits <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb12-5"><a href="data-wrangling.html#cb12-5" aria-hidden="true" tabindex="-1"></a>data_splits <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="raw-data-and-spike-sorted-traces.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="raster-and-mean-spike-rate-plots.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-data_wrangling.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

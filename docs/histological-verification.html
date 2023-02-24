@@ -148,21 +148,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.1" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html#including-plots"><i class="fa fa-check"></i><b>2.1</b> Including Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="polar-tuning-curves.html"><a href="polar-tuning-curves.html"><i class="fa fa-check"></i><b>3</b> Polar tuning curves</a>
+<li class="chapter" data-level="3" data-path="data-wrangling.html"><a href="data-wrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="polar-tuning-curves.html"><a href="polar-tuning-curves.html#including-plots-1"><i class="fa fa-check"></i><b>3.1</b> Including Plots</a></li>
+<li class="chapter" data-level="3.1" data-path="data-wrangling.html"><a href="data-wrangling.html#packages"><i class="fa fa-check"></i><b>3.1</b> Packages</a></li>
+<li class="chapter" data-level="3.2" data-path="data-wrangling.html"><a href="data-wrangling.html#not_in"><i class="fa fa-check"></i><b>3.2</b> <code>%not_in%</code></a></li>
+<li class="chapter" data-level="3.3" data-path="data-wrangling.html"><a href="data-wrangling.html#import-example-file-and-metadata"><i class="fa fa-check"></i><b>3.3</b> Import example file and metadata</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="data-wrangling.html"><a href="data-wrangling.html#identify-files-to-import"><i class="fa fa-check"></i><b>3.3.1</b> Identify files to import</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-wrangling.html"><a href="data-wrangling.html#data-import-and-preliminary-labeling"><i class="fa fa-check"></i><b>3.3.2</b> Data import and preliminary labeling</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html"><i class="fa fa-check"></i><b>4</b> Raster and mean spike rate plots</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-2"><i class="fa fa-check"></i><b>4.1</b> Including Plots</a></li>
+<li class="chapter" data-level="4.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-1"><i class="fa fa-check"></i><b>4.1</b> Including Plots</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>5</b> Spatiotemporal tuning</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-3"><i class="fa fa-check"></i><b>5.1</b> Including Plots</a></li>
+<li class="chapter" data-level="5.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>5.1</b> Including Plots</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>6</b> Histological verification</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-4"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
+<li class="chapter" data-level="6.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-3"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -188,7 +194,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 6</span> Histological verification<a href="histological-verification.html#histological-verification" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
 <p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="histological-verification.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cars)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="histological-verification.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cars)</span></code></pre></div>
 <pre><code>##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
 ##  1st Qu.:12.0   1st Qu.: 26.00  
@@ -196,8 +202,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  Mean   :15.4   Mean   : 42.98  
 ##  3rd Qu.:19.0   3rd Qu.: 56.00  
 ##  Max.   :25.0   Max.   :120.00</code></pre>
-<div id="including-plots-4" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Including Plots<a href="histological-verification.html#including-plots-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="including-plots-3" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Including Plots<a href="histological-verification.html#including-plots-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You can also embed plots, for example:</p>
 <p><img src="_main_files/figure-html/pressure6-1.png" width="672" /></p>
 <p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
