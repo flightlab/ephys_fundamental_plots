@@ -11,6 +11,7 @@ description: |
   A walkthrough on how to produce fundamental plots from electrophysiological 
   data. Developed by the Alshuler Lab at the University of British Columbia.
 link-citations: yes
+links-as-notes: true
 github-repo: flightlab/ephys_fundamental_plots
 ---
 
