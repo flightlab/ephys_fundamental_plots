@@ -65,22 +65,28 @@ data_splits <- NULL
 starttime <- Sys.time()
 for (i in 1:nrow(csv_mat_filejoin)) {
 
+  ## Which file # are we working on?
   print(i)
 
+  ## Set up temporary objects in which to eventually write data
   csv_data_sets <- NULL
   mat_data_sets <- NULL
   joined_data_sets <- NULL
 
+  ## Import the matlab file. This may take some time
   mat_import <-
     R.matlab::readMat(csv_mat_filejoin[i,"mat_files"])
 
+  ## Read in the corresponding csv log file
   csv_data_sets[[i]] <-
     read_csv(csv_mat_filejoin[i,"csv_files"],
              show_col_types = FALSE) %>%
+    ## Rename columns for convenience
     rename(
       Spatial_Frequency = `Spatial Frequency`,
       Temporal_Frequency = `Temporal Frequency`
     )
+  ## Set up a `SF_cpd` column that tranlates SFs to cycles per degree
   csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.000668] <-
     2^-6
   csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.001336] <-
@@ -94,6 +100,8 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.0212]   <-
     2^-1
 
+  ## The log file does not have time = 0, so set up a separate tibble to
+  ## add this info in later. Some of the metadata will just be filler for now.
   initial <- tibble(
     Trial = "initialization",
     Spatial_Frequency = csv_data_sets[[i]]$Spatial_Frequency[1],
@@ -103,20 +111,25 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     Time = 0.000
   )
 
+  ## Determine when the onset of motion occurred according to matlab
+  ## NOTE: IF THIS INFO IS NOT IN CHANNEL 3, PLEASE CHANGE ACCCORDINGLY
   first_moving_mat <-
     mat_import[[stringr::str_which(names(mat_import), "Ch3")[1]]][[5]][,1][1]
+  ## Find the first "moving" phase in the log file
   first_moving_csv <-
     csv_data_sets[[i]] %>%
     filter(Trial == "moving") %>%
     select(Time) %>%
     slice(1) %>%
     as.numeric()
+  ## Find the first "blank" phase in the log file
   first_blank <-
     csv_data_sets[[i]] %>%
     filter(Trial == "blank") %>%
     select(Time) %>%
     slice(1) %>%
     as.numeric()
+  ## Compute the difference between these two
   first_mvbl_diff <- first_moving_csv - first_blank
 
   first_csv_tmp <-
@@ -124,51 +137,25 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     ## Add the first event time to "Time" and subtract first_mvbl_diff (~2 secs)
     mutate(Time = Time + first_moving_mat - first_mvbl_diff - first_blank) %>%
     ## Make character version of Time for joining later
+    ## This will be crucial for _join functions
     mutate(Time_char = as.character(round(Time,3)))
 
-  ## duplicate the initialization for ease of setting T0
+  ## Duplicate the initialization for ease of setting T0
   inception <-
     initial %>%
     mutate(Time_char = as.character(round(Time,3)))
   inception$Trial[1] <- "inception"
 
+  ## Bind the initialization rows
   first_csv <-
     bind_rows(inception, first_csv_tmp)
+  ## Compute stimulus end times
   first_csv$Stim_end <- c(first_csv$Time[-1], max(first_csv$Time) + 3)
 
-  ## get final time
+  ## Get final time
   final_time <- first_csv$Stim_end[nrow(first_csv)]
 
-  # ## enforce timing offsets (if needed)
-  # first_csv <-
-  #   first_csv %>%
-  #   mutate(
-  #     Time = Time + 0.09,
-  #     Time_char = as.character(Time)
-  #   )
-  # first_csv$Time[1] <- 0
-  # first_csv$Time_char[1] <- "0"
-
-  # if (i == 28) {
-  #   ### FOR FILE 28 in newest batch ONLY ###
-  #   pho <- read_csv("./NEWDATA2/file28_photod.csv", col_names = FALSE)
-  #   spi <- read_csv("./NEWDATA2/file28_spikestransposed.csv", col_names = FALSE)
-  #   pho_vec <- c(0,as_vector(pho[,1]))
-  #   spi_vec <- c(0,as_vector(spi[,1]))
-  #
-  #   mat_data_sets[[i]] <-
-  #     data.frame(
-  #       Time =
-  #         seq(
-  #           from = 0, by = 0.001,
-  #           length.out = 0 + length(spi_vec)
-  #         ), #t(mat_import$tt),
-  #       Spikes = spi_vec,
-  #       Photod = pho_vec
-  #     ) %>%
-  #     as_tibble() %>%
-  #     mutate(Time_char = as.character(Time))
-  # } else {
+  ## Extract matlab spike and photodiode data
   mat_data_sets[[i]] <-
     data.frame(
       Time =
@@ -182,16 +169,18 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     as_tibble() %>%
     mutate(Time_char = as.character(Time)) %>%
     filter(Time <= final_time)
-  #}
 
-
+  ## Merge the matlab data with the metadata
   joined_one_full <-
     mat_data_sets[[i]] %>%
+    ## Join by the character version of time NOT the numerical!!
     full_join(first_csv, by = "Time_char") %>%
+    ## Rename columns for clarity of reference
     rename(Time_mat = Time.x,
            Time_csv = Time.y) %>%
+    ## Convert character time to numeric time
     mutate(Time = as.numeric(Time_char)) %>%
-    ## carry metadata forward
+    ## Carry metadata forward
     mutate(
       Trial = zoo::na.locf(Trial, type = "locf"),
       Spatial_Frequency = zoo::na.locf(Spatial_Frequency, type = "locf"),
@@ -205,35 +194,34 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     mutate(
       Speed = Temporal_Frequency/SF_cpd,
       Log2_Speed = log2(Speed)
-    ) #%>%
-  ## enforce timing offsets (if needed)
-  # mutate(
-  #   Time_mat = Time_mat + 0.09,
-  #   Time_char = as.character(Time_mat),
-  #   Time = Time + 0.09
-  # )
+    )
 
+  ## Add info to metadata
   metadata_one_full <-
     first_csv %>%
     mutate(
       Speed = Temporal_Frequency/SF_cpd,
       Log2_Speed = log2(Speed),
       Stim_end_diff = c(0, diff(Stim_end))
-    ) #%>%
-  # ## enforce timing offsets (if needed)
-  # mutate(
-  #   Time = Time + 0.09,
-  #   Time_char = as.character(Time)
-  # )
+    )
 
-  ## quality control
+  ## Some quality control checks
+  ## What are the stim time differences?
   stimtime_diffs <- round(metadata_one_full$Stim_end_diff)[-c(1:2)]
+  ## How many total reps were recorded?
   stimtime_reps <- length(stimtime_diffs)/3
+  ## What do we expect the overall structure to look like?
   stimtime_expectation <- rep(c(1,1,3), stimtime_reps)
+  ## Does reality match our expectations?
   if (!all(stimtime_diffs == stimtime_expectation)) {
+    ## If you get this, investigate the file further and determine what went
+    ## wrong
     print("stimtime issue; investigate")
   }
 
+  ## Sometimes the final sweep gets carried for an indefinite amount of time
+  ## before the investigator manually shuts things off. The following block
+  ## truncates accordingly
   mark_for_removal <-
     which(round(metadata_one_full$Stim_end_diff) %not_in% c(1, 3))
   if (any(mark_for_removal == 1 | mark_for_removal == 2)) {
@@ -253,20 +241,28 @@ for (i in 1:nrow(csv_mat_filejoin)) {
       joined_one_full
   }
 
+  ## Organize the metadata for export in the R environment
   meta_splits[[i]] <-
     metadata_sets[[i]] %>%
+    ## Get rid of the non-sweep info
     filter(!Trial == "inception") %>%
     filter(!Trial == "initialization") %>%
+    ## Group by trial
     group_by(Spatial_Frequency, Temporal_Frequency, Direction) %>%
+    ## Split by trial group
     group_split()
 
   data_splits[[i]] <-
     joined_data_sets[[i]] %>%
+    ## Get rid of the non-sweep info
     filter(!Trial == "inception") %>%
     filter(!Trial == "initialization") %>%
+    ## Group by trial
     group_by(Spatial_Frequency, Temporal_Frequency, Direction) %>%
+    ## Split by trial group
     group_split()
 
+  ## Do some cleanup so large objects don't linger in memor
   rm(
     first_csv, inception, initial, mat_import, first_csv_tmp, metadata_one_full,
     joined_one_full, joined_data_sets, csv_data_sets, mat_data_sets
@@ -276,14 +272,16 @@ for (i in 1:nrow(csv_mat_filejoin)) {
 }
 
 endtime <- Sys.time()
-endtime - starttime
+endtime - starttime ## Total elapsed time
 
-## tidy up
+## Tidy up
 gc()
 
-names(metadata_sets) <- csv_mat_filejoin$basename#base_names
-names(meta_splits)   <- csv_mat_filejoin$basename#base_names
-names(data_splits)   <- csv_mat_filejoin$basename#base_names
+## Name each data set according to the basename of the file
+names(metadata_sets) <- csv_mat_filejoin$basename #base_names
+names(meta_splits)   <- csv_mat_filejoin$basename #base_names
+names(data_splits)   <- csv_mat_filejoin$basename #base_names
+
 
 ################################# preprocessing ################################
 
