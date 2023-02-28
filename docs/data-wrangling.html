@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Data wrangling | Fundamental plots for electrophysiological data</title>
+  <title>5 Data wrangling | Fundamental plots for electrophysiological data</title>
   <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
   <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Data wrangling | Fundamental plots for electrophysiological data" />
+  <meta property="og:title" content="5 Data wrangling | Fundamental plots for electrophysiological data" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
@@ -17,7 +17,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
   <meta name="github-repo" content="flightlab/ephys_fundamental_plots" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Data wrangling | Fundamental plots for electrophysiological data" />
+  <meta name="twitter:title" content="5 Data wrangling | Fundamental plots for electrophysiological data" />
   
   <meta name="twitter:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
@@ -199,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="data-wrangling" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Data wrangling<a href="data-wrangling.html#data-wrangling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<h1><span class="header-section-number">5</span> Data wrangling<a href="data-wrangling.html#data-wrangling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Once data have been spike sorted, we are ready to begin working in <code>R</code>. To get
 to a point where meaningful preliminary plots can be produced, a few things need
 to be addressed:</p>
@@ -290,8 +290,8 @@ label the spike and photodiode time series based on the information in the
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-wrangling.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up how R has been using RAM by running garbage collection</span></span>
 <span id="cb10-2"><a href="data-wrangling.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used  (Mb) gc trigger  (Mb) max used  (Mb)
-## Ncells 2527167 135.0    3985704 212.9  3985704 212.9
-## Vcells 4334023  33.1   10146329  77.5  7077635  54.0</code></pre>
+## Ncells 2527151 135.0    3985512 212.9  3985512 212.9
+## Vcells 4334001  33.1   10146329  77.5  7077614  54.0</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-wrangling.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set up empty vectors that will collect sets of replicates that we will be</span></span>
 <span id="cb12-2"><a href="data-wrangling.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## splitting up</span></span>
 <span id="cb12-3"><a href="data-wrangling.html#cb12-3" aria-hidden="true" tabindex="-1"></a>metadata_sets <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
@@ -510,12 +510,12 @@ label the spike and photodiode time series based on the information in the
 ## [1] &quot;stimtime issue; investigate&quot;</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-wrangling.html#cb14-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() </span>
 <span id="cb14-2"><a href="data-wrangling.html#cb14-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime <span class="do">## Total elapsed time</span></span></code></pre></div>
-<pre><code>## Time difference of 53.57265 secs</code></pre>
+<pre><code>## Time difference of 53.68572 secs</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-wrangling.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up</span></span>
 <span id="cb16-2"><a href="data-wrangling.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells  4156779 222.0    9140614  488.2   5144989  274.8
-## Vcells 28549690 217.9  368324076 2810.1 711820859 5430.8</code></pre>
+## Ncells  4156763 222.0    9140687  488.2   5144973  274.8
+## Vcells 28549668 217.9  368324061 2810.1 711820837 5430.8</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="data-wrangling.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Name each data set according to the basename of the file</span></span>
 <span id="cb18-2"><a href="data-wrangling.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(metadata_sets) <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
 <span id="cb18-3"><a href="data-wrangling.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(meta_splits)   <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
