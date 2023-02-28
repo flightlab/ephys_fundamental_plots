@@ -46,8 +46,8 @@ Written by Tony Lapsansky, February 24, 2023
         Click and hold on the upper trace and drag it to the first available
         template window.
     2.  Click on the button just to the left of the trash can icon (on the top
-        half, upper right of the `WaveMark` window). This is the
-        `parameters dialog` button. This opens a template settings window.
+        half, upper right of the `WaveMark` window). This is the "parameters 
+        dialog" button. This opens a template settings window.
     3.  For the line `Maximum amplitude change for a match` enter `20`. This
         will allow a spike that fits a template to vary in maximum amplitude by
         up to 20%.
@@ -76,7 +76,7 @@ Written by Tony Lapsansky, February 24, 2023
     7.  Delete the template(s) in the `WaveMark` window by selecting that
         template's trash can icon.
     8.  Merge templates by dragging them into the same window
-    9.  Hit the "reclassify" button in the `WaveMark` window.
+    9.  Hit the `reclassify` button in the `WaveMark` window.
 8.  Export the spike-sorted data
     1.  `File → Export As`
     2.  Select `.mat` (Matlab data)
