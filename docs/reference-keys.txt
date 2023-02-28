@@ -1,9 +1,13 @@
 about
+preface
+r-packages-versioning
+not_in
+spike-sorting
+spike2
+neuralynx
 raw-data-and-spike-sorted-traces
 including-plots
 data-wrangling
-packages
-not_in
 import-example-file-and-metadata
 identify-files-to-import
 data-import-and-preliminary-labeling

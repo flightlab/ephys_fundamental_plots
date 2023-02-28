@@ -1,0 +1,101 @@
+# Data wrangling
+
+Once data have been spike sorted, we are ready to begin working in `R`. To get
+to a point where meaningful preliminary plots can be produced, a few things need
+to be addressed:
+
+1)  Labeling the time series of spike & photodiode data based on the stimulus
+    that appears on screen (i.e., matching the log file to the data file). This
+    includes labeling phases (like "blank", "stationary", and "moving") along
+    with experimental metadata such as SF, TF, and stimulus orientation
+    (direction).
+
+2)  Re-organizing the spike & photodiode so that separate replicates of a
+    stimulus run are uniquely labelled and then arranged together.
+
+3)  Binning the data into 10- and 100-ms data sets, and then exporting CSVs of
+    the unbinned, 10-ms-binned, and 100-ms-binned data. This will be highly
+    useful for situations where you are handling multiple data files (e.g., from
+    different recording days), in which case it is likely that your machine will
+    not be able to store all objects in RAM.
+
+> Before proceeding any further, please ensure you have installed and loaded all
+> the necessary `R` packages as detailed in the Preface section of this guide.
+
+## Import example file and metadata
+
+We will use a recently-collected data file and its corresponding metadata file
+to showcase the fundamentals of wrangling ephys data into a more easily
+plot-able format.
+
+### Identify files to import
+
+The following code is based on the assumptions that: 1) Your files are stored in
+a directory entitled `/data` 2) The basename of each file (i.e., the name of the
+file, excluding the file extension) is identical for each set of spike sorted
+data and corresponding metadata log file (e.g., `04132022_009m.mat` and
+`04132022_009m` have the same basename, which is `04132022_009m`).
+
+```{r list_files}
+## List all files of each file type
+csv_files <-
+  list.files("./data", pattern = ".csv",
+             full.names = TRUE)
+mat_files <-
+  list.files("./data", pattern = ".mat",
+             full.names = TRUE)
+
+## Generate metadata tibbles for each file type
+csv_file_info <-
+  tibble(
+    csv_files = csv_files,
+    ## Extract the basename by removing the file extension
+    basename =  basename(csv_files) %>% str_remove(".csv"),
+    ## NOTE: PLEASE ADJUST THE FOLLOWING LINE TO BE ABLE TO EXCTRACT OUT THE
+    ## DATE BASED ON YOUR NAMING CONVENTION
+    basedate =  basename(csv_files) %>% str_sub(start = 1, end = 12)
+  )
+mat_file_info <-
+  tibble(
+    mat_files = mat_files,
+    ## Extract the basename by removing the file extension
+    basename =  basename(mat_files) %>% str_remove(".mat"),
+    ## NOTE: AGAIN, PLEASE ADJUST THE FOLLOWING LINE TO BE ABLE TO EXCTRACT OUT
+    ## THE DATE BASED ON YOUR NAMING CONVENTION
+    basedate =  basename(mat_files) %>% str_sub(start = 1, end = 12)
+  )
+
+## Matchmake between .MAT data and .CSV log files
+csv_mat_filejoin <-
+  inner_join(csv_file_info, mat_file_info, by = "basename") %>%
+  ## OPTIONAL STEP: remove any rows where either the .MAT or .CSV is missing
+  drop_na()
+
+## Store a vector of basenames in the environment. This will become useful later
+base_names <- csv_mat_filejoin$basename
+
+## Your end products from this code block should look something like:
+csv_mat_filejoin
+
+## and:
+base_names
+```
+
+### Data import and preliminary labeling
+
+We will now use the `R.matlab` package to import the `.mat` file into R and then
+label the spike and photodiode time series based on the information in the
+`.csv` log file
+
+Because `.mat` files can be large, data import can take several minutes.
+
+```{r data_import}
+## Tidy up how R has been using RAM by running garbage collection
+gc()
+
+## Set up empty vectors that will collect sets of replicates that we will be
+## splitting up
+metadata_sets <- NULL
+meta_splits <- NULL
+data_splits <- NULL
+```

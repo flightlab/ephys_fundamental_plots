@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Spike sorting | Fundamental plots for electrophysiological data</title>
+  <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Spike sorting | Fundamental plots for electrophysiological data" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
+  <meta name="github-repo" content="flightlab/ephys_fundamental_plots" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Spike sorting | Fundamental plots for electrophysiological data" />
+  
+  <meta name="twitter:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
+  
+
+<meta name="author" content="Vikram B. Baliga" />
+
+
+<meta name="date" content="2023-02-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="preface.html"/>
+<link rel="next" href="raw-data-and-spike-sorted-traces.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Fundamental plots for electrophysiological data</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i>Citation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i><b>2</b> Preface</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="preface.html"><a href="preface.html#r-packages-versioning"><i class="fa fa-check"></i><b>2.1</b> R packages &amp; versioning</a></li>
+<li class="chapter" data-level="2.2" data-path="preface.html"><a href="preface.html#not_in"><i class="fa fa-check"></i><b>2.2</b> <code>%not_in%</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="spike-sorting.html"><a href="spike-sorting.html"><i class="fa fa-check"></i><b>3</b> Spike sorting</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="spike-sorting.html"><a href="spike-sorting.html#spike2"><i class="fa fa-check"></i><b>3.1</b> Spike2</a></li>
+<li class="chapter" data-level="3.2" data-path="spike-sorting.html"><a href="spike-sorting.html#neuralynx"><i class="fa fa-check"></i><b>3.2</b> Neuralynx</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html"><i class="fa fa-check"></i><b>4</b> Raw data and spike sorted traces</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html#including-plots"><i class="fa fa-check"></i><b>4.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="data-wrangling.html"><a href="data-wrangling.html"><i class="fa fa-check"></i><b>5</b> Data wrangling</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="data-wrangling.html"><a href="data-wrangling.html#import-example-file-and-metadata"><i class="fa fa-check"></i><b>5.1</b> Import example file and metadata</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="data-wrangling.html"><a href="data-wrangling.html#identify-files-to-import"><i class="fa fa-check"></i><b>5.1.1</b> Identify files to import</a></li>
+<li class="chapter" data-level="5.1.2" data-path="data-wrangling.html"><a href="data-wrangling.html#data-import-and-preliminary-labeling"><i class="fa fa-check"></i><b>5.1.2</b> Data import and preliminary labeling</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html"><i class="fa fa-check"></i><b>6</b> Raster and mean spike rate plots</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-1"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>7</b> Spatiotemporal tuning</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>7.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>8</b> Histological verification</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-3"><i class="fa fa-check"></i><b>8.1</b> Including Plots</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Fundamental plots for electrophysiological data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="spike-sorting" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Spike sorting<a href="spike-sorting.html#spike-sorting" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We’ll cover how to spike sort using two programs: 1) Spike2 (written by Tony
+Lapsanksy), and 2) Neuralynx (written by Eric Press)</p>
+<div id="spike2" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Spike2<a href="spike-sorting.html#spike2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Written by Tony Lapsansky, February 24, 2023</p>
+<ol style="list-style-type: decimal">
+<li>Save the Spike2 file
+<ol style="list-style-type: decimal">
+<li>Use the name structure <code>YEARMODA_sequence_investigator</code></li>
+<li>Save data in the corresponding directory
+<code>“C:\InvestigatorName\ephys\YEAR-MO-DA”</code></li>
+</ol></li>
+<li>Open <code>Spike2</code> and open the file</li>
+<li>Apply a digital high pass filter if needed. Note that if the data were
+collected with the high pass filter set at greater than 100 Hz (no LFP
+signal) then skip to step 4.
+<ol style="list-style-type: decimal">
+<li>Right click on channel and select <code>FIR Digital Filters…</code> (see Spike 2
+help → index <code>Digital Filter</code> for explanation)</li>
+<li>Under the pull down menu for <code>Filter</code> change from
+<code>Example low pass filter</code> to <code>Example high pass filter</code></li>
+<li>Select the <code>Show Details</code> button in the bottom right</li>
+<li>Adjust blue slider to shift the colour dots above the slider from red to
+yellow to green, but use the minimum level to achieve green. Fine
+adjustments can be made just under the slider.</li>
+<li>Hit <code>Apply</code></li>
+<li>Set <code>Destination</code> to the next available channel (often channel 4)</li>
+<li>Click Okay</li>
+<li>Close the filtering window. You are given the option to save the filter.
+Do not do this. It is important to set the filter each time. (?)</li>
+</ol></li>
+<li>Set thresholds for spikes
+<ol style="list-style-type: decimal">
+<li>Right click on the filtered channel and select <code>New WaveMark</code></li>
+<li>Clear previous templates if any are present. To do so, select the trash
+can icon within each template.</li>
+<li>Locate the dashed vertical line, which can be found at time 0 in the
+main window. This line indicates your cursor position.</li>
+<li>Move the dashed line through the trace to observe potential spike as
+determined by the default upper and lower thresholds.</li>
+<li>Right click the upper bound marker (the upper horizontal dashed line in
+the <code>WaveMark</code> window) and select <code>move away</code></li>
+<li>Identify spikes based on the lower bound. It is usually helpful to zoom
+in on the x-axis (time) to do this. Set the lower bound so that obvious
+spikes are included and ambiguous spikes are excluded.</li>
+</ol></li>
+<li>Choose template setting
+<ol style="list-style-type: decimal">
+<li>Move the cursor to a typical spike. The upper window is a base template.
+Click and hold on the upper trace and drag it to the first available
+template window.</li>
+<li>Click on the button just to the left of the trash can icon (on the top
+half, upper right of the <code>WaveMark</code> window). This is the
+<code>parameters dialog</code> button. This opens a template settings window.</li>
+<li>For the line <code>Maximum amplitude change for a match</code> enter <code>20</code>. This
+will allow a spike that fits a template to vary in maximum amplitude by
+up to 20%.</li>
+<li>For the line <code>Remove the DC offset before template matching</code>, confirm
+that the box is checked.</li>
+<li>Nothing else should need to be changed. Click <code>OK</code>.</li>
+</ol></li>
+<li>Spike sorting
+<ol style="list-style-type: decimal">
+<li>Back in the <code>WaveMark</code> window, make sure that the box <code>Circular replay</code>
+is unchecked, and that the box <code>Make Templates</code> is checked.</li>
+<li>Ensure that the vertical cursor on the main window is at time zero (or
+the first spike).</li>
+<li>Hit the play button ▶️, which is called “run forward”. This will take
+several minutes.</li>
+</ol></li>
+<li>Use PCA to delete and merge spike templates
+<ol style="list-style-type: decimal">
+<li>Select <code>New Channel</code> on the <code>WaveMark</code> window to place the spike data in
+the next available channel (typically, Channel 5)</li>
+<li>Close the <code>WaveMark</code> window.</li>
+<li>Right click on the sorted channel and select <code>Edit WaveMark</code></li>
+<li>Within the <code>WaveMark</code> window, go the pull down menu <code>Analyse</code> and select
+<code>Principal components</code>. Select <code>OK</code>. This opens a window of all spikes
+colored by template.</li>
+<li>Rotate around all three axes to determine if there is one, two, or more
+clusters.</li>
+<li>Identify templates that should be deleted and those that should be
+merged. Delete templates that sparse and peripheral.</li>
+<li>Delete the template(s) in the <code>WaveMark</code> window by selecting that
+template’s trash can icon.</li>
+<li>Merge templates by dragging them into the same window</li>
+<li>Hit the “reclassify” button in the <code>WaveMark</code> window.</li>
+</ol></li>
+<li>Export the spike-sorted data
+<ol style="list-style-type: decimal">
+<li><code>File → Export As</code></li>
+<li>Select <code>.mat</code> (Matlab data)</li>
+<li>Use the same filename and location but with the .mat extension.</li>
+<li>Hit <code>Save</code></li>
+<li>Select <code>Add</code> for <code>All Channels</code></li>
+<li>Click <code>Export</code></li>
+<li>Click <code>OK</code> (this will take several minutes)</li>
+</ol></li>
+</ol>
+</div>
+<div id="neuralynx" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Neuralynx<a href="spike-sorting.html#neuralynx" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Written by Eric Press, November 11, 2022</p>
+<ol style="list-style-type: decimal">
+<li><p>Spike sorting database:</p>
+<ol style="list-style-type: decimal">
+<li>Check the column labelled <code>Sorting status</code> to find days of recording
+that are <code>cued</code> meaning they are ready to be sorted. Recordings are cued
+for spike sorting once information about the recording has been added to
+the database. This includes observations from the day’s recording,
+whether the electrode position was moved from the previous recording,
+and the stimulus condition for each recording. The recordings are stored
+at the following location and are named/organized by date and time of
+recording:<br />
+<code>Computer/LaCie (D:)/Eric’s data/nlx_recordings</code></li>
+</ol></li>
+<li><p>Filtering the raw traces (CSCs):</p>
+<ol style="list-style-type: decimal">
+<li><p>Use the <code>NlxCSCFiltering</code> tool on any Windows machine to run a band-pass
+filter on input <code>CSC</code> files.</p></li>
+<li><p>Choose all the <code>CSC</code> files for a given recording, change the <code>PreAppend</code>
+field to <code>spfilt</code>, which stands for spike-filtered and adjust the <code>DSP</code>
+filtering fields to match the image to the right. This selects for
+frequencies in the raw traces where spikes will be found, but removes
+low frequency (LFP) and high frequency components of the traces.</p></li>
+</ol></li>
+</ol>
+<div class="figure">
+<img src="source_images/sec3.2.1_nix_csc_filter.png" alt="" />
+<p class="caption">Nix csc filter</p>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Examine the filtered traces:</p>
+<ol style="list-style-type: decimal">
+<li>Take a closer look at the filtered traces (Open in <code>Neuraview</code> on any
+Windows machine) and determine which channels are likely to have
+isolatable spikes and how many distinct spikes there might be. It helps
+to keep <code>Neuraview</code> open when setting thresholds in the next step.</li>
+</ol></li>
+<li><p>Spike detection from filtered traces:</p>
+<ol style="list-style-type: decimal">
+<li><p>Use the <code>CSCSpikeExtractor</code> tool on any Windows machine to detect spikes
+above or below a given µV) threshold. The units displayed in the program
+will be AdBitVolts which are simply 10.92x from the µV value.</p></li>
+<li><p>Based on the filtered traces, within <code>CSCSpikeExtractor</code>, set the spike
+extraction properties (<code>Spike Extraction -&gt; Properties</code> OR <code>Ctrl+P</code>) as
+shown above. The <code>Extraction Value</code> is set to 10.92x the µV you chose by
+viewing the filtered traces.</p></li>
+<li><p>Press <code>Ctrl+S</code> to extract spikes from the selected file at the desired
+settings. The resulting file will be placed in the <code>extracted spikes</code>
+filter on the <code>Desktop</code>.</p></li>
+<li><p>Create subfolders in the recording folder for each threshold and move
+the extracted spikes at each threshold into the appropriate folder.
+These spike-detected files will be used for spike sorting in the next
+step.</p></li>
+<li><p><strong>If it helps with detecting real spike waveforms while eliminating
+noise, run recordings through spike detection at multiple threshold
+(positive or negative) such that only all putative neurons are accounted
+for a minimal noise is detected.</strong></p></li>
+</ol></li>
+</ol>
+<div class="figure">
+<img src="source_images/sec3.2.2_spike_extraction_properties.png" alt="" />
+<p class="caption">Spike extraction
+properties</p>
+</div>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Spike sorting:</p>
+<ol style="list-style-type: decimal">
+<li><p>Open the extracted spikes in <code>Spikesort3D</code> on either the Neuralynx
+machine or another Windows machine that has an active <code>SpikeSort3D</code>
+licence. You can also use <code>TeamViewer</code> to control the Neuralynx machine
+but this works much better with another Windows machine.</p></li>
+<li><p>Press OK when the feature selection window appears. If you want to
+select alternate features to display, select them from the list
+provided. Sometimes it can be helpful to use PCA1 – 3 in isolating
+neurons but often it makes things more challenging.</p></li>
+<li><p>Using the 3D Plot, examine the clustering of spikes. Follow the image
+below to aid in interacting with the 3D plot (MB = the scroll wheel
+button i.e. middle mouse button). You can change the features displayed
+on each axis with <code>Q/W</code>, <code>A/S</code>, and <code>Z/X</code> respectively. Also, <code>Ctrl+P</code>
+brings up a window that allows you to change the size and opacity of
+points on the plot (I find <code>size = 2</code>, <code>alpha = 0.5</code> works well to
+improve visual definition of the clusters). If distinct clusters are
+difficult to see, find the combination of 3 features that produces the
+most noticeable clustering or the greatest spread of points in the
+space. The features displayed in the 3D plot are shown at the top left
+of the plot (i.e. X(3) Height # # # #). Use those features for the
+next step. <img src="source_images/sec3.2.3_3d_plot_movement.png" alt="3D plot movement and interaction" /></p></li>
+<li><p>Run <code>KlustaKwik</code> (<code>Cluster → Autocluster using KlustaKwik</code>) and select
+the 3 features that generate the most clearly separable clusters on the
+3D view – often, the first 3 (<code>Peak</code>, <code>Valley</code>, <code>Energy</code>) do a decent
+job. Change the <code>MaxPossibleClusters</code> to <code>10</code> before pressing <code>Run</code>. The
+remaining settings should match the image below. <img src="source_images/sec3.2.4_klustakwik.png" alt="KlustaKwik interface" /></p></li>
+<li><p>Following calculations, use the <code>Waveform</code> window and the 3D plot to
+group the distinct clusters into what you believe are waveforms produced
+by distinct neurons. Use the number keys to highlight distinct clusters
+and <code>Ctrl+M</code> to merge clusters together. <code>Ctrl+C</code> copies the selected
+cluster and can be used to split a cluster into 2 if you believe
+portions of the cluster belong to distinct putative neurons. This step
+takes some practice. You can use <code>Ctrl+Z</code> to undo only one move.
+Otherwise, you may need to exit without saving and start again at
+step 4. Save with <code>Ctrl+S</code> often and click OK to overwrite the file.</p></li>
+<li><p>Once you are satisfied with the waveforms left, note how many there are,
+and whether it seems possible that some of the groups belong to the same
+neuron. Consider what you know about excitable membranes to make these
+decisions. Fill out the <code>Spike Sorting Database</code> with the information
+used to reach this point. This includes, the threshold(s), # of
+clusters, # of putative neurons (often 1 less than the # of clusters
+because it would be a stretch to include the smallest amplitude waveform
+as a distinct, separable neuron), and any else to note from performing
+sorting.</p></li>
+<li><p>Save each cluster to its own spike file
+(<code>File → Save Multiple Spike Files</code>)</p></li>
+<li><p>Open the separate spike files you just created, along with the original
+filtered trace in <code>Neuraview</code>. Scroll along the recording and examine if
+the sorting you performed seems believable. Do the spikes in different
+rows really seem like they’re different in the filtered trace? Do some
+spikes not seem like real spikes? If anything seems amiss, make the
+appropriate merges in <code>SpikeSort3D</code> before proceding.</p></li>
+<li><p>Export the relevant data from the sorting. Perform the following:</p>
+<ol style="list-style-type: decimal">
+<li><p><code>File → Save ASCII Timestamp Files</code></p></li>
+<li><p><code>File → Save Multiple Spike Files</code></p></li>
+<li><p><code>File → Save ASCII Avg Waveforms</code></p></li>
+<li><p>Also, save the file itself with <code>Ctrl+S</code></p></li>
+</ol></li>
+<li><p>Lastly, bring up all the waveforms together on the waveform plot. Take a
+screenshot and save it to the folder where the extracted spikes (and now
+timestamps files) are stored.</p></li>
+</ol></li>
+<li><p>Moving sorted files to other locations:</p>
+<ol style="list-style-type: decimal">
+<li><p>Once a chunk of recordings have been sorted, copy/paste the entire
+recording file to Eric’s orange 1TB storage drive (Lacie). Place them in
+the following folder:</p>
+<p><code>Eric's data/sorted_recordings</code></p></li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="preface.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="raw-data-and-spike-sorted-traces.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-spike_sorting.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

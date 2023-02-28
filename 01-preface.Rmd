@@ -1,0 +1,59 @@
+# Preface
+
+## R packages & versioning
+
+The R packages listed below will be necessary at some point over the course of
+this book. I recommend installing them all now. The block of code below is
+designed to first check if each of the listed packages is already installed on
+your computer. If any is missing, then an attempt is made to install it from
+CRAN. Finally, all of the packages are loaded into the environment.
+
+```{r package_loading, echo=TRUE, message=FALSE, warning=FALSE}
+## Specify the packages you'll use in the script
+packages <- c("tidyverse",
+              "readxl",
+              "zoo",
+              "gridExtra",
+              "R.matlab",
+              "cowplot",
+              "easystats",
+              "circular",
+              "splines",
+              "MESS", ## area under curve
+              "zoo" ## rolling means
+)
+## Now for each package listed, first check to see if the package is already
+## installed. If it is installed, it's simply loaded. If not, it's downloaded 
+## from CRAN and then installed and loaded.
+package.check <- lapply(packages,
+                        FUN = function(x) {
+                          if (!require(x, character.only = TRUE)) {
+                            install.packages(x, dependencies = TRUE)
+                            library(x, character.only = TRUE)
+                          }
+                        }
+)
+```
+
+I will use the `sessionInfo()` command to detail the specific versions of
+packages I am using (along with other information about my R session). Please 
+note that I am not suggesting you obtain exactly the same version of each 
+package listed below. Instead, the information below is meant to help you assess
+whether package versioning underlies any trouble you may encounter.
+
+```{r package_versions, echo=FALSE}
+print(sessionInfo())
+```
+
+
+## `%not_in%`
+
+This guide will also rely on this handy function, which you should add to your
+code:
+
+``` {r not_in}
+`%not_in%` <- Negate(`%in%`)
+```
+
+This simple operator allows you to determine if an element does not appear in a
+target object.
