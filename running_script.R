@@ -439,7 +439,10 @@ for (i in 1:length(metadata_sets)) {
 names(metadata_combos) <- csv_mat_filejoin$basename #base_names
 
 #### __SET BIN SIZE HERE ####
-bin_size = 10 ## 10 or 100
+
+## Set bin size here
+## Units are in ms (e.g. 10 = 10ms)
+bin_size = 10 ## 10 or 100 or 1 (1 = "unbinned")
 
 slice_size = NULL
 slicemin = NULL
@@ -452,12 +455,15 @@ if (bin_size == 10){
   slice_size <- 51
   slicemin <- 21
   slicemax <- 49
+} else if (bin_size == 1){
+  slice_size <- NULL
+  slicemin <- NULL
+  slicemax <- NULL
 } else {
-  print("bin_size is non-standard")
+  stop("bin_size is non-standard")
 }
 
 
-#### __reorganize in stim order ####
 all_replicate_data_reorganized <-
   vector(mode = "list", length = length(meta_splits))
 name_sets <-
@@ -465,85 +471,122 @@ name_sets <-
 gc()
 
 starttime <- Sys.time()
-for (i in 1:length(meta_splits)){ # i = number of files
+for (i in 1:length(meta_splits)){
+
+  ## i = file number
   print(i)
+
+  ## We'll need to collect data at a per-stimulus level and on a per-replicate
+  ## level within the per-stimulus level
+  ## "j" will be used to designate a unique stimulus
+  ## We'll first create an empty object in which to collect stimulus-specific
+  ## data
   replicate_data_reorganized <- NULL
+  ## For each of j unique stimuli...
   for (j in 1:length(meta_splits[[i]])) { # j = {direction,speed}
+    ## Isolate the j-th data
     d <- data_splits[[i]][[j]]
+    ## And the j-th log data
     m <- meta_splits[[i]][[j]] %>%
       group_by(Trial) %>%
+      ## Label separate replicates
       mutate(Replicate = row_number())
 
+    ## Extract a stimulus label to a name_set that will be used later
     name_sets[[i]][[j]] <-
       paste(m$Direction[1], "Deg,",  m$Speed[1], "Deg/s")
 
+    ## Set up a temporary object to deal with per-replicate data
     replicates_ordered <- NULL
+    ## "k" will be used to designate replicate number
     for (k in 1:max(m$Replicate)){
       tmp <-
         m %>%
         filter(Replicate == k)
 
+      ## If you have a complete replicate (i.e., blank, stationary, moving)
       if (nrow(tmp) == 3 ) {
+        ## Grab the specific data
         doot <-
           d %>%
           filter(Time >= min(tmp$Time)) %>%
           filter(Time <= max(tmp$Stim_end))
+        ## Add bin information
         doot$bin <-
           rep(1:ceiling(nrow(doot)/bin_size), each = bin_size)[1:nrow(doot)]
 
-        replicates_ordered[[k]] <-
-          doot %>%
-
-          ## IF YOU ARE BINNING, RUN THIS:
-          group_by(bin) %>%
-          summarise(
-            Trial = first(Trial),
-            Time_bin_mid = mean(Time_mat),
-            Time_bin_begin = min(Time_mat),
-            Time_bin_end = max(Time_mat),
-            Spike_rate = sum(Spikes)/(max(Time_mat) - min(Time_mat)),
-            Photod_mean = mean(Photod)
-          ) %>%
-          mutate(
-            Time_stand = Time_bin_mid - min(Time_bin_mid),
-            Blank_end = tmp$Stim_end[1] - min(Time_bin_mid),
-            Static_end = tmp$Stim_end[2] - min(Time_bin_mid),
-            SF_cpd = m$SF_cpd[1],
-            Temporal_Frequency = m$Temporal_Frequency[1],
-            Speed = m$Speed[1],
-            Direction = m$Direction[1],
-            Replicate = k
-          ) %>%
-          select(Speed, SF_cpd, Temporal_Frequency, Direction,
-                 everything()) %>%
-          filter(Time_stand >= 0) %>%
-          filter(bin < slice_size + 1)
-
-        ## IF YOU ARE NOT BINNING, RUN THIS:
-        # mutate(
-        #   Time_stand = Time_mat - min(Time_mat),
-        #   Time_begin = min(Time_mat),
-        #   Time_end = max(Time_mat),
-        #   Blank_end = tmp$Stim_end[1] - min(Time_mat),
-        #   Static_end = tmp$Stim_end[2] - min(Time_mat),
-        #   Replicate = k
-        # ) %>%
-        #   select(Speed, SF_cpd, Temporal_Frequency, Direction,
-        #          everything()) %>%
-        #   filter(Time_stand >= 0)
-
+        if(bin_size == 1) { ## IF YOU ARE NOT BINNING, RUN THIS:
+          replicates_ordered[[k]] <-
+            doot %>%
+            mutate(
+              ## Construct a standardized time within the sweep
+              Time_stand = Time_mat - min(Time_mat),
+              ## When does the sweep begin
+              Time_begin = min(Time_mat),
+              ## When does the sweep end
+              Time_end = max(Time_mat),
+              ## Delineate the end of the blank phase
+              Blank_end = tmp$Stim_end[1] - min(Time_mat),
+              ## Delineate the end of the stationary phase
+              Static_end = tmp$Stim_end[2] - min(Time_mat),
+              ## Label the replicate number
+              Replicate = k
+            ) %>%
+              ## Bring stim info to first few columns
+              select(Speed, SF_cpd, Temporal_Frequency, Direction,
+                     everything()) %>%
+              ## Just in case there some hang over
+              filter(Time_stand >= 0)
+          } else { ## IF YOU ARE BINNING, RUN THIS:
+          replicates_ordered[[k]] <-
+            doot %>%
+            ## WITHIN EACH BIN:
+            group_by(bin) %>%
+            summarise(
+              ## Label the trial
+              Trial = first(Trial),
+              ## Midpoint of bin
+              Time_bin_mid = mean(Time_mat),
+              ## Bin beginning
+              Time_bin_begin = min(Time_mat),
+              ## Bin end
+              Time_bin_end = max(Time_mat),
+              ## Spike rate = sum of spikes divided by elapsed time
+              Spike_rate = sum(Spikes)/(max(Time_mat) - min(Time_mat)),
+              Photod_mean = mean(Photod)
+            ) %>%
+            mutate(
+              ## Add in metadata (following same definitions above)
+              Time_stand = Time_bin_mid - min(Time_bin_mid),
+              Blank_end = tmp$Stim_end[1] - min(Time_bin_mid),
+              Static_end = tmp$Stim_end[2] - min(Time_bin_mid),
+              SF_cpd = m$SF_cpd[1],
+              Temporal_Frequency = m$Temporal_Frequency[1],
+              Speed = m$Speed[1],
+              Direction = m$Direction[1],
+              Replicate = k
+            ) %>%
+            ## Bring stim info to first few columns
+            select(Speed, SF_cpd, Temporal_Frequency, Direction,
+                   everything()) %>%
+            ## Just in case there some hang over
+            filter(Time_stand >= 0) %>%
+            filter(bin < slice_size + 1)
+        }
       }
-    }
+      }
 
+    ## Now insert it within the collector of per-stimulus data
     replicate_data_reorganized[[j]] <-
       replicates_ordered %>%
       bind_rows()
 
+    ## Now insert it within the overall data collector
     all_replicate_data_reorganized[[i]][[j]] <-
       replicate_data_reorganized[[j]]
 
+    ## Toss out temporary object and clean up
     rm(replicates_ordered)
-
     gc()
   }
 }
@@ -577,11 +620,15 @@ for (i in 1:length(all_replicate_data_reorganized)) {
 ################################### export csv #################################
 ## Export a csv for each session with all data organized
 
-export_path <- "./reformatted_data_csv/"
-#condition <-  "_unbinned"
+## Declare export destination
+export_path <- "./data/"
+## The "condition" will be appended to the file name. Choose whichever one
+## corresponds to the bin_size you used above
 condition <-  "_binsize10"
 #condition <-  "_binsize100"
+#condition <-  "_unbinned"
 
+## Export each tibble within all_replicate_data_reorganized
 for (i in 1:length(all_replicate_data_reorganized)) {
   print(i)
   dat <-

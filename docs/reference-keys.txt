@@ -11,6 +11,8 @@ data-wrangling
 import-example-file-and-metadata
 identify-files-to-import
 data-import-and-preliminary-labeling
+organizing-replicates-required-and-binning-optional
+data-export
 raster-and-mean-spike-rate-plots
 including-plots-1
 spatiotemporal-tuning
