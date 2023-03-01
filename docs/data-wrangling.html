@@ -26,7 +26,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="author" content="Vikram B. Baliga" />
 
 
-<meta name="date" content="2023-02-27" />
+<meta name="date" content="2023-02-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -273,9 +273,10 @@ data and corresponding metadata log file (e.g., <code>04132022_009m.mat</code> a
 <span id="cb6-38"><a href="data-wrangling.html#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="do">## Your end products from this code block should look something like:</span></span>
 <span id="cb6-39"><a href="data-wrangling.html#cb6-39" aria-hidden="true" tabindex="-1"></a>csv_mat_filejoin</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 5
-##   csv_files                basename      basedate.x   mat_files       basedate.y
-##   &lt;chr&gt;                    &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;           &lt;chr&gt;     
-## 1 ./data/04132022_009m.csv 04132022_009m 04132022_009 ./data/0413202… 04132022_…</code></pre>
+##   csv_files                basename      basedate.x   mat_files          based…¹
+##   &lt;chr&gt;                    &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;  
+## 1 ./data/04132022_009m.csv 04132022_009m 04132022_009 ./data/04132022_0… 041320…
+## # … with abbreviated variable name ¹​basedate.y</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-wrangling.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## and:</span></span>
 <span id="cb8-2"><a href="data-wrangling.html#cb8-2" aria-hidden="true" tabindex="-1"></a>base_names</span></code></pre></div>
 <pre><code>## [1] &quot;04132022_009m&quot;</code></pre>
@@ -290,15 +291,15 @@ label the spike and photodiode time series based on the information in the
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-wrangling.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up how R has been using RAM by running garbage collection</span></span>
 <span id="cb10-2"><a href="data-wrangling.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used  (Mb) gc trigger  (Mb) max used  (Mb)
-## Ncells 2527151 135.0    3985512 212.9  3985512 212.9
-## Vcells 4334001  33.1   10146329  77.5  7077614  54.0</code></pre>
+## Ncells 2465312 131.7    3915768 209.2  3915768 209.2
+## Vcells 4241870  32.4   10146329  77.5  6911459  52.8</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-wrangling.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set up empty vectors that will collect sets of replicates that we will be</span></span>
 <span id="cb12-2"><a href="data-wrangling.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## splitting up</span></span>
 <span id="cb12-3"><a href="data-wrangling.html#cb12-3" aria-hidden="true" tabindex="-1"></a>metadata_sets <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb12-4"><a href="data-wrangling.html#cb12-4" aria-hidden="true" tabindex="-1"></a>meta_splits <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb12-5"><a href="data-wrangling.html#cb12-5" aria-hidden="true" tabindex="-1"></a>data_splits <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb12-6"><a href="data-wrangling.html#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="data-wrangling.html#cb12-7" aria-hidden="true" tabindex="-1"></a>starttime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="do">## optional, this will help you assess total import time</span></span>
+<span id="cb12-7"><a href="data-wrangling.html#cb12-7" aria-hidden="true" tabindex="-1"></a>starttime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="do">## Optional, will help you assess run time</span></span>
 <span id="cb12-8"><a href="data-wrangling.html#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(csv_mat_filejoin)) {</span>
 <span id="cb12-9"><a href="data-wrangling.html#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-10"><a href="data-wrangling.html#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Which file # are we working on?</span></span>
@@ -315,7 +316,7 @@ label the spike and photodiode time series based on the information in the
 <span id="cb12-21"><a href="data-wrangling.html#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-22"><a href="data-wrangling.html#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Read in the corresponding csv log file</span></span>
 <span id="cb12-23"><a href="data-wrangling.html#cb12-23" aria-hidden="true" tabindex="-1"></a>  csv_data_sets[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-24"><a href="data-wrangling.html#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(csv_mat_filejoin[i,<span class="st">&quot;csv_files&quot;</span>],</span>
+<span id="cb12-24"><a href="data-wrangling.html#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(<span class="fu">as.character</span>(csv_mat_filejoin[i,<span class="st">&quot;csv_files&quot;</span>]),</span>
 <span id="cb12-25"><a href="data-wrangling.html#cb12-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb12-26"><a href="data-wrangling.html#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Rename columns for convenience</span></span>
 <span id="cb12-27"><a href="data-wrangling.html#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(</span>
@@ -336,7 +337,7 @@ label the spike and photodiode time series based on the information in the
 <span id="cb12-42"><a href="data-wrangling.html#cb12-42" aria-hidden="true" tabindex="-1"></a>  csv_data_sets[[i]]<span class="sc">$</span>SF_cpd[csv_data_sets[[i]]<span class="sc">$</span>Spatial_Frequency <span class="sc">==</span> <span class="fl">0.0212</span>]   <span class="ot">&lt;-</span></span>
 <span id="cb12-43"><a href="data-wrangling.html#cb12-43" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span><span class="sc">^-</span><span class="dv">1</span></span>
 <span id="cb12-44"><a href="data-wrangling.html#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-45"><a href="data-wrangling.html#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="do">## The log file does not have time = 0, so set up a separate tibble to </span></span>
+<span id="cb12-45"><a href="data-wrangling.html#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="do">## The log file does not have time = 0, so set up a separate tibble to</span></span>
 <span id="cb12-46"><a href="data-wrangling.html#cb12-46" aria-hidden="true" tabindex="-1"></a>  <span class="do">## add this info in later. Some of the metadata will just be filler for now.</span></span>
 <span id="cb12-47"><a href="data-wrangling.html#cb12-47" aria-hidden="true" tabindex="-1"></a>  initial <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
 <span id="cb12-48"><a href="data-wrangling.html#cb12-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">Trial =</span> <span class="st">&quot;initialization&quot;</span>,</span>
@@ -368,158 +369,294 @@ label the spike and photodiode time series based on the information in the
 <span id="cb12-74"><a href="data-wrangling.html#cb12-74" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the difference between these two</span></span>
 <span id="cb12-75"><a href="data-wrangling.html#cb12-75" aria-hidden="true" tabindex="-1"></a>  first_mvbl_diff <span class="ot">&lt;-</span> first_moving_csv <span class="sc">-</span> first_blank</span>
 <span id="cb12-76"><a href="data-wrangling.html#cb12-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-77"><a href="data-wrangling.html#cb12-77" aria-hidden="true" tabindex="-1"></a>  first_csv_tmp <span class="ot">&lt;-</span></span>
-<span id="cb12-78"><a href="data-wrangling.html#cb12-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(initial, csv_data_sets[[i]]) <span class="sc">%&gt;%</span></span>
-<span id="cb12-79"><a href="data-wrangling.html#cb12-79" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Add the first event time to &quot;Time&quot; and subtract first_mvbl_diff (~2 secs)</span></span>
-<span id="cb12-80"><a href="data-wrangling.html#cb12-80" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time =</span> Time <span class="sc">+</span> first_moving_mat <span class="sc">-</span> first_mvbl_diff <span class="sc">-</span> first_blank) <span class="sc">%&gt;%</span></span>
-<span id="cb12-81"><a href="data-wrangling.html#cb12-81" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Make character version of Time for joining later</span></span>
-<span id="cb12-82"><a href="data-wrangling.html#cb12-82" aria-hidden="true" tabindex="-1"></a>    <span class="do">## This will be crucial for _join functions</span></span>
-<span id="cb12-83"><a href="data-wrangling.html#cb12-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Time,<span class="dv">3</span>)))</span>
-<span id="cb12-84"><a href="data-wrangling.html#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-85"><a href="data-wrangling.html#cb12-85" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Duplicate the initialization for ease of setting T0</span></span>
-<span id="cb12-86"><a href="data-wrangling.html#cb12-86" aria-hidden="true" tabindex="-1"></a>  inception <span class="ot">&lt;-</span></span>
-<span id="cb12-87"><a href="data-wrangling.html#cb12-87" aria-hidden="true" tabindex="-1"></a>    initial <span class="sc">%&gt;%</span></span>
-<span id="cb12-88"><a href="data-wrangling.html#cb12-88" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Time,<span class="dv">3</span>)))</span>
-<span id="cb12-89"><a href="data-wrangling.html#cb12-89" aria-hidden="true" tabindex="-1"></a>  inception<span class="sc">$</span>Trial[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;inception&quot;</span></span>
-<span id="cb12-90"><a href="data-wrangling.html#cb12-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-91"><a href="data-wrangling.html#cb12-91" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Bind the initialization rows</span></span>
-<span id="cb12-92"><a href="data-wrangling.html#cb12-92" aria-hidden="true" tabindex="-1"></a>  first_csv <span class="ot">&lt;-</span></span>
-<span id="cb12-93"><a href="data-wrangling.html#cb12-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(inception, first_csv_tmp)</span>
-<span id="cb12-94"><a href="data-wrangling.html#cb12-94" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute stimulus end times</span></span>
-<span id="cb12-95"><a href="data-wrangling.html#cb12-95" aria-hidden="true" tabindex="-1"></a>  first_csv<span class="sc">$</span>Stim_end <span class="ot">&lt;-</span> <span class="fu">c</span>(first_csv<span class="sc">$</span>Time[<span class="sc">-</span><span class="dv">1</span>], <span class="fu">max</span>(first_csv<span class="sc">$</span>Time) <span class="sc">+</span> <span class="dv">3</span>)</span>
-<span id="cb12-96"><a href="data-wrangling.html#cb12-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-97"><a href="data-wrangling.html#cb12-97" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Get final time</span></span>
-<span id="cb12-98"><a href="data-wrangling.html#cb12-98" aria-hidden="true" tabindex="-1"></a>  final_time <span class="ot">&lt;-</span> first_csv<span class="sc">$</span>Stim_end[<span class="fu">nrow</span>(first_csv)]</span>
+<span id="cb12-77"><a href="data-wrangling.html#cb12-77" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Check to see if the final row of the metadata is &quot;moving&quot; and truncate</span></span>
+<span id="cb12-78"><a href="data-wrangling.html#cb12-78" aria-hidden="true" tabindex="-1"></a>  <span class="do">## if not</span></span>
+<span id="cb12-79"><a href="data-wrangling.html#cb12-79" aria-hidden="true" tabindex="-1"></a>  <span class="do">## This can effectively be done by truncating after the final &quot;moving&quot; phase</span></span>
+<span id="cb12-80"><a href="data-wrangling.html#cb12-80" aria-hidden="true" tabindex="-1"></a>  max_moving_sweep <span class="ot">&lt;-</span></span>
+<span id="cb12-81"><a href="data-wrangling.html#cb12-81" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(<span class="fu">which</span>(csv_data_sets[[i]]<span class="sc">$</span>Trial <span class="sc">==</span> <span class="st">&quot;moving&quot;</span>))</span>
+<span id="cb12-82"><a href="data-wrangling.html#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-83"><a href="data-wrangling.html#cb12-83" aria-hidden="true" tabindex="-1"></a>  first_csv_tmp <span class="ot">&lt;-</span></span>
+<span id="cb12-84"><a href="data-wrangling.html#cb12-84" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(initial, csv_data_sets[[i]]) <span class="sc">%&gt;%</span></span>
+<span id="cb12-85"><a href="data-wrangling.html#cb12-85" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Add 1 to max moving sweep since we tacked on &quot;initial&quot; in previous step</span></span>
+<span id="cb12-86"><a href="data-wrangling.html#cb12-86" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Then slice to restrict any extraneous partial sweeps</span></span>
+<span id="cb12-87"><a href="data-wrangling.html#cb12-87" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> (max_moving_sweep <span class="sc">+</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-88"><a href="data-wrangling.html#cb12-88" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Add the first event time to &quot;Time&quot; and subtract first_mvbl_diff (~2 secs)</span></span>
+<span id="cb12-89"><a href="data-wrangling.html#cb12-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time =</span> Time <span class="sc">+</span> first_moving_mat <span class="sc">-</span> first_mvbl_diff <span class="sc">-</span> first_blank) <span class="sc">%&gt;%</span></span>
+<span id="cb12-90"><a href="data-wrangling.html#cb12-90" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Make character version of Time for joining later</span></span>
+<span id="cb12-91"><a href="data-wrangling.html#cb12-91" aria-hidden="true" tabindex="-1"></a>    <span class="do">## This will be crucial for _join functions</span></span>
+<span id="cb12-92"><a href="data-wrangling.html#cb12-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Time,<span class="dv">3</span>)))</span>
+<span id="cb12-93"><a href="data-wrangling.html#cb12-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-94"><a href="data-wrangling.html#cb12-94" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Duplicate the initialization for ease of setting T0</span></span>
+<span id="cb12-95"><a href="data-wrangling.html#cb12-95" aria-hidden="true" tabindex="-1"></a>  inception <span class="ot">&lt;-</span></span>
+<span id="cb12-96"><a href="data-wrangling.html#cb12-96" aria-hidden="true" tabindex="-1"></a>    initial <span class="sc">%&gt;%</span></span>
+<span id="cb12-97"><a href="data-wrangling.html#cb12-97" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Time,<span class="dv">3</span>)))</span>
+<span id="cb12-98"><a href="data-wrangling.html#cb12-98" aria-hidden="true" tabindex="-1"></a>  inception<span class="sc">$</span>Trial[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;inception&quot;</span></span>
 <span id="cb12-99"><a href="data-wrangling.html#cb12-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-100"><a href="data-wrangling.html#cb12-100" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Extract matlab spike and photodiode data</span></span>
-<span id="cb12-101"><a href="data-wrangling.html#cb12-101" aria-hidden="true" tabindex="-1"></a>  mat_data_sets[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-102"><a href="data-wrangling.html#cb12-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
-<span id="cb12-103"><a href="data-wrangling.html#cb12-103" aria-hidden="true" tabindex="-1"></a>      <span class="at">Time =</span></span>
-<span id="cb12-104"><a href="data-wrangling.html#cb12-104" aria-hidden="true" tabindex="-1"></a>        <span class="fu">seq</span>(</span>
-<span id="cb12-105"><a href="data-wrangling.html#cb12-105" aria-hidden="true" tabindex="-1"></a>          <span class="at">from =</span> <span class="dv">0</span>, <span class="at">by =</span> <span class="fl">0.001</span>,</span>
-<span id="cb12-106"><a href="data-wrangling.html#cb12-106" aria-hidden="true" tabindex="-1"></a>          <span class="at">length.out =</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fu">length</span>(<span class="fu">t</span>(mat_import<span class="sc">$</span>spikes))</span>
-<span id="cb12-107"><a href="data-wrangling.html#cb12-107" aria-hidden="true" tabindex="-1"></a>        ), <span class="co">#t(mat_import$tt),</span></span>
-<span id="cb12-108"><a href="data-wrangling.html#cb12-108" aria-hidden="true" tabindex="-1"></a>      <span class="at">Spikes =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">t</span>(mat_import<span class="sc">$</span>spikes)),</span>
-<span id="cb12-109"><a href="data-wrangling.html#cb12-109" aria-hidden="true" tabindex="-1"></a>      <span class="at">Photod =</span> <span class="fu">c</span>(<span class="dv">0</span>, mat_import<span class="sc">$</span>photodiode)</span>
-<span id="cb12-110"><a href="data-wrangling.html#cb12-110" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-111"><a href="data-wrangling.html#cb12-111" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb12-112"><a href="data-wrangling.html#cb12-112" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(Time)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-113"><a href="data-wrangling.html#cb12-113" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Time <span class="sc">&lt;=</span> final_time)</span>
-<span id="cb12-114"><a href="data-wrangling.html#cb12-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-115"><a href="data-wrangling.html#cb12-115" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Merge the matlab data with the metadata</span></span>
-<span id="cb12-116"><a href="data-wrangling.html#cb12-116" aria-hidden="true" tabindex="-1"></a>  joined_one_full <span class="ot">&lt;-</span></span>
-<span id="cb12-117"><a href="data-wrangling.html#cb12-117" aria-hidden="true" tabindex="-1"></a>    mat_data_sets[[i]] <span class="sc">%&gt;%</span></span>
-<span id="cb12-118"><a href="data-wrangling.html#cb12-118" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Join by the character version of time NOT the numerical!!</span></span>
-<span id="cb12-119"><a href="data-wrangling.html#cb12-119" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(first_csv, <span class="at">by =</span> <span class="st">&quot;Time_char&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-120"><a href="data-wrangling.html#cb12-120" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Rename columns for clarity of reference</span></span>
-<span id="cb12-121"><a href="data-wrangling.html#cb12-121" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Time_mat =</span> Time.x,</span>
-<span id="cb12-122"><a href="data-wrangling.html#cb12-122" aria-hidden="true" tabindex="-1"></a>           <span class="at">Time_csv =</span> Time.y) <span class="sc">%&gt;%</span></span>
-<span id="cb12-123"><a href="data-wrangling.html#cb12-123" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Convert character time to numeric time</span></span>
-<span id="cb12-124"><a href="data-wrangling.html#cb12-124" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time =</span> <span class="fu">as.numeric</span>(Time_char)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-125"><a href="data-wrangling.html#cb12-125" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Carry metadata forward</span></span>
-<span id="cb12-126"><a href="data-wrangling.html#cb12-126" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb12-127"><a href="data-wrangling.html#cb12-127" aria-hidden="true" tabindex="-1"></a>      <span class="at">Trial =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Trial, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
-<span id="cb12-128"><a href="data-wrangling.html#cb12-128" aria-hidden="true" tabindex="-1"></a>      <span class="at">Spatial_Frequency =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Spatial_Frequency, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
-<span id="cb12-129"><a href="data-wrangling.html#cb12-129" aria-hidden="true" tabindex="-1"></a>      <span class="at">SF_cpd =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(SF_cpd, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
-<span id="cb12-130"><a href="data-wrangling.html#cb12-130" aria-hidden="true" tabindex="-1"></a>      <span class="at">Temporal_Frequency =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Temporal_Frequency, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
-<span id="cb12-131"><a href="data-wrangling.html#cb12-131" aria-hidden="true" tabindex="-1"></a>      <span class="at">Direction =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Direction, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
-<span id="cb12-132"><a href="data-wrangling.html#cb12-132" aria-hidden="true" tabindex="-1"></a>      <span class="at">Time_csv =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Time_csv, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
-<span id="cb12-133"><a href="data-wrangling.html#cb12-133" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stim_end =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Stim_end, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>)</span>
-<span id="cb12-134"><a href="data-wrangling.html#cb12-134" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-135"><a href="data-wrangling.html#cb12-135" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Calculate velocity</span></span>
-<span id="cb12-136"><a href="data-wrangling.html#cb12-136" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb12-137"><a href="data-wrangling.html#cb12-137" aria-hidden="true" tabindex="-1"></a>      <span class="at">Speed =</span> Temporal_Frequency<span class="sc">/</span>SF_cpd,</span>
-<span id="cb12-138"><a href="data-wrangling.html#cb12-138" aria-hidden="true" tabindex="-1"></a>      <span class="at">Log2_Speed =</span> <span class="fu">log2</span>(Speed)</span>
-<span id="cb12-139"><a href="data-wrangling.html#cb12-139" aria-hidden="true" tabindex="-1"></a>    ) </span>
-<span id="cb12-140"><a href="data-wrangling.html#cb12-140" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-141"><a href="data-wrangling.html#cb12-141" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add info to metadata</span></span>
-<span id="cb12-142"><a href="data-wrangling.html#cb12-142" aria-hidden="true" tabindex="-1"></a>  metadata_one_full <span class="ot">&lt;-</span></span>
-<span id="cb12-143"><a href="data-wrangling.html#cb12-143" aria-hidden="true" tabindex="-1"></a>    first_csv <span class="sc">%&gt;%</span></span>
-<span id="cb12-144"><a href="data-wrangling.html#cb12-144" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb12-145"><a href="data-wrangling.html#cb12-145" aria-hidden="true" tabindex="-1"></a>      <span class="at">Speed =</span> Temporal_Frequency<span class="sc">/</span>SF_cpd,</span>
-<span id="cb12-146"><a href="data-wrangling.html#cb12-146" aria-hidden="true" tabindex="-1"></a>      <span class="at">Log2_Speed =</span> <span class="fu">log2</span>(Speed),</span>
-<span id="cb12-147"><a href="data-wrangling.html#cb12-147" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stim_end_diff =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">diff</span>(Stim_end))</span>
-<span id="cb12-148"><a href="data-wrangling.html#cb12-148" aria-hidden="true" tabindex="-1"></a>    ) </span>
-<span id="cb12-149"><a href="data-wrangling.html#cb12-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-150"><a href="data-wrangling.html#cb12-150" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Some quality control checks</span></span>
-<span id="cb12-151"><a href="data-wrangling.html#cb12-151" aria-hidden="true" tabindex="-1"></a>  <span class="do">## What are the stim time differences?</span></span>
-<span id="cb12-152"><a href="data-wrangling.html#cb12-152" aria-hidden="true" tabindex="-1"></a>  stimtime_diffs <span class="ot">&lt;-</span> <span class="fu">round</span>(metadata_one_full<span class="sc">$</span>Stim_end_diff)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span>
-<span id="cb12-153"><a href="data-wrangling.html#cb12-153" aria-hidden="true" tabindex="-1"></a>  <span class="do">## How many total reps were recorded?</span></span>
-<span id="cb12-154"><a href="data-wrangling.html#cb12-154" aria-hidden="true" tabindex="-1"></a>  stimtime_reps <span class="ot">&lt;-</span> <span class="fu">length</span>(stimtime_diffs)<span class="sc">/</span><span class="dv">3</span></span>
-<span id="cb12-155"><a href="data-wrangling.html#cb12-155" aria-hidden="true" tabindex="-1"></a>  <span class="do">## What do we expect the overall structure to look like?</span></span>
-<span id="cb12-156"><a href="data-wrangling.html#cb12-156" aria-hidden="true" tabindex="-1"></a>  stimtime_expectation <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>), stimtime_reps)</span>
-<span id="cb12-157"><a href="data-wrangling.html#cb12-157" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Does reality match our expectations?</span></span>
-<span id="cb12-158"><a href="data-wrangling.html#cb12-158" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(stimtime_diffs <span class="sc">==</span> stimtime_expectation)) {</span>
-<span id="cb12-159"><a href="data-wrangling.html#cb12-159" aria-hidden="true" tabindex="-1"></a>    <span class="do">## If you get this, investigate the file further and determine what went</span></span>
-<span id="cb12-160"><a href="data-wrangling.html#cb12-160" aria-hidden="true" tabindex="-1"></a>    <span class="do">## wrong</span></span>
-<span id="cb12-161"><a href="data-wrangling.html#cb12-161" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;stimtime issue; investigate&quot;</span>) </span>
-<span id="cb12-162"><a href="data-wrangling.html#cb12-162" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-100"><a href="data-wrangling.html#cb12-100" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Bind the initialization rows</span></span>
+<span id="cb12-101"><a href="data-wrangling.html#cb12-101" aria-hidden="true" tabindex="-1"></a>  first_csv <span class="ot">&lt;-</span></span>
+<span id="cb12-102"><a href="data-wrangling.html#cb12-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(inception, first_csv_tmp)</span>
+<span id="cb12-103"><a href="data-wrangling.html#cb12-103" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute stimulus end times</span></span>
+<span id="cb12-104"><a href="data-wrangling.html#cb12-104" aria-hidden="true" tabindex="-1"></a>  first_csv<span class="sc">$</span>Stim_end <span class="ot">&lt;-</span> <span class="fu">c</span>(first_csv<span class="sc">$</span>Time[<span class="sc">-</span><span class="dv">1</span>], <span class="fu">max</span>(first_csv<span class="sc">$</span>Time) <span class="sc">+</span> <span class="dv">3</span>)</span>
+<span id="cb12-105"><a href="data-wrangling.html#cb12-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-106"><a href="data-wrangling.html#cb12-106" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Get final time</span></span>
+<span id="cb12-107"><a href="data-wrangling.html#cb12-107" aria-hidden="true" tabindex="-1"></a>  final_time <span class="ot">&lt;-</span> first_csv<span class="sc">$</span>Stim_end[<span class="fu">nrow</span>(first_csv)]</span>
+<span id="cb12-108"><a href="data-wrangling.html#cb12-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-109"><a href="data-wrangling.html#cb12-109" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Find photodiode</span></span>
+<span id="cb12-110"><a href="data-wrangling.html#cb12-110" aria-hidden="true" tabindex="-1"></a>  <span class="do">## It is almost always in channel 2, but we should be sure to check before</span></span>
+<span id="cb12-111"><a href="data-wrangling.html#cb12-111" aria-hidden="true" tabindex="-1"></a>  <span class="do">## extracting automatically</span></span>
+<span id="cb12-112"><a href="data-wrangling.html#cb12-112" aria-hidden="true" tabindex="-1"></a>  photod_default_channel <span class="ot">&lt;-</span></span>
+<span id="cb12-113"><a href="data-wrangling.html#cb12-113" aria-hidden="true" tabindex="-1"></a>    mat_import[[stringr<span class="sc">::</span><span class="fu">str_which</span>(<span class="fu">names</span>(mat_import), <span class="st">&quot;Ch2&quot;</span>)[<span class="dv">1</span>]]]</span>
+<span id="cb12-114"><a href="data-wrangling.html#cb12-114" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>photod_default_channel[<span class="dv">1</span>][[<span class="dv">1</span>]][<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;waveform&quot;</span>) {</span>
+<span id="cb12-115"><a href="data-wrangling.html#cb12-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">&quot;File &quot;</span>, i,<span class="st">&quot;: Photodiode channel identity uncertain&quot;</span>)</span>
+<span id="cb12-116"><a href="data-wrangling.html#cb12-116" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-117"><a href="data-wrangling.html#cb12-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-118"><a href="data-wrangling.html#cb12-118" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Find spikes</span></span>
+<span id="cb12-119"><a href="data-wrangling.html#cb12-119" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Similarly, spikes are almost always in channel 5, but we should check</span></span>
+<span id="cb12-120"><a href="data-wrangling.html#cb12-120" aria-hidden="true" tabindex="-1"></a>  spikes_default_channel <span class="ot">&lt;-</span></span>
+<span id="cb12-121"><a href="data-wrangling.html#cb12-121" aria-hidden="true" tabindex="-1"></a>    mat_import[[stringr<span class="sc">::</span><span class="fu">str_which</span>(<span class="fu">names</span>(mat_import), <span class="st">&quot;Ch5&quot;</span>)[<span class="dv">1</span>]]]</span>
+<span id="cb12-122"><a href="data-wrangling.html#cb12-122" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="st">&quot;codes&quot;</span> <span class="sc">%not_in%</span> <span class="fu">attributes</span>(spikes_default_channel)<span class="sc">$</span>dimnames[[<span class="dv">1</span>]]) {</span>
+<span id="cb12-123"><a href="data-wrangling.html#cb12-123" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">&quot;File &quot;</span>, i,<span class="st">&quot;: Sorted spikes channel identity uncertain&quot;</span>)</span>
+<span id="cb12-124"><a href="data-wrangling.html#cb12-124" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-125"><a href="data-wrangling.html#cb12-125" aria-hidden="true" tabindex="-1"></a>  <span class="do">## If that worked, see if we can automatically determine the &quot;times&quot; and</span></span>
+<span id="cb12-126"><a href="data-wrangling.html#cb12-126" aria-hidden="true" tabindex="-1"></a>  <span class="do">## &quot;codes&quot; slot numbers</span></span>
+<span id="cb12-127"><a href="data-wrangling.html#cb12-127" aria-hidden="true" tabindex="-1"></a>  times_location <span class="ot">&lt;-</span></span>
+<span id="cb12-128"><a href="data-wrangling.html#cb12-128" aria-hidden="true" tabindex="-1"></a>    <span class="fu">which</span>(<span class="fu">attributes</span>(spikes_default_channel)<span class="sc">$</span>dimnames[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">&quot;times&quot;</span>)</span>
+<span id="cb12-129"><a href="data-wrangling.html#cb12-129" aria-hidden="true" tabindex="-1"></a>  codes_location <span class="ot">&lt;-</span></span>
+<span id="cb12-130"><a href="data-wrangling.html#cb12-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">which</span>(<span class="fu">attributes</span>(spikes_default_channel)<span class="sc">$</span>dimnames[[<span class="dv">1</span>]] <span class="sc">==</span> <span class="st">&quot;codes&quot;</span>)</span>
+<span id="cb12-131"><a href="data-wrangling.html#cb12-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-132"><a href="data-wrangling.html#cb12-132" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Extract photodiode data</span></span>
+<span id="cb12-133"><a href="data-wrangling.html#cb12-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb12-134"><a href="data-wrangling.html#cb12-134" aria-hidden="true" tabindex="-1"></a>  photod_full <span class="ot">&lt;-</span></span>
+<span id="cb12-135"><a href="data-wrangling.html#cb12-135" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb12-136"><a href="data-wrangling.html#cb12-136" aria-hidden="true" tabindex="-1"></a>      <span class="at">Photod =</span></span>
+<span id="cb12-137"><a href="data-wrangling.html#cb12-137" aria-hidden="true" tabindex="-1"></a>        photod_default_channel[<span class="dv">9</span>][[<span class="dv">1</span>]][, <span class="dv">1</span>])</span>
+<span id="cb12-138"><a href="data-wrangling.html#cb12-138" aria-hidden="true" tabindex="-1"></a>  photod_full<span class="sc">$</span>Time <span class="ot">&lt;-</span></span>
+<span id="cb12-139"><a href="data-wrangling.html#cb12-139" aria-hidden="true" tabindex="-1"></a>    <span class="fu">seq</span>(</span>
+<span id="cb12-140"><a href="data-wrangling.html#cb12-140" aria-hidden="true" tabindex="-1"></a>      <span class="at">from =</span> <span class="dv">0</span>,</span>
+<span id="cb12-141"><a href="data-wrangling.html#cb12-141" aria-hidden="true" tabindex="-1"></a>      <span class="at">by =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">25000</span>,</span>
+<span id="cb12-142"><a href="data-wrangling.html#cb12-142" aria-hidden="true" tabindex="-1"></a>      <span class="at">length.out =</span> <span class="fu">nrow</span>(photod_full)</span>
+<span id="cb12-143"><a href="data-wrangling.html#cb12-143" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-144"><a href="data-wrangling.html#cb12-144" aria-hidden="true" tabindex="-1"></a>  photod_full <span class="ot">&lt;-</span></span>
+<span id="cb12-145"><a href="data-wrangling.html#cb12-145" aria-hidden="true" tabindex="-1"></a>    photod_full <span class="sc">%&gt;%</span></span>
+<span id="cb12-146"><a href="data-wrangling.html#cb12-146" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Time, <span class="dv">5</span>)))</span>
+<span id="cb12-147"><a href="data-wrangling.html#cb12-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-148"><a href="data-wrangling.html#cb12-148" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Extract all spike data</span></span>
+<span id="cb12-149"><a href="data-wrangling.html#cb12-149" aria-hidden="true" tabindex="-1"></a>  all_spike_dat <span class="ot">&lt;-</span></span>
+<span id="cb12-150"><a href="data-wrangling.html#cb12-150" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb12-151"><a href="data-wrangling.html#cb12-151" aria-hidden="true" tabindex="-1"></a>      <span class="at">Time =</span></span>
+<span id="cb12-152"><a href="data-wrangling.html#cb12-152" aria-hidden="true" tabindex="-1"></a>        spikes_default_channel[times_location][[<span class="dv">1</span>]][, <span class="dv">1</span>],</span>
+<span id="cb12-153"><a href="data-wrangling.html#cb12-153" aria-hidden="true" tabindex="-1"></a>      <span class="at">code =</span></span>
+<span id="cb12-154"><a href="data-wrangling.html#cb12-154" aria-hidden="true" tabindex="-1"></a>        spikes_default_channel[codes_location][[<span class="dv">1</span>]][, <span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb12-155"><a href="data-wrangling.html#cb12-155" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Get rid of empty rows</span></span>
+<span id="cb12-156"><a href="data-wrangling.html#cb12-156" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(code <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-157"><a href="data-wrangling.html#cb12-157" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Characterize time, for purposes of joining later</span></span>
+<span id="cb12-158"><a href="data-wrangling.html#cb12-158" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Time, <span class="dv">5</span>))) <span class="co">#%&gt;%</span></span>
+<span id="cb12-159"><a href="data-wrangling.html#cb12-159" aria-hidden="true" tabindex="-1"></a>    <span class="co">#mutate(code = as.character(code))</span></span>
+<span id="cb12-160"><a href="data-wrangling.html#cb12-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-161"><a href="data-wrangling.html#cb12-161" aria-hidden="true" tabindex="-1"></a>  <span class="do">## How many distinct neurons are there?</span></span>
+<span id="cb12-162"><a href="data-wrangling.html#cb12-162" aria-hidden="true" tabindex="-1"></a>  n_cells <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(all_spike_dat<span class="sc">$</span>code))</span>
 <span id="cb12-163"><a href="data-wrangling.html#cb12-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-164"><a href="data-wrangling.html#cb12-164" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Sometimes the final sweep gets carried for an indefinite amount of time</span></span>
-<span id="cb12-165"><a href="data-wrangling.html#cb12-165" aria-hidden="true" tabindex="-1"></a>  <span class="do">## before the investigator manually shuts things off. The following block</span></span>
-<span id="cb12-166"><a href="data-wrangling.html#cb12-166" aria-hidden="true" tabindex="-1"></a>  <span class="do">## truncates accordingly</span></span>
-<span id="cb12-167"><a href="data-wrangling.html#cb12-167" aria-hidden="true" tabindex="-1"></a>  mark_for_removal <span class="ot">&lt;-</span></span>
-<span id="cb12-168"><a href="data-wrangling.html#cb12-168" aria-hidden="true" tabindex="-1"></a>    <span class="fu">which</span>(<span class="fu">round</span>(metadata_one_full<span class="sc">$</span>Stim_end_diff) <span class="sc">%not_in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
-<span id="cb12-169"><a href="data-wrangling.html#cb12-169" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(mark_for_removal <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> mark_for_removal <span class="sc">==</span> <span class="dv">2</span>)) {</span>
-<span id="cb12-170"><a href="data-wrangling.html#cb12-170" aria-hidden="true" tabindex="-1"></a>    mark_for_removal <span class="ot">&lt;-</span> mark_for_removal[mark_for_removal <span class="sc">&gt;</span> <span class="dv">2</span>]</span>
-<span id="cb12-171"><a href="data-wrangling.html#cb12-171" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-172"><a href="data-wrangling.html#cb12-172" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(mark_for_removal) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb12-173"><a href="data-wrangling.html#cb12-173" aria-hidden="true" tabindex="-1"></a>    metadata_sets[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-174"><a href="data-wrangling.html#cb12-174" aria-hidden="true" tabindex="-1"></a>      metadata_one_full <span class="sc">%&gt;%</span></span>
-<span id="cb12-175"><a href="data-wrangling.html#cb12-175" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Time <span class="sc">&lt;</span> metadata_one_full[mark_for_removal[<span class="dv">1</span>],]<span class="sc">$</span>Time)</span>
-<span id="cb12-176"><a href="data-wrangling.html#cb12-176" aria-hidden="true" tabindex="-1"></a>    joined_data_sets[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-177"><a href="data-wrangling.html#cb12-177" aria-hidden="true" tabindex="-1"></a>      joined_one_full <span class="sc">%&gt;%</span></span>
-<span id="cb12-178"><a href="data-wrangling.html#cb12-178" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Time_mat <span class="sc">&lt;</span> metadata_one_full[mark_for_removal[<span class="dv">1</span>],]<span class="sc">$</span>Time)</span>
-<span id="cb12-179"><a href="data-wrangling.html#cb12-179" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb12-180"><a href="data-wrangling.html#cb12-180" aria-hidden="true" tabindex="-1"></a>    metadata_sets[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-181"><a href="data-wrangling.html#cb12-181" aria-hidden="true" tabindex="-1"></a>      metadata_one_full</span>
-<span id="cb12-182"><a href="data-wrangling.html#cb12-182" aria-hidden="true" tabindex="-1"></a>    joined_data_sets[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-183"><a href="data-wrangling.html#cb12-183" aria-hidden="true" tabindex="-1"></a>      joined_one_full</span>
-<span id="cb12-184"><a href="data-wrangling.html#cb12-184" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-185"><a href="data-wrangling.html#cb12-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-186"><a href="data-wrangling.html#cb12-186" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Organize the metadata for export in the R environment</span></span>
-<span id="cb12-187"><a href="data-wrangling.html#cb12-187" aria-hidden="true" tabindex="-1"></a>  meta_splits[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-188"><a href="data-wrangling.html#cb12-188" aria-hidden="true" tabindex="-1"></a>    metadata_sets[[i]] <span class="sc">%&gt;%</span></span>
-<span id="cb12-189"><a href="data-wrangling.html#cb12-189" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Get rid of the non-sweep info</span></span>
-<span id="cb12-190"><a href="data-wrangling.html#cb12-190" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;inception&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-191"><a href="data-wrangling.html#cb12-191" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;initialization&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-192"><a href="data-wrangling.html#cb12-192" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Group by trial</span></span>
-<span id="cb12-193"><a href="data-wrangling.html#cb12-193" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Spatial_Frequency, Temporal_Frequency, Direction) <span class="sc">%&gt;%</span></span>
-<span id="cb12-194"><a href="data-wrangling.html#cb12-194" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Split by trial group</span></span>
-<span id="cb12-195"><a href="data-wrangling.html#cb12-195" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_split</span>()</span>
-<span id="cb12-196"><a href="data-wrangling.html#cb12-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-197"><a href="data-wrangling.html#cb12-197" aria-hidden="true" tabindex="-1"></a>  data_splits[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb12-198"><a href="data-wrangling.html#cb12-198" aria-hidden="true" tabindex="-1"></a>    joined_data_sets[[i]] <span class="sc">%&gt;%</span></span>
-<span id="cb12-199"><a href="data-wrangling.html#cb12-199" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Get rid of the non-sweep info</span></span>
-<span id="cb12-200"><a href="data-wrangling.html#cb12-200" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;inception&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-201"><a href="data-wrangling.html#cb12-201" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;initialization&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-202"><a href="data-wrangling.html#cb12-202" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Group by trial</span></span>
-<span id="cb12-203"><a href="data-wrangling.html#cb12-203" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Spatial_Frequency, Temporal_Frequency, Direction) <span class="sc">%&gt;%</span></span>
-<span id="cb12-204"><a href="data-wrangling.html#cb12-204" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Split by trial group</span></span>
-<span id="cb12-205"><a href="data-wrangling.html#cb12-205" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_split</span>()</span>
+<span id="cb12-164"><a href="data-wrangling.html#cb12-164" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(n_cells) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb12-165"><a href="data-wrangling.html#cb12-165" aria-hidden="true" tabindex="-1"></a>    all_spike_dat_tmp <span class="ot">&lt;-</span></span>
+<span id="cb12-166"><a href="data-wrangling.html#cb12-166" aria-hidden="true" tabindex="-1"></a>      all_spike_dat <span class="sc">%&gt;%</span></span>
+<span id="cb12-167"><a href="data-wrangling.html#cb12-167" aria-hidden="true" tabindex="-1"></a>      <span class="do">## Group by identity of spiking neuron</span></span>
+<span id="cb12-168"><a href="data-wrangling.html#cb12-168" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(code) <span class="sc">%&gt;%</span></span>
+<span id="cb12-169"><a href="data-wrangling.html#cb12-169" aria-hidden="true" tabindex="-1"></a>      <span class="do">## Split into separate dfs, one per neuron</span></span>
+<span id="cb12-170"><a href="data-wrangling.html#cb12-170" aria-hidden="true" tabindex="-1"></a>      <span class="co">#split(factor(all_spike_dat$code))</span></span>
+<span id="cb12-171"><a href="data-wrangling.html#cb12-171" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_split</span>()</span>
+<span id="cb12-172"><a href="data-wrangling.html#cb12-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-173"><a href="data-wrangling.html#cb12-173" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Keep the name of the first cell&#39;s spike column as simply &quot;Spikes&quot;</span></span>
+<span id="cb12-174"><a href="data-wrangling.html#cb12-174" aria-hidden="true" tabindex="-1"></a>    first_cell <span class="ot">&lt;-</span></span>
+<span id="cb12-175"><a href="data-wrangling.html#cb12-175" aria-hidden="true" tabindex="-1"></a>      all_spike_dat_tmp[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span></span>
+<span id="cb12-176"><a href="data-wrangling.html#cb12-176" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">Spikes =</span> code)</span>
+<span id="cb12-177"><a href="data-wrangling.html#cb12-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-178"><a href="data-wrangling.html#cb12-178" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Additional cells are labeled as &quot;Spike_n&quot;</span></span>
+<span id="cb12-179"><a href="data-wrangling.html#cb12-179" aria-hidden="true" tabindex="-1"></a>    ad_cells <span class="ot">&lt;-</span> n_cells[n_cells <span class="sc">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb12-180"><a href="data-wrangling.html#cb12-180" aria-hidden="true" tabindex="-1"></a>    all_cells <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb12-181"><a href="data-wrangling.html#cb12-181" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> ad_cells) {</span>
+<span id="cb12-182"><a href="data-wrangling.html#cb12-182" aria-hidden="true" tabindex="-1"></a>      <span class="co">#print(i)</span></span>
+<span id="cb12-183"><a href="data-wrangling.html#cb12-183" aria-hidden="true" tabindex="-1"></a>      new_name <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;Spikes_&quot;</span>, j)</span>
+<span id="cb12-184"><a href="data-wrangling.html#cb12-184" aria-hidden="true" tabindex="-1"></a>      all_cells[[j]] <span class="ot">&lt;-</span></span>
+<span id="cb12-185"><a href="data-wrangling.html#cb12-185" aria-hidden="true" tabindex="-1"></a>        all_spike_dat_tmp[[j]]</span>
+<span id="cb12-186"><a href="data-wrangling.html#cb12-186" aria-hidden="true" tabindex="-1"></a>      <span class="fu">names</span>(all_cells[[j]])[<span class="fu">match</span>(<span class="st">&quot;code&quot;</span>, <span class="fu">names</span>(all_cells[[j]]))] <span class="ot">&lt;-</span></span>
+<span id="cb12-187"><a href="data-wrangling.html#cb12-187" aria-hidden="true" tabindex="-1"></a>        new_name</span>
+<span id="cb12-188"><a href="data-wrangling.html#cb12-188" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-189"><a href="data-wrangling.html#cb12-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-190"><a href="data-wrangling.html#cb12-190" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Add first cell back in</span></span>
+<span id="cb12-191"><a href="data-wrangling.html#cb12-191" aria-hidden="true" tabindex="-1"></a>    all_cells[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> first_cell</span>
+<span id="cb12-192"><a href="data-wrangling.html#cb12-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-193"><a href="data-wrangling.html#cb12-193" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Consolidate</span></span>
+<span id="cb12-194"><a href="data-wrangling.html#cb12-194" aria-hidden="true" tabindex="-1"></a>    all_spike_dat <span class="ot">&lt;-</span></span>
+<span id="cb12-195"><a href="data-wrangling.html#cb12-195" aria-hidden="true" tabindex="-1"></a>      all_cells <span class="sc">%&gt;%</span></span>
+<span id="cb12-196"><a href="data-wrangling.html#cb12-196" aria-hidden="true" tabindex="-1"></a>      <span class="do">## Tack on additional spike columns</span></span>
+<span id="cb12-197"><a href="data-wrangling.html#cb12-197" aria-hidden="true" tabindex="-1"></a>      <span class="fu">reduce</span>(left_join, <span class="at">by =</span> <span class="st">&quot;Time_char&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-198"><a href="data-wrangling.html#cb12-198" aria-hidden="true" tabindex="-1"></a>      <span class="do">## Remove time.n columns but</span></span>
+<span id="cb12-199"><a href="data-wrangling.html#cb12-199" aria-hidden="true" tabindex="-1"></a>      <span class="do">## Do not remove Time_char</span></span>
+<span id="cb12-200"><a href="data-wrangling.html#cb12-200" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(<span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;Time.&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-201"><a href="data-wrangling.html#cb12-201" aria-hidden="true" tabindex="-1"></a>      <span class="do">## Regenerate numeric time</span></span>
+<span id="cb12-202"><a href="data-wrangling.html#cb12-202" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb12-203"><a href="data-wrangling.html#cb12-203" aria-hidden="true" tabindex="-1"></a>        <span class="at">Time =</span> <span class="fu">as.numeric</span>(Time_char)</span>
+<span id="cb12-204"><a href="data-wrangling.html#cb12-204" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-205"><a href="data-wrangling.html#cb12-205" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Time, Time_char, <span class="fu">everything</span>())</span>
 <span id="cb12-206"><a href="data-wrangling.html#cb12-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-207"><a href="data-wrangling.html#cb12-207" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Do some cleanup so large objects don&#39;t linger in memor</span></span>
-<span id="cb12-208"><a href="data-wrangling.html#cb12-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span>(</span>
-<span id="cb12-209"><a href="data-wrangling.html#cb12-209" aria-hidden="true" tabindex="-1"></a>    first_csv, inception, initial, mat_import, first_csv_tmp, metadata_one_full,</span>
-<span id="cb12-210"><a href="data-wrangling.html#cb12-210" aria-hidden="true" tabindex="-1"></a>    joined_one_full, joined_data_sets, csv_data_sets, mat_data_sets</span>
-<span id="cb12-211"><a href="data-wrangling.html#cb12-211" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-212"><a href="data-wrangling.html#cb12-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">&quot;File &quot;</span>, i, <span class="st">&quot;: &quot;</span>, csv_mat_filejoin[i,<span class="st">&quot;basename&quot;</span>], <span class="st">&quot; imported&quot;</span>)</span>
-<span id="cb12-213"><a href="data-wrangling.html#cb12-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gc</span>()</span>
-<span id="cb12-214"><a href="data-wrangling.html#cb12-214" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<pre><code>## [1] 1
-## [1] &quot;stimtime issue; investigate&quot;</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-wrangling.html#cb14-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() </span>
+<span id="cb12-207"><a href="data-wrangling.html#cb12-207" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb12-208"><a href="data-wrangling.html#cb12-208" aria-hidden="true" tabindex="-1"></a>    all_spike_dat <span class="ot">&lt;-</span></span>
+<span id="cb12-209"><a href="data-wrangling.html#cb12-209" aria-hidden="true" tabindex="-1"></a>      all_spike_dat <span class="sc">%&gt;%</span></span>
+<span id="cb12-210"><a href="data-wrangling.html#cb12-210" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">Spikes =</span> code) <span class="sc">%&gt;%</span></span>
+<span id="cb12-211"><a href="data-wrangling.html#cb12-211" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Time, Time_char, <span class="fu">everything</span>())</span>
+<span id="cb12-212"><a href="data-wrangling.html#cb12-212" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-213"><a href="data-wrangling.html#cb12-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-214"><a href="data-wrangling.html#cb12-214" aria-hidden="true" tabindex="-1"></a>  <span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb12-215"><a href="data-wrangling.html#cb12-215" aria-hidden="true" tabindex="-1"></a>  mat_data_sets[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb12-216"><a href="data-wrangling.html#cb12-216" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Generate a time sequence from 0 to final_time</span></span>
+<span id="cb12-217"><a href="data-wrangling.html#cb12-217" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb12-218"><a href="data-wrangling.html#cb12-218" aria-hidden="true" tabindex="-1"></a>      <span class="at">Time =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> final_time, <span class="at">by =</span> <span class="fl">0.001</span>)</span>
+<span id="cb12-219"><a href="data-wrangling.html#cb12-219" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-220"><a href="data-wrangling.html#cb12-220" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Character-ize it</span></span>
+<span id="cb12-221"><a href="data-wrangling.html#cb12-221" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time_char =</span> <span class="fu">as.character</span>(<span class="fu">round</span>(Time, <span class="dv">5</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb12-222"><a href="data-wrangling.html#cb12-222" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Join in the photodiode data</span></span>
+<span id="cb12-223"><a href="data-wrangling.html#cb12-223" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(photod_full, <span class="at">by =</span> <span class="st">&quot;Time_char&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-224"><a href="data-wrangling.html#cb12-224" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>Time.y) <span class="sc">%&gt;%</span></span>
+<span id="cb12-225"><a href="data-wrangling.html#cb12-225" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Time =</span> Time.x) <span class="sc">%&gt;%</span></span>
+<span id="cb12-226"><a href="data-wrangling.html#cb12-226" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Join in the spike data</span></span>
+<span id="cb12-227"><a href="data-wrangling.html#cb12-227" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(all_spike_dat, <span class="at">by =</span> <span class="st">&quot;Time_char&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-228"><a href="data-wrangling.html#cb12-228" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>Time.y) <span class="sc">%&gt;%</span></span>
+<span id="cb12-229"><a href="data-wrangling.html#cb12-229" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Time =</span> Time.x) <span class="sc">%&gt;%</span></span>
+<span id="cb12-230"><a href="data-wrangling.html#cb12-230" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Time <span class="sc">&lt;=</span> final_time) <span class="sc">%&gt;%</span></span>
+<span id="cb12-231"><a href="data-wrangling.html#cb12-231" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Replace NAs with 0 in the Spike columns only</span></span>
+<span id="cb12-232"><a href="data-wrangling.html#cb12-232" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-233"><a href="data-wrangling.html#cb12-233" aria-hidden="true" tabindex="-1"></a>      <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&quot;Spikes&quot;</span>), <span class="sc">~</span><span class="fu">replace_na</span>(.x, <span class="dv">0</span>))</span>
+<span id="cb12-234"><a href="data-wrangling.html#cb12-234" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-235"><a href="data-wrangling.html#cb12-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-236"><a href="data-wrangling.html#cb12-236" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Merge the matlab data with the metadata</span></span>
+<span id="cb12-237"><a href="data-wrangling.html#cb12-237" aria-hidden="true" tabindex="-1"></a>  joined_one_full <span class="ot">&lt;-</span></span>
+<span id="cb12-238"><a href="data-wrangling.html#cb12-238" aria-hidden="true" tabindex="-1"></a>    mat_data_sets[[i]] <span class="sc">%&gt;%</span></span>
+<span id="cb12-239"><a href="data-wrangling.html#cb12-239" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Join by the character version of time NOT the numerical!!</span></span>
+<span id="cb12-240"><a href="data-wrangling.html#cb12-240" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(first_csv, <span class="at">by =</span> <span class="st">&quot;Time_char&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-241"><a href="data-wrangling.html#cb12-241" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Rename columns for clarity of reference</span></span>
+<span id="cb12-242"><a href="data-wrangling.html#cb12-242" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Time_mat =</span> Time.x,</span>
+<span id="cb12-243"><a href="data-wrangling.html#cb12-243" aria-hidden="true" tabindex="-1"></a>           <span class="at">Time_csv =</span> Time.y) <span class="sc">%&gt;%</span></span>
+<span id="cb12-244"><a href="data-wrangling.html#cb12-244" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Convert character time to numeric time</span></span>
+<span id="cb12-245"><a href="data-wrangling.html#cb12-245" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Time =</span> <span class="fu">as.numeric</span>(Time_char)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-246"><a href="data-wrangling.html#cb12-246" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Carry metadata forward</span></span>
+<span id="cb12-247"><a href="data-wrangling.html#cb12-247" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-248"><a href="data-wrangling.html#cb12-248" aria-hidden="true" tabindex="-1"></a>      <span class="at">Trial =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Trial, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
+<span id="cb12-249"><a href="data-wrangling.html#cb12-249" aria-hidden="true" tabindex="-1"></a>      <span class="at">Spatial_Frequency =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Spatial_Frequency, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
+<span id="cb12-250"><a href="data-wrangling.html#cb12-250" aria-hidden="true" tabindex="-1"></a>      <span class="at">SF_cpd =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(SF_cpd, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
+<span id="cb12-251"><a href="data-wrangling.html#cb12-251" aria-hidden="true" tabindex="-1"></a>      <span class="at">Temporal_Frequency =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Temporal_Frequency, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
+<span id="cb12-252"><a href="data-wrangling.html#cb12-252" aria-hidden="true" tabindex="-1"></a>      <span class="at">Direction =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Direction, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
+<span id="cb12-253"><a href="data-wrangling.html#cb12-253" aria-hidden="true" tabindex="-1"></a>      <span class="at">Time_csv =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Time_csv, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>),</span>
+<span id="cb12-254"><a href="data-wrangling.html#cb12-254" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stim_end =</span> zoo<span class="sc">::</span><span class="fu">na.locf</span>(Stim_end, <span class="at">type =</span> <span class="st">&quot;locf&quot;</span>)</span>
+<span id="cb12-255"><a href="data-wrangling.html#cb12-255" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-256"><a href="data-wrangling.html#cb12-256" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Calculate velocity</span></span>
+<span id="cb12-257"><a href="data-wrangling.html#cb12-257" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-258"><a href="data-wrangling.html#cb12-258" aria-hidden="true" tabindex="-1"></a>      <span class="at">Speed =</span> Temporal_Frequency<span class="sc">/</span>SF_cpd,</span>
+<span id="cb12-259"><a href="data-wrangling.html#cb12-259" aria-hidden="true" tabindex="-1"></a>      <span class="at">Log2_Speed =</span> <span class="fu">log2</span>(Speed)</span>
+<span id="cb12-260"><a href="data-wrangling.html#cb12-260" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-261"><a href="data-wrangling.html#cb12-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-262"><a href="data-wrangling.html#cb12-262" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Add info to metadata</span></span>
+<span id="cb12-263"><a href="data-wrangling.html#cb12-263" aria-hidden="true" tabindex="-1"></a>  metadata_one_full <span class="ot">&lt;-</span></span>
+<span id="cb12-264"><a href="data-wrangling.html#cb12-264" aria-hidden="true" tabindex="-1"></a>    first_csv <span class="sc">%&gt;%</span></span>
+<span id="cb12-265"><a href="data-wrangling.html#cb12-265" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-266"><a href="data-wrangling.html#cb12-266" aria-hidden="true" tabindex="-1"></a>      <span class="at">Speed =</span> Temporal_Frequency<span class="sc">/</span>SF_cpd,</span>
+<span id="cb12-267"><a href="data-wrangling.html#cb12-267" aria-hidden="true" tabindex="-1"></a>      <span class="at">Log2_Speed =</span> <span class="fu">log2</span>(Speed),</span>
+<span id="cb12-268"><a href="data-wrangling.html#cb12-268" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stim_end_diff =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">diff</span>(Stim_end))</span>
+<span id="cb12-269"><a href="data-wrangling.html#cb12-269" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-270"><a href="data-wrangling.html#cb12-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-271"><a href="data-wrangling.html#cb12-271" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Some quality control checks</span></span>
+<span id="cb12-272"><a href="data-wrangling.html#cb12-272" aria-hidden="true" tabindex="-1"></a>  <span class="do">## What are the stim time differences?</span></span>
+<span id="cb12-273"><a href="data-wrangling.html#cb12-273" aria-hidden="true" tabindex="-1"></a>  stimtime_diffs <span class="ot">&lt;-</span> <span class="fu">round</span>(metadata_one_full<span class="sc">$</span>Stim_end_diff)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span>
+<span id="cb12-274"><a href="data-wrangling.html#cb12-274" aria-hidden="true" tabindex="-1"></a>  <span class="do">## How many total reps were recorded?</span></span>
+<span id="cb12-275"><a href="data-wrangling.html#cb12-275" aria-hidden="true" tabindex="-1"></a>  stimtime_reps <span class="ot">&lt;-</span> <span class="fu">length</span>(stimtime_diffs)<span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb12-276"><a href="data-wrangling.html#cb12-276" aria-hidden="true" tabindex="-1"></a>  <span class="do">## What do we expect the overall structure to look like?</span></span>
+<span id="cb12-277"><a href="data-wrangling.html#cb12-277" aria-hidden="true" tabindex="-1"></a>  stimtime_expectation <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>), stimtime_reps)</span>
+<span id="cb12-278"><a href="data-wrangling.html#cb12-278" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Does reality match our expectations?</span></span>
+<span id="cb12-279"><a href="data-wrangling.html#cb12-279" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(stimtime_diffs <span class="sc">==</span> stimtime_expectation)) {</span>
+<span id="cb12-280"><a href="data-wrangling.html#cb12-280" aria-hidden="true" tabindex="-1"></a>    <span class="do">## If you get this, investigate the file further and determine what went</span></span>
+<span id="cb12-281"><a href="data-wrangling.html#cb12-281" aria-hidden="true" tabindex="-1"></a>    <span class="do">## wrong</span></span>
+<span id="cb12-282"><a href="data-wrangling.html#cb12-282" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;stimtime issue; investigate&quot;</span>)</span>
+<span id="cb12-283"><a href="data-wrangling.html#cb12-283" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-284"><a href="data-wrangling.html#cb12-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-285"><a href="data-wrangling.html#cb12-285" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Sometimes the final sweep gets carried for an indefinite amount of time</span></span>
+<span id="cb12-286"><a href="data-wrangling.html#cb12-286" aria-hidden="true" tabindex="-1"></a>  <span class="do">## before the investigator manually shuts things off. The following block</span></span>
+<span id="cb12-287"><a href="data-wrangling.html#cb12-287" aria-hidden="true" tabindex="-1"></a>  <span class="do">## truncates accordingly</span></span>
+<span id="cb12-288"><a href="data-wrangling.html#cb12-288" aria-hidden="true" tabindex="-1"></a>  mark_for_removal <span class="ot">&lt;-</span></span>
+<span id="cb12-289"><a href="data-wrangling.html#cb12-289" aria-hidden="true" tabindex="-1"></a>    <span class="fu">which</span>(<span class="fu">round</span>(metadata_one_full<span class="sc">$</span>Stim_end_diff) <span class="sc">%not_in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb12-290"><a href="data-wrangling.html#cb12-290" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(mark_for_removal <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> mark_for_removal <span class="sc">==</span> <span class="dv">2</span>)) {</span>
+<span id="cb12-291"><a href="data-wrangling.html#cb12-291" aria-hidden="true" tabindex="-1"></a>    mark_for_removal <span class="ot">&lt;-</span> mark_for_removal[mark_for_removal <span class="sc">&gt;</span> <span class="dv">2</span>]</span>
+<span id="cb12-292"><a href="data-wrangling.html#cb12-292" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-293"><a href="data-wrangling.html#cb12-293" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(mark_for_removal) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb12-294"><a href="data-wrangling.html#cb12-294" aria-hidden="true" tabindex="-1"></a>    metadata_sets[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb12-295"><a href="data-wrangling.html#cb12-295" aria-hidden="true" tabindex="-1"></a>      metadata_one_full <span class="sc">%&gt;%</span></span>
+<span id="cb12-296"><a href="data-wrangling.html#cb12-296" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Time <span class="sc">&lt;</span> metadata_one_full[mark_for_removal[<span class="dv">1</span>],]<span class="sc">$</span>Time)</span>
+<span id="cb12-297"><a href="data-wrangling.html#cb12-297" aria-hidden="true" tabindex="-1"></a>    joined_data_sets[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb12-298"><a href="data-wrangling.html#cb12-298" aria-hidden="true" tabindex="-1"></a>      joined_one_full <span class="sc">%&gt;%</span></span>
+<span id="cb12-299"><a href="data-wrangling.html#cb12-299" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Time_mat <span class="sc">&lt;</span> metadata_one_full[mark_for_removal[<span class="dv">1</span>],]<span class="sc">$</span>Time)</span>
+<span id="cb12-300"><a href="data-wrangling.html#cb12-300" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb12-301"><a href="data-wrangling.html#cb12-301" aria-hidden="true" tabindex="-1"></a>    metadata_sets[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb12-302"><a href="data-wrangling.html#cb12-302" aria-hidden="true" tabindex="-1"></a>      metadata_one_full</span>
+<span id="cb12-303"><a href="data-wrangling.html#cb12-303" aria-hidden="true" tabindex="-1"></a>    joined_data_sets[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb12-304"><a href="data-wrangling.html#cb12-304" aria-hidden="true" tabindex="-1"></a>      joined_one_full</span>
+<span id="cb12-305"><a href="data-wrangling.html#cb12-305" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-306"><a href="data-wrangling.html#cb12-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-307"><a href="data-wrangling.html#cb12-307" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Organize the metadata for export in the R environment</span></span>
+<span id="cb12-308"><a href="data-wrangling.html#cb12-308" aria-hidden="true" tabindex="-1"></a>  meta_splits[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb12-309"><a href="data-wrangling.html#cb12-309" aria-hidden="true" tabindex="-1"></a>    metadata_sets[[i]] <span class="sc">%&gt;%</span></span>
+<span id="cb12-310"><a href="data-wrangling.html#cb12-310" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Get rid of the non-sweep info</span></span>
+<span id="cb12-311"><a href="data-wrangling.html#cb12-311" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;inception&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-312"><a href="data-wrangling.html#cb12-312" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;initialization&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-313"><a href="data-wrangling.html#cb12-313" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Group by trial</span></span>
+<span id="cb12-314"><a href="data-wrangling.html#cb12-314" aria-hidden="true" tabindex="-1"></a>    <span class="co">#group_by(Spatial_Frequency, Temporal_Frequency, Direction) %&gt;%</span></span>
+<span id="cb12-315"><a href="data-wrangling.html#cb12-315" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Split by trial group</span></span>
+<span id="cb12-316"><a href="data-wrangling.html#cb12-316" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_split</span>(Spatial_Frequency, Temporal_Frequency, Direction)</span>
+<span id="cb12-317"><a href="data-wrangling.html#cb12-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-318"><a href="data-wrangling.html#cb12-318" aria-hidden="true" tabindex="-1"></a>  data_splits[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb12-319"><a href="data-wrangling.html#cb12-319" aria-hidden="true" tabindex="-1"></a>    joined_data_sets[[i]] <span class="sc">%&gt;%</span></span>
+<span id="cb12-320"><a href="data-wrangling.html#cb12-320" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Get rid of the non-sweep info</span></span>
+<span id="cb12-321"><a href="data-wrangling.html#cb12-321" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;inception&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-322"><a href="data-wrangling.html#cb12-322" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Trial <span class="sc">==</span> <span class="st">&quot;initialization&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-323"><a href="data-wrangling.html#cb12-323" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Group by trial</span></span>
+<span id="cb12-324"><a href="data-wrangling.html#cb12-324" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Spatial_Frequency, Temporal_Frequency, Direction) <span class="sc">%&gt;%</span></span>
+<span id="cb12-325"><a href="data-wrangling.html#cb12-325" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Split by trial group</span></span>
+<span id="cb12-326"><a href="data-wrangling.html#cb12-326" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_split</span>()</span>
+<span id="cb12-327"><a href="data-wrangling.html#cb12-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-328"><a href="data-wrangling.html#cb12-328" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Do some cleanup so large objects don&#39;t linger in memory</span></span>
+<span id="cb12-329"><a href="data-wrangling.html#cb12-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span>(</span>
+<span id="cb12-330"><a href="data-wrangling.html#cb12-330" aria-hidden="true" tabindex="-1"></a>    first_csv, inception, initial, mat_import, first_csv_tmp,</span>
+<span id="cb12-331"><a href="data-wrangling.html#cb12-331" aria-hidden="true" tabindex="-1"></a>    photod_default_channel, spikes_default_channel, photod_full,</span>
+<span id="cb12-332"><a href="data-wrangling.html#cb12-332" aria-hidden="true" tabindex="-1"></a>    all_spike_dat, all_spike_dat_tmp, first_cell, all_cells,</span>
+<span id="cb12-333"><a href="data-wrangling.html#cb12-333" aria-hidden="true" tabindex="-1"></a>    metadata_one_full, joined_one_full, joined_data_sets,</span>
+<span id="cb12-334"><a href="data-wrangling.html#cb12-334" aria-hidden="true" tabindex="-1"></a>    csv_data_sets, mat_data_sets</span>
+<span id="cb12-335"><a href="data-wrangling.html#cb12-335" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-336"><a href="data-wrangling.html#cb12-336" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">&quot;File &quot;</span>, i, <span class="st">&quot;: &quot;</span>, csv_mat_filejoin[i,<span class="st">&quot;basename&quot;</span>], <span class="st">&quot; imported&quot;</span>)</span>
+<span id="cb12-337"><a href="data-wrangling.html#cb12-337" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gc</span>()</span>
+<span id="cb12-338"><a href="data-wrangling.html#cb12-338" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-wrangling.html#cb14-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb14-2"><a href="data-wrangling.html#cb14-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime <span class="do">## Total elapsed time</span></span></code></pre></div>
-<pre><code>## Time difference of 53.68572 secs</code></pre>
+<pre><code>## Time difference of 1.915329 mins</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-wrangling.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up</span></span>
 <span id="cb16-2"><a href="data-wrangling.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells  4156763 222.0    9140687  488.2   5144973  274.8
-## Vcells 28549668 217.9  368324061 2810.1 711820837 5430.8</code></pre>
+## Ncells  4103010 219.2   70156398 3746.8  40651970 2171.1
+## Vcells 44157311 336.9  460324948 3512.1 719160585 5486.8</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="data-wrangling.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Name each data set according to the basename of the file</span></span>
 <span id="cb18-2"><a href="data-wrangling.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(metadata_sets) <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
 <span id="cb18-3"><a href="data-wrangling.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(meta_splits)   <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
 <span id="cb18-4"><a href="data-wrangling.html#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_splits)   <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span></code></pre></div>
+<p>What we now have is the following:</p>
+<ul>
+<li><code>metadata_sets</code>: contains a <code>list</code> of <code>tibble</code>s (one per imported file),
+each of which comprises the stimulus log</li>
+<li><code>meta_splits</code>: a <code>list</code> of <code>list</code>s. The first level of the <code>list</code>
+corresponds to the file identities. Within each file’s <code>list</code>, there is an
+additional set of <code>list</code>s, each of which contains a <code>tibble</code> with the log
+info for a specific stimulus combination. Essentially the same as
+<code>metadata_sets</code> but split up on a per-stimulus basis.</li>
+<li><code>data_splits</code>: another <code>list</code> of <code>list</code>s, arranged in the same hierarchical
+order as <code>meta_splits</code>. Each tibble herein contains the spike and photodiode
+data from the <code>matlab</code> file on a per-stimulus basis.</li>
+</ul>
 
 </div>
 </div>

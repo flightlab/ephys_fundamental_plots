@@ -1,7 +1,8 @@
 ############################### package loading ################################
 ## Specify the packages you'll use in the script
 packages <- c("tidyverse",
-              "readxl",
+              #"readxl",
+              #"magrittr",
               "zoo",
               "gridExtra",
               "R.matlab",
@@ -62,7 +63,7 @@ metadata_sets <- NULL
 meta_splits <- NULL
 data_splits <- NULL
 
-starttime <- Sys.time()
+starttime <- Sys.time() ## Optional, will help you assess run time
 for (i in 1:nrow(csv_mat_filejoin)) {
 
   ## Which file # are we working on?
@@ -79,7 +80,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
 
   ## Read in the corresponding csv log file
   csv_data_sets[[i]] <-
-    read_csv(csv_mat_filejoin[i,"csv_files"],
+    read_csv(as.character(csv_mat_filejoin[i,"csv_files"]),
              show_col_types = FALSE) %>%
     ## Rename columns for convenience
     rename(
@@ -132,8 +133,17 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   ## Compute the difference between these two
   first_mvbl_diff <- first_moving_csv - first_blank
 
+  ## Check to see if the final row of the metadata is "moving" and truncate
+  ## if not
+  ## This can effectively be done by truncating after the final "moving" phase
+  max_moving_sweep <-
+    max(which(csv_data_sets[[i]]$Trial == "moving"))
+
   first_csv_tmp <-
     bind_rows(initial, csv_data_sets[[i]]) %>%
+    ## Add 1 to max moving sweep since we tacked on "initial" in previous step
+    ## Then slice to restrict any extraneous partial sweeps
+    slice_head(n = (max_moving_sweep + 1)) %>%
     ## Add the first event time to "Time" and subtract first_mvbl_diff (~2 secs)
     mutate(Time = Time + first_moving_mat - first_mvbl_diff - first_blank) %>%
     ## Make character version of Time for joining later
@@ -155,20 +165,132 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   ## Get final time
   final_time <- first_csv$Stim_end[nrow(first_csv)]
 
-  ## Extract matlab spike and photodiode data
-  mat_data_sets[[i]] <-
-    data.frame(
+  ## Find photodiode
+  ## It is almost always in channel 2, but we should be sure to check before
+  ## extracting automatically
+  photod_default_channel <-
+    mat_import[[stringr::str_which(names(mat_import), "Ch2")[1]]]
+  if (!photod_default_channel[1][[1]][1] == "waveform") {
+    warning("File ", i,": Photodiode channel identity uncertain")
+  }
+
+  ## Find spikes
+  ## Similarly, spikes are almost always in channel 5, but we should check
+  spikes_default_channel <-
+    mat_import[[stringr::str_which(names(mat_import), "Ch5")[1]]]
+  if("codes" %not_in% attributes(spikes_default_channel)$dimnames[[1]]) {
+    warning("File ", i,": Sorted spikes channel identity uncertain")
+  }
+  ## If that worked, see if we can automatically determine the "times" and
+  ## "codes" slot numbers
+  times_location <-
+    which(attributes(spikes_default_channel)$dimnames[[1]] == "times")
+  codes_location <-
+    which(attributes(spikes_default_channel)$dimnames[[1]] == "codes")
+
+  ## Extract photodiode data
+  options(scipen = 999)
+  photod_full <-
+    tibble(
+      Photod =
+        photod_default_channel[9][[1]][, 1])
+  photod_full$Time <-
+    seq(
+      from = 0,
+      by = 1 / 25000,
+      length.out = nrow(photod_full)
+    )
+  photod_full <-
+    photod_full %>%
+    mutate(Time_char = as.character(round(Time, 5)))
+
+  ## Extract all spike data
+  all_spike_dat <-
+    tibble(
       Time =
-        seq(
-          from = 0, by = 0.001,
-          length.out = 1 + length(t(mat_import$spikes))
-        ), #t(mat_import$tt),
-      Spikes = c(0, t(mat_import$spikes)),
-      Photod = c(0, mat_import$photodiode)
+        spikes_default_channel[times_location][[1]][, 1],
+      code =
+        spikes_default_channel[codes_location][[1]][, 1]) %>%
+    ## Get rid of empty rows
+    filter(code > 0) %>%
+    ## Characterize time, for purposes of joining later
+    mutate(Time_char = as.character(round(Time, 5))) #%>%
+    #mutate(code = as.character(code))
+
+  ## How many distinct neurons are there?
+  n_cells <- sort(unique(all_spike_dat$code))
+
+  if(length(n_cells) > 1) {
+    all_spike_dat_tmp <-
+      all_spike_dat %>%
+      ## Group by identity of spiking neuron
+      group_by(code) %>%
+      ## Split into separate dfs, one per neuron
+      #split(factor(all_spike_dat$code))
+      group_split()
+
+    ## Keep the name of the first cell's spike column as simply "Spikes"
+    first_cell <-
+      all_spike_dat_tmp[[1]] %>%
+      rename(Spikes = code)
+
+    ## Additional cells are labeled as "Spike_n"
+    ad_cells <- n_cells[n_cells > 1]
+    all_cells <- NULL
+    for (j in ad_cells) {
+      #print(i)
+      new_name = paste0("Spikes_", j)
+      all_cells[[j]] <-
+        all_spike_dat_tmp[[j]]
+      names(all_cells[[j]])[match("code", names(all_cells[[j]]))] <-
+        new_name
+    }
+
+    ## Add first cell back in
+    all_cells[[1]] <- first_cell
+
+    ## Consolidate
+    all_spike_dat <-
+      all_cells %>%
+      ## Tack on additional spike columns
+      reduce(left_join, by = "Time_char") %>%
+      ## Remove time.n columns but
+      ## Do not remove Time_char
+      select(-contains("Time.")) %>%
+      ## Regenerate numeric time
+      mutate(
+        Time = as.numeric(Time_char)
+      ) %>%
+      select(Time, Time_char, everything())
+
+  } else {
+    all_spike_dat <-
+      all_spike_dat %>%
+      rename(Spikes = code) %>%
+      select(Time, Time_char, everything())
+  }
+
+  options(scipen = 999)
+  mat_data_sets[[i]] <-
+    ## Generate a time sequence from 0 to final_time
+    tibble(
+      Time = seq(from = 0, to = final_time, by = 0.001)
     ) %>%
-    as_tibble() %>%
-    mutate(Time_char = as.character(Time)) %>%
-    filter(Time <= final_time)
+    ## Character-ize it
+    mutate(Time_char = as.character(round(Time, 5))) %>%
+    ## Join in the photodiode data
+    left_join(photod_full, by = "Time_char") %>%
+    select(-Time.y) %>%
+    rename(Time = Time.x) %>%
+    ## Join in the spike data
+    left_join(all_spike_dat, by = "Time_char") %>%
+    select(-Time.y) %>%
+    rename(Time = Time.x) %>%
+    filter(Time <= final_time) %>%
+    ## Replace NAs with 0 in the Spike columns only
+    mutate(
+      across(starts_with("Spikes"), ~replace_na(.x, 0))
+    )
 
   ## Merge the matlab data with the metadata
   joined_one_full <-
@@ -248,9 +370,9 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     filter(!Trial == "inception") %>%
     filter(!Trial == "initialization") %>%
     ## Group by trial
-    group_by(Spatial_Frequency, Temporal_Frequency, Direction) %>%
+    #group_by(Spatial_Frequency, Temporal_Frequency, Direction) %>%
     ## Split by trial group
-    group_split()
+    group_split(Spatial_Frequency, Temporal_Frequency, Direction)
 
   data_splits[[i]] <-
     joined_data_sets[[i]] %>%
@@ -262,10 +384,13 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     ## Split by trial group
     group_split()
 
-  ## Do some cleanup so large objects don't linger in memor
+  ## Do some cleanup so large objects don't linger in memory
   rm(
-    first_csv, inception, initial, mat_import, first_csv_tmp, metadata_one_full,
-    joined_one_full, joined_data_sets, csv_data_sets, mat_data_sets
+    first_csv, inception, initial, mat_import, first_csv_tmp,
+    photod_default_channel, spikes_default_channel, photod_full,
+    all_spike_dat, all_spike_dat_tmp, first_cell, all_cells,
+    metadata_one_full, joined_one_full, joined_data_sets,
+    csv_data_sets, mat_data_sets
   )
   message("File ", i, ": ", csv_mat_filejoin[i,"basename"], " imported")
   gc()
@@ -282,6 +407,20 @@ names(metadata_sets) <- csv_mat_filejoin$basename #base_names
 names(meta_splits)   <- csv_mat_filejoin$basename #base_names
 names(data_splits)   <- csv_mat_filejoin$basename #base_names
 
+## Old method: Extract matlab spike and photodiode data
+# mat_data_sets[[i]] <-
+#   data.frame(
+#     Time =
+#       seq(
+#         from = 0, by = 0.001,
+#         length.out = 1 + length(t(mat_import$spikes))
+#       ), #t(mat_import$tt),
+#     Spikes = c(0, t(mat_import$spikes)),
+#     Photod = c(0, mat_import$photodiode)
+#   ) %>%
+#   as_tibble() %>%
+#   mutate(Time_char = as.character(Time)) %>%
+#   filter(Time <= final_time)
 
 ################################# preprocessing ################################
 
