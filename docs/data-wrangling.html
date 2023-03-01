@@ -293,8 +293,8 @@ label the spike and photodiode time series based on the information in the
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-wrangling.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up how R has been using RAM by running garbage collection</span></span>
 <span id="cb10-2"><a href="data-wrangling.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used  (Mb) gc trigger  (Mb) max used  (Mb)
-## Ncells 2465399 131.7    3966801 211.9  3966801 211.9
-## Vcells 4245040  32.4   10146329  77.5  6894567  52.7</code></pre>
+## Ncells 2461925 131.5    3931398 210.0  3931398 210.0
+## Vcells 4236696  32.4   10146329  77.5  6794772  51.9</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-wrangling.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set up empty vectors that will collect sets of replicates that we will be</span></span>
 <span id="cb12-2"><a href="data-wrangling.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## splitting up</span></span>
 <span id="cb12-3"><a href="data-wrangling.html#cb12-3" aria-hidden="true" tabindex="-1"></a>metadata_sets <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
@@ -636,12 +636,12 @@ label the spike and photodiode time series based on the information in the
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-wrangling.html#cb14-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb14-2"><a href="data-wrangling.html#cb14-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime <span class="do">## Total elapsed time</span></span></code></pre></div>
-<pre><code>## Time difference of 2.21141 mins</code></pre>
+<pre><code>## Time difference of 2.17167 mins</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-wrangling.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up</span></span>
 <span id="cb16-2"><a href="data-wrangling.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells  4103394 219.2   70156749 3746.8  40652384 2171.1
-## Vcells 44160976 337.0  460328325 3512.1 719164250 5486.8</code></pre>
+## Ncells  4099736 219.0   70153405 3746.6  40649002 2170.9
+## Vcells 44152332 336.9  460320359 3512.0 719156848 5486.8</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="data-wrangling.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Name each data set according to the basename of the file</span></span>
 <span id="cb18-2"><a href="data-wrangling.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(metadata_sets) <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
 <span id="cb18-3"><a href="data-wrangling.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(meta_splits)   <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
@@ -735,8 +735,8 @@ scenarios, I will provide one example. Bin size <strong>must</strong> be declare
 <span id="cb19-28"><a href="data-wrangling.html#cb19-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(meta_splits))</span>
 <span id="cb19-29"><a href="data-wrangling.html#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells  4106290 219.3   56125400 2997.5  40652384 2171.1
-## Vcells 44160135 337.0  368262660 2809.7 719164250 5486.8</code></pre>
+## Ncells  4102631 219.2   56122724 2997.3  40649002 2170.9
+## Vcells 44151491 336.9  368256288 2809.6 719156848 5486.8</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="data-wrangling.html#cb21-1" aria-hidden="true" tabindex="-1"></a>starttime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb21-2"><a href="data-wrangling.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(meta_splits)){</span>
 <span id="cb21-3"><a href="data-wrangling.html#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -860,11 +860,11 @@ scenarios, I will provide one example. Bin size <strong>must</strong> be declare
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="data-wrangling.html#cb23-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb23-2"><a href="data-wrangling.html#cb23-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime</span></code></pre></div>
-<pre><code>## Time difference of 1.216188 mins</code></pre>
+<pre><code>## Time difference of 1.142881 mins</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="data-wrangling.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells  4112658 219.7   11770351  628.7  40652384 2171.1
-## Vcells 46350754 353.7  150840387 1150.9 719164250 5486.8</code></pre>
+## Ncells  4108999 219.5   11769790  628.6  40649002 2170.9
+## Vcells 46342110 353.6  150837776 1150.9 719156848 5486.8</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="data-wrangling.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized)) {</span>
 <span id="cb27-2"><a href="data-wrangling.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized[[i]])) {</span>
 <span id="cb27-3"><a href="data-wrangling.html#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(all_replicate_data_reorganized[[i]])[[j]] <span class="ot">&lt;-</span> name_sets[[i]][[j]]</span>
