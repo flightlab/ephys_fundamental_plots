@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:title" content="License | Fundamental plots for electrophysiological data" />
+<meta property="og:title" content="5 Data wrangling | Fundamental plots for electrophysiological data" />
 <meta property="og:type" content="book" />
 
 <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
@@ -20,7 +20,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>">
 
-<title>License | Fundamental plots for electrophysiological data</title>
+<title>5 Data wrangling | Fundamental plots for electrophysiological data</title>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -194,15 +194,36 @@ details > summary {
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="license" class="section level2 unnumbered">
-<h2>License</h2>
-<p>The content of this work is licensed under CC-BY. For details please see <a href="https://creativecommons.org/licenses/by/4.0/">this web page</a> or the LICENSE file in <a href="https://github.com/flightlab/ephys_fundamental_plots">flightlab/ephys_fundamental_plots</a>.</p>
-
+<div id="data-wrangling" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Data wrangling</h1>
+<p>Once data have been spike sorted, we are ready to begin working in
+<code>R</code>. To get to a point where meaningful preliminary plots can be
+produced, a few things need to be addressed:</p>
+<ol style="list-style-type: decimal">
+<li><p>Labeling the time series of spike &amp; photodiode data based on the
+stimulus that appears on screen (i.e., matching the log file to
+the data file). This includes labeling phases (like “blank”,
+“stationary”, and “moving”) along with experimental metadata such
+as SF, TF, and stimulus orientation (direction).</p></li>
+<li><p>Re-organizing the spike &amp; photodiode so that separate replicates
+of a stimulus run are uniquely labelled and then arranged
+together.</p></li>
+<li><p>Binning the data into 10- and 100-ms data sets, and then exporting
+CSVs of the unbinned, 10-ms-binned, and 100-ms-binned data. This
+will be highly useful for situations where you are handling
+multiple data files (e.g., from different recording days), in
+which case it is likely that your machine will not be able to
+store all objects in RAM.</p></li>
+</ol>
+<blockquote>
+<p>Before proceeding any further, please ensure you have installed and
+loaded all the necessary <code>R</code> packages as detailed in the Preface
+section of this guide.</p>
+</blockquote>
 </div>
-<!-- </div> -->
 <p style="text-align: center;">
-<a href="citation.html"><button class="btn btn-default">Previous</button></a>
-<a href="2-preface.html"><button class="btn btn-default">Next</button></a>
+<a href="4.1-including-plots.html"><button class="btn btn-default">Previous</button></a>
+<a href="5.1-import-example-file-and-metadata.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

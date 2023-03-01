@@ -1,40 +1,44 @@
 # Data wrangling
 
-Once data have been spike sorted, we are ready to begin working in `R`. To get
-to a point where meaningful preliminary plots can be produced, a few things need
-to be addressed:
+Once data have been spike sorted, we are ready to begin working in
+`R`. To get to a point where meaningful preliminary plots can be
+produced, a few things need to be addressed:
 
-1)  Labeling the time series of spike & photodiode data based on the stimulus
-    that appears on screen (i.e., matching the log file to the data file). This
-    includes labeling phases (like "blank", "stationary", and "moving") along
-    with experimental metadata such as SF, TF, and stimulus orientation
-    (direction).
+1)  Labeling the time series of spike & photodiode data based on the
+    stimulus that appears on screen (i.e., matching the log file to
+    the data file). This includes labeling phases (like "blank",
+    "stationary", and "moving") along with experimental metadata such
+    as SF, TF, and stimulus orientation (direction).
 
-2)  Re-organizing the spike & photodiode so that separate replicates of a
-    stimulus run are uniquely labelled and then arranged together.
+2)  Re-organizing the spike & photodiode so that separate replicates
+    of a stimulus run are uniquely labelled and then arranged
+    together.
 
-3)  Binning the data into 10- and 100-ms data sets, and then exporting CSVs of
-    the unbinned, 10-ms-binned, and 100-ms-binned data. This will be highly
-    useful for situations where you are handling multiple data files (e.g., from
-    different recording days), in which case it is likely that your machine will
-    not be able to store all objects in RAM.
+3)  Binning the data into 10- and 100-ms data sets, and then exporting
+    CSVs of the unbinned, 10-ms-binned, and 100-ms-binned data. This
+    will be highly useful for situations where you are handling
+    multiple data files (e.g., from different recording days), in
+    which case it is likely that your machine will not be able to
+    store all objects in RAM.
 
-> Before proceeding any further, please ensure you have installed and loaded all
-> the necessary `R` packages as detailed in the Preface section of this guide.
+> Before proceeding any further, please ensure you have installed and
+> loaded all the necessary `R` packages as detailed in the Preface
+> section of this guide.
 
 ## Import example file and metadata
 
-We will use a recently-collected data file and its corresponding metadata file
-to showcase the fundamentals of wrangling ephys data into a more easily
-plot-able format.
+We will use a recently-collected data file and its corresponding
+metadata file to showcase the fundamentals of wrangling ephys data
+into a more easily plot-able format.
 
 ### Identify files to import
 
-The following code is based on the assumptions that: 1) Your files are stored in
-a directory entitled `/data` 2) The basename of each file (i.e., the name of the
-file, excluding the file extension) is identical for each set of spike sorted
-data and corresponding metadata log file (e.g., `04132022_009m.mat` and
-`04132022_009m` have the same basename, which is `04132022_009m`).
+The following code is based on the assumptions that: 1) Your files are
+stored in a directory entitled `/data` 2) The basename of each file
+(i.e., the name of the file, excluding the file extension) is
+identical for each set of spike sorted data and corresponding metadata
+log file (e.g., `04132022_009m.mat` and `04132022_009m` have the same
+basename, which is `04132022_009m`).
 
 ```{r list_files}
 ## List all files of each file type
@@ -83,11 +87,12 @@ base_names
 
 ### Data import and preliminary labeling
 
-We will now use the `R.matlab` package to import the `.mat` file into R and then
-label the spike and photodiode time series based on the information in the
-`.csv` log file
+We will now use the `R.matlab` package to import the `.mat` file into
+R and then label the spike and photodiode time series based on the
+information in the `.csv` log file
 
-Because `.mat` files can be large, data import can take several minutes.
+Because `.mat` files can be large, data import can take several
+minutes.
 
 Please see in-line comments for further guidance
 
@@ -469,43 +474,46 @@ names(metadata_combos) <- csv_mat_filejoin$basename #base_names
 
 **What we now have is the following:**
 
--   `metadata_sets`: contains a `list` of `tibble`s (one per imported file),
-    each of which comprises the stimulus log
--   `metadata_combos`: contains a `list` of `tibble`s (one per imported file),
-    each of which comprises the stimulus log re-written in a preferred plotting
-    order
+-   `metadata_sets`: contains a `list` of `tibble`s (one per imported
+    file), each of which comprises the stimulus log
+-   `metadata_combos`: contains a `list` of `tibble`s (one per
+    imported file), each of which comprises the stimulus log
+    re-written in a preferred plotting order
 -   `meta_splits`: a `list` of `list`s. The first level of the `list`
-    corresponds to the file identities. Within each file's `list`, there is an
-    additional set of `list`s, each of which contains a `tibble` with the log
-    info for a specific stimulus combination. Essentially the same as
-    `metadata_sets` but split up on a per-stimulus basis.
--   `data_splits`: another `list` of `list`s, arranged in the same hierarchical
-    order as `meta_splits`. Each tibble herein contains the spike and photodiode
-    data from the `matlab` file on a per-stimulus basis.
+    corresponds to the file identities. Within each file's `list`,
+    there is an additional set of `list`s, each of which contains a
+    `tibble` with the log info for a specific stimulus combination.
+    Essentially the same as `metadata_sets` but split up on a
+    per-stimulus basis.
+-   `data_splits`: another `list` of `list`s, arranged in the same
+    hierarchical order as `meta_splits`. Each tibble herein contains
+    the spike and photodiode data from the `matlab` file on a
+    per-stimulus basis.
 
-Note that since we are only using one example file, each of these lists should
-only be 1 element long (with the latter two having additional elements within
-the first element)
+Note that since we are only using one example file, each of these
+lists should only be 1 element long (with the latter two having
+additional elements within the first element)
 
 ## Organizing replicates (required) and binning (optional)
 
-It is common to record several different sweeps of a stimulus to collect
-(somewhat) independent replicates of neural responses. The primary task of this
-section will be to use the lists from the previous section to gather & label
-replicates of the same stimulus.
+It is common to record several different sweeps of a stimulus to
+collect (somewhat) independent replicates of neural responses. The
+primary task of this section will be to use the lists from the
+previous section to gather & label replicates of the same stimulus.
 
-A secondary task is to deal with binning, if desired (highly recommended).
-Depending on the goals of plotting and/or analyses, it may be wise to work with
-either unbinned spike data or to bin the data at a convenient and sensible
-interval. I generally choose to work at the following levels:
+A secondary task is to deal with binning, if desired (highly
+recommended). Depending on the goals of plotting and/or analyses, it
+may be wise to work with either unbinned spike data or to bin the data
+at a convenient and sensible interval. I generally choose to work at
+the following levels:
 
 1.  Unbinned
 2.  Bin size = 10 ms
 3.  Bin size = 100 ms
 
-**Important note:** Rather than provide separate code for each of these 3
-scenarios, I will provide one example. Bin size **must** be declared beforehand
--- please pay attention.
+**Important note:** Rather than provide separate code for each of
+these 3 scenarios, I will provide one example. Bin size **must** be
+declared beforehand -- please pay attention.
 
 ```{r reorganize_data}
 ## Set bin size here
@@ -673,18 +681,19 @@ names(all_replicate_data_reorganized) <- csv_mat_filejoin$basename #base_names
 
 ## Data export
 
-It is highly recommended that you export `all_replicate_data_reorganized`. I
-generally export `all_replicate_data_reorganized` as a separate `csv` file for
-each of the following conditions:
+It is highly recommended that you export
+`all_replicate_data_reorganized`. I generally export
+`all_replicate_data_reorganized` as a separate `csv` file for each of
+the following conditions:
 
 1.  Unbinned
 2.  Bin size = 10 ms
 3.  Bin size = 100 ms
 
-This section will provide code to export each of the above, assuming you used
-those bin sizes in the previous section. Please be sure to change file naming
-conventions and other parameters in the event you chose a different `bin_size`
-in the previous section.
+This section will provide code to export each of the above, assuming
+you used those bin sizes in the previous section. Please be sure to
+change file naming conventions and other parameters in the event you
+chose a different `bin_size` in the previous section.
 
 ```{r export_csv, eval=F, echo=T}
 ## Declare export destination

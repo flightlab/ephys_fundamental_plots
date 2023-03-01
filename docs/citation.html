@@ -2,67 +2,52 @@
 <html lang="" xml:lang="">
 <head>
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Citation | Fundamental plots for electrophysiological data</title>
-  <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
-data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
-  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Citation | Fundamental plots for electrophysiological data" />
+<meta property="og:type" content="book" />
 
-  <meta property="og:title" content="Citation | Fundamental plots for electrophysiological data" />
-  <meta property="og:type" content="book" />
-  
-  <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+<meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Citation | Fundamental plots for electrophysiological data" />
-  
-  <meta name="twitter:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
-data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
-  
+<meta name="github-repo" content="flightlab/ephys_fundamental_plots" />
 
 <meta name="author" content="Vikram B. Baliga" />
 
+<meta name="date" content="2023-02-28" />
 
-<meta name="date" content="2023-02-24" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="index.html"/>
-<link rel="next" href="license.html"/>
+<meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>">
+
+<title>Citation | Fundamental plots for electrophysiological data</title>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
 
 
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-
-
+<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -121,131 +106,116 @@ code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
+<div class="container-fluid main-container">
 
 
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li><a href="./">Fundamental plots for electrophysiological data</a></li>
-
-<li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a></li>
-<li class="chapter" data-level="" data-path="citation.html"><a href="citation.html"><i class="fa fa-check"></i>Citation</a></li>
-<li class="chapter" data-level="" data-path="license.html"><a href="license.html"><i class="fa fa-check"></i>License</a></li>
-<li class="chapter" data-level="2" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html"><i class="fa fa-check"></i><b>2</b> Raw data and spike sorted traces</a>
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
 <ul>
-<li class="chapter" data-level="2.1" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html#including-plots"><i class="fa fa-check"></i><b>2.1</b> Including Plots</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="polar-tuning-curves.html"><a href="polar-tuning-curves.html"><i class="fa fa-check"></i><b>3</b> Polar tuning curves</a>
+<li class="has-sub"><a href="index.html#about" id="toc-about"><span class="toc-section-number">1</span> About</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="polar-tuning-curves.html"><a href="polar-tuning-curves.html#including-plots-1"><i class="fa fa-check"></i><b>3.1</b> Including Plots</a></li>
+<li><a href="citation.html#citation" id="toc-citation">Citation</a></li>
+<li><a href="license.html#license" id="toc-license">License</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html"><i class="fa fa-check"></i><b>4</b> Raster and mean spike rate plots</a>
+<li class="has-sub"><a href="2-preface.html#preface" id="toc-preface"><span class="toc-section-number">2</span> Preface</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-2"><i class="fa fa-check"></i><b>4.1</b> Including Plots</a></li>
+<li><a href="2.1-r-packages-versioning.html#r-packages-versioning" id="toc-r-packages-versioning"><span class="toc-section-number">2.1</span> R packages &amp; versioning</a></li>
+<li><a href="2.2-not_in.html#not_in" id="toc-not_in"><span class="toc-section-number">2.2</span> <code>%not_in%</code></a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>5</b> Spatiotemporal tuning</a>
+<li class="has-sub"><a href="3-spike-sorting.html#spike-sorting" id="toc-spike-sorting"><span class="toc-section-number">3</span> Spike sorting</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-3"><i class="fa fa-check"></i><b>5.1</b> Including Plots</a></li>
+<li><a href="3.1-spike2.html#spike2" id="toc-spike2"><span class="toc-section-number">3.1</span> Spike2</a></li>
+<li><a href="3.2-neuralynx.html#neuralynx" id="toc-neuralynx"><span class="toc-section-number">3.2</span> Neuralynx</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>6</b> Histological verification</a>
+<li class="has-sub"><a href="4-raw-data-and-spike-sorted-traces.html#raw-data-and-spike-sorted-traces" id="toc-raw-data-and-spike-sorted-traces"><span class="toc-section-number">4</span> Raw data and spike sorted traces</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-4"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
+<li><a href="4.1-including-plots.html#including-plots" id="toc-including-plots"><span class="toc-section-number">4.1</span> Including Plots</a></li>
 </ul></li>
-<li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
+<li class="has-sub"><a href="5-data-wrangling.html#data-wrangling" id="toc-data-wrangling"><span class="toc-section-number">5</span> Data wrangling</a>
+<ul>
+<li class="has-sub"><a href="5.1-import-example-file-and-metadata.html#import-example-file-and-metadata" id="toc-import-example-file-and-metadata"><span class="toc-section-number">5.1</span> Import example file and metadata</a>
+<ul>
+<li><a href="5.1-import-example-file-and-metadata.html#identify-files-to-import" id="toc-identify-files-to-import"><span class="toc-section-number">5.1.1</span> Identify files to import</a></li>
+<li><a href="5.1-import-example-file-and-metadata.html#data-import-and-preliminary-labeling" id="toc-data-import-and-preliminary-labeling"><span class="toc-section-number">5.1.2</span> Data import and preliminary labeling</a></li>
+</ul></li>
+<li><a href="5.2-organizing-replicates-required-and-binning-optional.html#organizing-replicates-required-and-binning-optional" id="toc-organizing-replicates-required-and-binning-optional"><span class="toc-section-number">5.2</span> Organizing replicates (required) and binning (optional)</a></li>
+<li><a href="5.3-data-export.html#data-export" id="toc-data-export"><span class="toc-section-number">5.3</span> Data export</a></li>
+</ul></li>
+<li class="has-sub"><a href="6-raster-and-mean-spike-rate-plots.html#raster-and-mean-spike-rate-plots" id="toc-raster-and-mean-spike-rate-plots"><span class="toc-section-number">6</span> Raster and mean spike rate plots</a>
+<ul>
+<li><a href="6.1-including-plots-1.html#including-plots-1" id="toc-including-plots-1"><span class="toc-section-number">6.1</span> Including Plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="7-spatiotemporal-tuning.html#spatiotemporal-tuning" id="toc-spatiotemporal-tuning"><span class="toc-section-number">7</span> Spatiotemporal tuning</a>
+<ul>
+<li><a href="7.1-including-plots-2.html#including-plots-2" id="toc-including-plots-2"><span class="toc-section-number">7.1</span> Including Plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="8-histological-verification.html#histological-verification" id="toc-histological-verification"><span class="toc-section-number">8</span> Histological verification</a>
+<ul>
+<li><a href="8.1-including-plots-3.html#including-plots-3" id="toc-including-plots-3"><span class="toc-section-number">8.1</span> Including Plots</a></li>
+</ul></li>
 </ul>
-
-      </nav>
-    </div>
-
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Fundamental plots for electrophysiological data</a>
-          </h1>
-        </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="citation" class="section level1 unnumbered hasAnchor">
-<h1>Citation<a href="citation.html#citation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="citation" class="section level2 unnumbered">
+<h2>Citation</h2>
 <p>TBD</p>
 </div>
-            </section>
+<p style="text-align: center;">
+<a href="index.html"><button class="btn btn-default">Previous</button></a>
+<a href="license.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
 
-          </div>
-        </div>
-      </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="license.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
-  </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+
+</div>
+
 <script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-});
+
 </script>
 
 </body>
-
 </html>

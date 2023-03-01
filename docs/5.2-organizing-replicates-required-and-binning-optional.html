@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="5.2 Organizing replicates (required) and binning (optional) | Fundamental plots for electrophysiological data" />
+<meta property="og:type" content="book" />
+
+<meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
+<meta name="github-repo" content="flightlab/ephys_fundamental_plots" />
+
+<meta name="author" content="Vikram B. Baliga" />
+
+<meta name="date" content="2023-02-28" />
+
+
+<meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
+data. Developed by the Alshuler Lab at the University of British Columbia.</p>">
+
+<title>5.2 Organizing replicates (required) and binning (optional) | Fundamental plots for electrophysiological data</title>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#about" id="toc-about"><span class="toc-section-number">1</span> About</a>
+<ul>
+<li><a href="citation.html#citation" id="toc-citation">Citation</a></li>
+<li><a href="license.html#license" id="toc-license">License</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-preface.html#preface" id="toc-preface"><span class="toc-section-number">2</span> Preface</a>
+<ul>
+<li><a href="2.1-r-packages-versioning.html#r-packages-versioning" id="toc-r-packages-versioning"><span class="toc-section-number">2.1</span> R packages &amp; versioning</a></li>
+<li><a href="2.2-not_in.html#not_in" id="toc-not_in"><span class="toc-section-number">2.2</span> <code>%not_in%</code></a></li>
+</ul></li>
+<li class="has-sub"><a href="3-spike-sorting.html#spike-sorting" id="toc-spike-sorting"><span class="toc-section-number">3</span> Spike sorting</a>
+<ul>
+<li><a href="3.1-spike2.html#spike2" id="toc-spike2"><span class="toc-section-number">3.1</span> Spike2</a></li>
+<li><a href="3.2-neuralynx.html#neuralynx" id="toc-neuralynx"><span class="toc-section-number">3.2</span> Neuralynx</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-raw-data-and-spike-sorted-traces.html#raw-data-and-spike-sorted-traces" id="toc-raw-data-and-spike-sorted-traces"><span class="toc-section-number">4</span> Raw data and spike sorted traces</a>
+<ul>
+<li><a href="4.1-including-plots.html#including-plots" id="toc-including-plots"><span class="toc-section-number">4.1</span> Including Plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="5-data-wrangling.html#data-wrangling" id="toc-data-wrangling"><span class="toc-section-number">5</span> Data wrangling</a>
+<ul>
+<li class="has-sub"><a href="5.1-import-example-file-and-metadata.html#import-example-file-and-metadata" id="toc-import-example-file-and-metadata"><span class="toc-section-number">5.1</span> Import example file and metadata</a>
+<ul>
+<li><a href="5.1-import-example-file-and-metadata.html#identify-files-to-import" id="toc-identify-files-to-import"><span class="toc-section-number">5.1.1</span> Identify files to import</a></li>
+<li><a href="5.1-import-example-file-and-metadata.html#data-import-and-preliminary-labeling" id="toc-data-import-and-preliminary-labeling"><span class="toc-section-number">5.1.2</span> Data import and preliminary labeling</a></li>
+</ul></li>
+<li><a href="5.2-organizing-replicates-required-and-binning-optional.html#organizing-replicates-required-and-binning-optional" id="toc-organizing-replicates-required-and-binning-optional"><span class="toc-section-number">5.2</span> Organizing replicates (required) and binning (optional)</a></li>
+<li><a href="5.3-data-export.html#data-export" id="toc-data-export"><span class="toc-section-number">5.3</span> Data export</a></li>
+</ul></li>
+<li class="has-sub"><a href="6-raster-and-mean-spike-rate-plots.html#raster-and-mean-spike-rate-plots" id="toc-raster-and-mean-spike-rate-plots"><span class="toc-section-number">6</span> Raster and mean spike rate plots</a>
+<ul>
+<li><a href="6.1-including-plots-1.html#including-plots-1" id="toc-including-plots-1"><span class="toc-section-number">6.1</span> Including Plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="7-spatiotemporal-tuning.html#spatiotemporal-tuning" id="toc-spatiotemporal-tuning"><span class="toc-section-number">7</span> Spatiotemporal tuning</a>
+<ul>
+<li><a href="7.1-including-plots-2.html#including-plots-2" id="toc-including-plots-2"><span class="toc-section-number">7.1</span> Including Plots</a></li>
+</ul></li>
+<li class="has-sub"><a href="8-histological-verification.html#histological-verification" id="toc-histological-verification"><span class="toc-section-number">8</span> Histological verification</a>
+<ul>
+<li><a href="8.1-including-plots-3.html#including-plots-3" id="toc-including-plots-3"><span class="toc-section-number">8.1</span> Including Plots</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="organizing-replicates-required-and-binning-optional" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Organizing replicates (required) and binning (optional)</h2>
+<p>It is common to record several different sweeps of a stimulus to
+collect (somewhat) independent replicates of neural responses. The
+primary task of this section will be to use the lists from the
+previous section to gather &amp; label replicates of the same stimulus.</p>
+<p>A secondary task is to deal with binning, if desired (highly
+recommended). Depending on the goals of plotting and/or analyses, it
+may be wise to work with either unbinned spike data or to bin the data
+at a convenient and sensible interval. I generally choose to work at
+the following levels:</p>
+<ol style="list-style-type: decimal">
+<li>Unbinned</li>
+<li>Bin size = 10 ms</li>
+<li>Bin size = 100 ms</li>
+</ol>
+<p><strong>Important note:</strong> Rather than provide separate code for each of
+these 3 scenarios, I will provide one example. Bin size <strong>must</strong> be
+declared beforehand – please pay attention.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set bin size here</span></span>
+<span id="cb19-2"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Units are in ms (e.g. 10 = 10ms)</span></span>
+<span id="cb19-3"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-3" aria-hidden="true" tabindex="-1"></a>bin_size <span class="ot">=</span> <span class="dv">10</span> <span class="do">## 10 or 100 or 1 (1 = &quot;unbinned&quot;)</span></span>
+<span id="cb19-4"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-5" aria-hidden="true" tabindex="-1"></a>slice_size <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb19-6"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-6" aria-hidden="true" tabindex="-1"></a>slicemin <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb19-7"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-7" aria-hidden="true" tabindex="-1"></a>slicemax <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb19-8"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (bin_size <span class="sc">==</span> <span class="dv">10</span>){</span>
+<span id="cb19-9"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-9" aria-hidden="true" tabindex="-1"></a>  slice_size <span class="ot">&lt;-</span> <span class="dv">501</span></span>
+<span id="cb19-10"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-10" aria-hidden="true" tabindex="-1"></a>  slicemin <span class="ot">&lt;-</span> <span class="dv">202</span></span>
+<span id="cb19-11"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-11" aria-hidden="true" tabindex="-1"></a>  slicemax <span class="ot">&lt;-</span> <span class="dv">498</span></span>
+<span id="cb19-12"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-12" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (bin_size <span class="sc">==</span> <span class="dv">100</span>){</span>
+<span id="cb19-13"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-13" aria-hidden="true" tabindex="-1"></a>  slice_size <span class="ot">&lt;-</span> <span class="dv">51</span></span>
+<span id="cb19-14"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-14" aria-hidden="true" tabindex="-1"></a>  slicemin <span class="ot">&lt;-</span> <span class="dv">21</span></span>
+<span id="cb19-15"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-15" aria-hidden="true" tabindex="-1"></a>  slicemax <span class="ot">&lt;-</span> <span class="dv">49</span></span>
+<span id="cb19-16"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-16" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (bin_size <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb19-17"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-17" aria-hidden="true" tabindex="-1"></a>  slice_size <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb19-18"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-18" aria-hidden="true" tabindex="-1"></a>  slicemin <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb19-19"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-19" aria-hidden="true" tabindex="-1"></a>  slicemax <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb19-20"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-20" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb19-21"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">&quot;bin_size is non-standard&quot;</span>)</span>
+<span id="cb19-22"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-23"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-25" aria-hidden="true" tabindex="-1"></a>all_replicate_data_reorganized <span class="ot">&lt;-</span></span>
+<span id="cb19-26"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(meta_splits))</span>
+<span id="cb19-27"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-27" aria-hidden="true" tabindex="-1"></a>name_sets <span class="ot">&lt;-</span></span>
+<span id="cb19-28"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(meta_splits))</span>
+<span id="cb19-29"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
+## Ncells  4119969 220.1   57761792 3084.9  40665614 2171.8
+## Vcells 44189870 337.2  353843959 2699.7 718476778 5481.6</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-1" aria-hidden="true" tabindex="-1"></a>starttime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb21-2"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(meta_splits)){</span>
+<span id="cb21-3"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## i = file number</span></span>
+<span id="cb21-5"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb21-6"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="do">## We&#39;ll need to collect data at a per-stimulus level and on a per-replicate</span></span>
+<span id="cb21-8"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="do">## level within the per-stimulus level</span></span>
+<span id="cb21-9"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="do">## &quot;j&quot; will be used to designate a unique stimulus</span></span>
+<span id="cb21-10"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## We&#39;ll first create an empty object in which to collect stimulus-specific</span></span>
+<span id="cb21-11"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="do">## data</span></span>
+<span id="cb21-12"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-12" aria-hidden="true" tabindex="-1"></a>  replicate_data_reorganized <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb21-13"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">## For each of j unique stimuli...</span></span>
+<span id="cb21-14"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(meta_splits[[i]])) { <span class="co"># j = {direction,speed}</span></span>
+<span id="cb21-15"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Isolate the j-th data</span></span>
+<span id="cb21-16"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-16" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> data_splits[[i]][[j]]</span>
+<span id="cb21-17"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="do">## And the j-th log data</span></span>
+<span id="cb21-18"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-18" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> meta_splits[[i]][[j]] <span class="sc">%&gt;%</span></span>
+<span id="cb21-19"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(Trial) <span class="sc">%&gt;%</span></span>
+<span id="cb21-20"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-20" aria-hidden="true" tabindex="-1"></a>      <span class="do">## Label separate replicates</span></span>
+<span id="cb21-21"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Replicate =</span> <span class="fu">row_number</span>())</span>
+<span id="cb21-22"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Extract a stimulus label to a name_set that will be used later</span></span>
+<span id="cb21-24"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-24" aria-hidden="true" tabindex="-1"></a>    name_sets[[i]][[j]] <span class="ot">&lt;-</span></span>
+<span id="cb21-25"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(m<span class="sc">$</span>Direction[<span class="dv">1</span>], <span class="st">&quot;Deg,&quot;</span>,  m<span class="sc">$</span>Speed[<span class="dv">1</span>], <span class="st">&quot;Deg/s&quot;</span>)</span>
+<span id="cb21-26"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-27" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Set up a temporary object to deal with per-replicate data</span></span>
+<span id="cb21-28"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-28" aria-hidden="true" tabindex="-1"></a>    replicates_ordered <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb21-29"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-29" aria-hidden="true" tabindex="-1"></a>    <span class="do">## &quot;k&quot; will be used to designate replicate number</span></span>
+<span id="cb21-30"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">max</span>(m<span class="sc">$</span>Replicate)){</span>
+<span id="cb21-31"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-31" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span></span>
+<span id="cb21-32"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-32" aria-hidden="true" tabindex="-1"></a>        m <span class="sc">%&gt;%</span></span>
+<span id="cb21-33"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(Replicate <span class="sc">==</span> k)</span>
+<span id="cb21-34"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-35"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-35" aria-hidden="true" tabindex="-1"></a>      <span class="do">## If you have a complete replicate (i.e., blank, stationary, moving)</span></span>
+<span id="cb21-36"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-36" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">nrow</span>(tmp) <span class="sc">==</span> <span class="dv">3</span> ) {</span>
+<span id="cb21-37"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-37" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Grab the specific data</span></span>
+<span id="cb21-38"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-38" aria-hidden="true" tabindex="-1"></a>        doot <span class="ot">&lt;-</span></span>
+<span id="cb21-39"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-39" aria-hidden="true" tabindex="-1"></a>          d <span class="sc">%&gt;%</span></span>
+<span id="cb21-40"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-40" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(Time <span class="sc">&gt;=</span> <span class="fu">min</span>(tmp<span class="sc">$</span>Time)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-41"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-41" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(Time <span class="sc">&lt;=</span> <span class="fu">max</span>(tmp<span class="sc">$</span>Stim_end))</span>
+<span id="cb21-42"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-42" aria-hidden="true" tabindex="-1"></a>        <span class="do">## Add bin information</span></span>
+<span id="cb21-43"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-43" aria-hidden="true" tabindex="-1"></a>        doot<span class="sc">$</span>bin <span class="ot">&lt;-</span></span>
+<span id="cb21-44"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-44" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ceiling</span>(<span class="fu">nrow</span>(doot)<span class="sc">/</span>bin_size), <span class="at">each =</span> bin_size)[<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(doot)]</span>
+<span id="cb21-45"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-46"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(bin_size <span class="sc">==</span> <span class="dv">1</span>) { <span class="do">## IF YOU ARE NOT BINNING, RUN THIS:</span></span>
+<span id="cb21-47"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-47" aria-hidden="true" tabindex="-1"></a>          replicates_ordered[[k]] <span class="ot">&lt;-</span></span>
+<span id="cb21-48"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-48" aria-hidden="true" tabindex="-1"></a>            doot <span class="sc">%&gt;%</span></span>
+<span id="cb21-49"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-49" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(</span>
+<span id="cb21-50"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-50" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Construct a standardized time within the sweep</span></span>
+<span id="cb21-51"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-51" aria-hidden="true" tabindex="-1"></a>              <span class="at">Time_stand =</span> Time_mat <span class="sc">-</span> <span class="fu">min</span>(Time_mat),</span>
+<span id="cb21-52"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-52" aria-hidden="true" tabindex="-1"></a>              <span class="do">## When does the sweep begin</span></span>
+<span id="cb21-53"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-53" aria-hidden="true" tabindex="-1"></a>              <span class="at">Time_begin =</span> <span class="fu">min</span>(Time_mat),</span>
+<span id="cb21-54"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-54" aria-hidden="true" tabindex="-1"></a>              <span class="do">## When does the sweep end</span></span>
+<span id="cb21-55"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-55" aria-hidden="true" tabindex="-1"></a>              <span class="at">Time_end =</span> <span class="fu">max</span>(Time_mat),</span>
+<span id="cb21-56"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-56" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Delineate the end of the blank phase</span></span>
+<span id="cb21-57"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-57" aria-hidden="true" tabindex="-1"></a>              <span class="at">Blank_end =</span> tmp<span class="sc">$</span>Stim_end[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">min</span>(Time_mat),</span>
+<span id="cb21-58"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-58" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Delineate the end of the stationary phase</span></span>
+<span id="cb21-59"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-59" aria-hidden="true" tabindex="-1"></a>              <span class="at">Static_end =</span> tmp<span class="sc">$</span>Stim_end[<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">min</span>(Time_mat),</span>
+<span id="cb21-60"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-60" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Label the replicate number</span></span>
+<span id="cb21-61"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-61" aria-hidden="true" tabindex="-1"></a>              <span class="at">Replicate =</span> k</span>
+<span id="cb21-62"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-62" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-63"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-63" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Bring stim info to first few columns</span></span>
+<span id="cb21-64"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-64" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(Speed, SF_cpd, Temporal_Frequency, Direction,</span>
+<span id="cb21-65"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-65" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">everything</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb21-66"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-66" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Just in case there some hang over</span></span>
+<span id="cb21-67"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-67" aria-hidden="true" tabindex="-1"></a>              <span class="fu">filter</span>(Time_stand <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb21-68"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-68" aria-hidden="true" tabindex="-1"></a>          } <span class="cf">else</span> { <span class="do">## IF YOU ARE BINNING, RUN THIS:</span></span>
+<span id="cb21-69"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-69" aria-hidden="true" tabindex="-1"></a>          replicates_ordered[[k]] <span class="ot">&lt;-</span></span>
+<span id="cb21-70"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-70" aria-hidden="true" tabindex="-1"></a>            doot <span class="sc">%&gt;%</span></span>
+<span id="cb21-71"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-71" aria-hidden="true" tabindex="-1"></a>            <span class="do">## WITHIN EACH BIN:</span></span>
+<span id="cb21-72"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-72" aria-hidden="true" tabindex="-1"></a>            <span class="fu">group_by</span>(bin) <span class="sc">%&gt;%</span></span>
+<span id="cb21-73"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-73" aria-hidden="true" tabindex="-1"></a>            <span class="fu">summarise</span>(</span>
+<span id="cb21-74"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-74" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Label the trial</span></span>
+<span id="cb21-75"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-75" aria-hidden="true" tabindex="-1"></a>              <span class="at">Trial =</span> <span class="fu">first</span>(Trial),</span>
+<span id="cb21-76"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-76" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Midpoint of bin</span></span>
+<span id="cb21-77"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-77" aria-hidden="true" tabindex="-1"></a>              <span class="at">Time_bin_mid =</span> <span class="fu">mean</span>(Time_mat),</span>
+<span id="cb21-78"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-78" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Bin beginning</span></span>
+<span id="cb21-79"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-79" aria-hidden="true" tabindex="-1"></a>              <span class="at">Time_bin_begin =</span> <span class="fu">min</span>(Time_mat),</span>
+<span id="cb21-80"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-80" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Bin end</span></span>
+<span id="cb21-81"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-81" aria-hidden="true" tabindex="-1"></a>              <span class="at">Time_bin_end =</span> <span class="fu">max</span>(Time_mat),</span>
+<span id="cb21-82"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-82" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Spike rate = sum of spikes divided by elapsed time</span></span>
+<span id="cb21-83"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-83" aria-hidden="true" tabindex="-1"></a>              <span class="at">Spike_rate =</span> <span class="fu">sum</span>(Spikes)<span class="sc">/</span>(<span class="fu">max</span>(Time_mat) <span class="sc">-</span> <span class="fu">min</span>(Time_mat)),</span>
+<span id="cb21-84"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-84" aria-hidden="true" tabindex="-1"></a>              <span class="at">Photod_mean =</span> <span class="fu">mean</span>(Photod)</span>
+<span id="cb21-85"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-85" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-86"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-86" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(</span>
+<span id="cb21-87"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-87" aria-hidden="true" tabindex="-1"></a>              <span class="do">## Add in metadata (following same definitions above)</span></span>
+<span id="cb21-88"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-88" aria-hidden="true" tabindex="-1"></a>              <span class="at">Time_stand =</span> Time_bin_mid <span class="sc">-</span> <span class="fu">min</span>(Time_bin_mid),</span>
+<span id="cb21-89"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-89" aria-hidden="true" tabindex="-1"></a>              <span class="at">Blank_end =</span> tmp<span class="sc">$</span>Stim_end[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">min</span>(Time_bin_mid),</span>
+<span id="cb21-90"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-90" aria-hidden="true" tabindex="-1"></a>              <span class="at">Static_end =</span> tmp<span class="sc">$</span>Stim_end[<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">min</span>(Time_bin_mid),</span>
+<span id="cb21-91"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-91" aria-hidden="true" tabindex="-1"></a>              <span class="at">SF_cpd =</span> m<span class="sc">$</span>SF_cpd[<span class="dv">1</span>],</span>
+<span id="cb21-92"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-92" aria-hidden="true" tabindex="-1"></a>              <span class="at">Temporal_Frequency =</span> m<span class="sc">$</span>Temporal_Frequency[<span class="dv">1</span>],</span>
+<span id="cb21-93"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-93" aria-hidden="true" tabindex="-1"></a>              <span class="at">Speed =</span> m<span class="sc">$</span>Speed[<span class="dv">1</span>],</span>
+<span id="cb21-94"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-94" aria-hidden="true" tabindex="-1"></a>              <span class="at">Direction =</span> m<span class="sc">$</span>Direction[<span class="dv">1</span>],</span>
+<span id="cb21-95"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-95" aria-hidden="true" tabindex="-1"></a>              <span class="at">Replicate =</span> k</span>
+<span id="cb21-96"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-96" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-97"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-97" aria-hidden="true" tabindex="-1"></a>            <span class="do">## Bring stim info to first few columns</span></span>
+<span id="cb21-98"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-98" aria-hidden="true" tabindex="-1"></a>            <span class="fu">select</span>(Speed, SF_cpd, Temporal_Frequency, Direction,</span>
+<span id="cb21-99"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-99" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">everything</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb21-100"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-100" aria-hidden="true" tabindex="-1"></a>            <span class="do">## Just in case there some hang over</span></span>
+<span id="cb21-101"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-101" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(Time_stand <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-102"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-102" aria-hidden="true" tabindex="-1"></a>            <span class="fu">filter</span>(bin <span class="sc">&lt;</span> slice_size <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb21-103"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-103" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb21-104"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-104" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb21-105"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-105" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb21-106"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-107"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-107" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Now insert it within the collector of per-stimulus data</span></span>
+<span id="cb21-108"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-108" aria-hidden="true" tabindex="-1"></a>    replicate_data_reorganized[[j]] <span class="ot">&lt;-</span></span>
+<span id="cb21-109"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-109" aria-hidden="true" tabindex="-1"></a>      replicates_ordered <span class="sc">%&gt;%</span></span>
+<span id="cb21-110"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-110" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bind_rows</span>()</span>
+<span id="cb21-111"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-112"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-112" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Now insert it within the overall data collector</span></span>
+<span id="cb21-113"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-113" aria-hidden="true" tabindex="-1"></a>    all_replicate_data_reorganized[[i]][[j]] <span class="ot">&lt;-</span></span>
+<span id="cb21-114"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-114" aria-hidden="true" tabindex="-1"></a>      replicate_data_reorganized[[j]]</span>
+<span id="cb21-115"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-116"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-116" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Toss out temporary object and clean up</span></span>
+<span id="cb21-117"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-117" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span>(replicates_ordered)</span>
+<span id="cb21-118"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-118" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gc</span>()</span>
+<span id="cb21-119"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-119" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb21-120"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb21-120" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb23-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb23-2"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb23-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime</span></code></pre></div>
+<pre><code>## Time difference of 59.08842 secs</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
+## Ncells  4126337 220.4   12113528  647.0  40665614 2171.8
+## Vcells 46380489 353.9  144934487 1105.8 718476778 5481.6</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized)) {</span>
+<span id="cb27-2"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized[[i]])) {</span>
+<span id="cb27-3"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(all_replicate_data_reorganized[[i]])[[j]] <span class="ot">&lt;-</span> name_sets[[i]][[j]]</span>
+<span id="cb27-4"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb27-5"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb27-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-6"><a href="5.2-organizing-replicates-required-and-binning-optional.html#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(all_replicate_data_reorganized) <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span></code></pre></div>
+</div>
+<p style="text-align: center;">
+<a href="5.1-import-example-file-and-metadata.html"><button class="btn btn-default">Previous</button></a>
+<a href="5.3-data-export.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

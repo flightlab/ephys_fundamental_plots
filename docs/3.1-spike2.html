@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:title" content="License | Fundamental plots for electrophysiological data" />
+<meta property="og:title" content="3.1 Spike2 | Fundamental plots for electrophysiological data" />
 <meta property="og:type" content="book" />
 
 <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
@@ -20,7 +20,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>">
 
-<title>License | Fundamental plots for electrophysiological data</title>
+<title>3.1 Spike2 | Fundamental plots for electrophysiological data</title>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -194,15 +194,107 @@ details > summary {
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="license" class="section level2 unnumbered">
-<h2>License</h2>
-<p>The content of this work is licensed under CC-BY. For details please see <a href="https://creativecommons.org/licenses/by/4.0/">this web page</a> or the LICENSE file in <a href="https://github.com/flightlab/ephys_fundamental_plots">flightlab/ephys_fundamental_plots</a>.</p>
-
+<div id="spike2" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Spike2</h2>
+<p>Written by Tony Lapsansky, February 24, 2023</p>
+<ol style="list-style-type: decimal">
+<li>Save the Spike2 file
+<ol style="list-style-type: decimal">
+<li>Use the name structure <code>YEARMODA_sequence_investigator</code></li>
+<li>Save data in the corresponding directory
+<code>“C:\InvestigatorName\ephys\YEAR-MO-DA”</code></li>
+</ol></li>
+<li>Open <code>Spike2</code> and open the file</li>
+<li>Apply a digital high pass filter if needed. Note that if the data were
+collected with the high pass filter set at greater than 100 Hz (no LFP
+signal) then skip to step 4.
+<ol style="list-style-type: decimal">
+<li>Right click on channel and select <code>FIR Digital Filters…</code> (see Spike 2
+help → index <code>Digital Filter</code> for explanation)</li>
+<li>Under the pull down menu for <code>Filter</code> change from
+<code>Example low pass filter</code> to <code>Example high pass filter</code></li>
+<li>Select the <code>Show Details</code> button in the bottom right</li>
+<li>Adjust blue slider to shift the colour dots above the slider from red to
+yellow to green, but use the minimum level to achieve green. Fine
+adjustments can be made just under the slider.</li>
+<li>Hit <code>Apply</code></li>
+<li>Set <code>Destination</code> to the next available channel (often channel 4)</li>
+<li>Click Okay</li>
+<li>Close the filtering window. You are given the option to save the filter.
+Do not do this. It is important to set the filter each time. (?)</li>
+</ol></li>
+<li>Set thresholds for spikes
+<ol style="list-style-type: decimal">
+<li>Right click on the filtered channel and select <code>New WaveMark</code></li>
+<li>Clear previous templates if any are present. To do so, select the trash
+can icon within each template.</li>
+<li>Locate the dashed vertical line, which can be found at time 0 in the
+main window. This line indicates your cursor position.</li>
+<li>Move the dashed line through the trace to observe potential spike as
+determined by the default upper and lower thresholds.</li>
+<li>Right click the upper bound marker (the upper horizontal dashed line in
+the <code>WaveMark</code> window) and select <code>move away</code></li>
+<li>Identify spikes based on the lower bound. It is usually helpful to zoom
+in on the x-axis (time) to do this. Set the lower bound so that obvious
+spikes are included and ambiguous spikes are excluded.</li>
+</ol></li>
+<li>Choose template setting
+<ol style="list-style-type: decimal">
+<li>Move the cursor to a typical spike. The upper window is a base template.
+Click and hold on the upper trace and drag it to the first available
+template window.</li>
+<li>Click on the button just to the left of the trash can icon (on the top
+half, upper right of the <code>WaveMark</code> window). This is the “parameters
+dialog” button. This opens a template settings window.</li>
+<li>For the line <code>Maximum amplitude change for a match</code> enter <code>20</code>. This
+will allow a spike that fits a template to vary in maximum amplitude by
+up to 20%.</li>
+<li>For the line <code>Remove the DC offset before template matching</code>, confirm
+that the box is checked.</li>
+<li>Nothing else should need to be changed. Click <code>OK</code>.</li>
+</ol></li>
+<li>Spike sorting
+<ol style="list-style-type: decimal">
+<li>Back in the <code>WaveMark</code> window, make sure that the box <code>Circular replay</code>
+is unchecked, and that the box <code>Make Templates</code> is checked.</li>
+<li>Ensure that the vertical cursor on the main window is at time zero (or
+the first spike).</li>
+<li>Hit the play button ▶️, which is called “run forward”. This will take
+several minutes.</li>
+</ol></li>
+<li>Use PCA to delete and merge spike templates
+<ol style="list-style-type: decimal">
+<li>Select <code>New Channel</code> on the <code>WaveMark</code> window to place the spike data in
+the next available channel (typically, Channel 5)</li>
+<li>Close the <code>WaveMark</code> window.</li>
+<li>Right click on the sorted channel and select <code>Edit WaveMark</code></li>
+<li>Within the <code>WaveMark</code> window, go the pull down menu <code>Analyse</code> and select
+<code>Principal components</code>. Select <code>OK</code>. This opens a window of all spikes
+colored by template.</li>
+<li>Rotate around all three axes to determine if there is one, two, or more
+clusters.</li>
+<li>Identify templates that should be deleted and those that should be
+merged. Delete templates that sparse and peripheral.</li>
+<li>Delete the template(s) in the <code>WaveMark</code> window by selecting that
+template’s trash can icon.</li>
+<li>Merge templates by dragging them into the same window</li>
+<li>Hit the <code>reclassify</code> button in the <code>WaveMark</code> window.</li>
+</ol></li>
+<li>Export the spike-sorted data
+<ol style="list-style-type: decimal">
+<li><code>File → Export As</code></li>
+<li>Select <code>.mat</code> (Matlab data)</li>
+<li>Use the same filename and location but with the .mat extension.</li>
+<li>Hit <code>Save</code></li>
+<li>Select <code>Add</code> for <code>All Channels</code></li>
+<li>Click <code>Export</code></li>
+<li>Click <code>OK</code> (this will take several minutes)</li>
+</ol></li>
+</ol>
 </div>
-<!-- </div> -->
 <p style="text-align: center;">
-<a href="citation.html"><button class="btn btn-default">Previous</button></a>
-<a href="2-preface.html"><button class="btn btn-default">Next</button></a>
+<a href="3-spike-sorting.html"><button class="btn btn-default">Previous</button></a>
+<a href="3.2-neuralynx.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>

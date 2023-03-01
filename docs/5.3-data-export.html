@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:title" content="License | Fundamental plots for electrophysiological data" />
+<meta property="og:title" content="5.3 Data export | Fundamental plots for electrophysiological data" />
 <meta property="og:type" content="book" />
 
 <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
@@ -20,7 +20,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>">
 
-<title>License | Fundamental plots for electrophysiological data</title>
+<title>5.3 Data export | Fundamental plots for electrophysiological data</title>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -194,15 +194,55 @@ details > summary {
 </div>
 <div class="row">
 <div class="col-sm-12">
-<div id="license" class="section level2 unnumbered">
-<h2>License</h2>
-<p>The content of this work is licensed under CC-BY. For details please see <a href="https://creativecommons.org/licenses/by/4.0/">this web page</a> or the LICENSE file in <a href="https://github.com/flightlab/ephys_fundamental_plots">flightlab/ephys_fundamental_plots</a>.</p>
+<div id="data-export" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Data export</h2>
+<p>It is highly recommended that you export
+<code>all_replicate_data_reorganized</code>. I generally export
+<code>all_replicate_data_reorganized</code> as a separate <code>csv</code> file for each of
+the following conditions:</p>
+<ol style="list-style-type: decimal">
+<li>Unbinned</li>
+<li>Bin size = 10 ms</li>
+<li>Bin size = 100 ms</li>
+</ol>
+<p>This section will provide code to export each of the above, assuming
+you used those bin sizes in the previous section. Please be sure to
+change file naming conventions and other parameters in the event you
+chose a different <code>bin_size</code> in the previous section.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="5.3-data-export.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Declare export destination</span></span>
+<span id="cb28-2"><a href="5.3-data-export.html#cb28-2" aria-hidden="true" tabindex="-1"></a>export_path <span class="ot">&lt;-</span> <span class="st">&quot;./data/&quot;</span></span>
+<span id="cb28-3"><a href="5.3-data-export.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="do">## The &quot;condition&quot; will be appended to the file name. Choose whichever one</span></span>
+<span id="cb28-4"><a href="5.3-data-export.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="do">## corresponds to the bin_size you used above</span></span>
+<span id="cb28-5"><a href="5.3-data-export.html#cb28-5" aria-hidden="true" tabindex="-1"></a>condition <span class="ot">&lt;-</span>  <span class="st">&quot;_binsize10&quot;</span></span>
+<span id="cb28-6"><a href="5.3-data-export.html#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">#condition &lt;-  &quot;_binsize100&quot;</span></span>
+<span id="cb28-7"><a href="5.3-data-export.html#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">#condition &lt;-  &quot;_unbinned&quot;</span></span>
+<span id="cb28-8"><a href="5.3-data-export.html#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="5.3-data-export.html#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Export each tibble within all_replicate_data_reorganized</span></span>
+<span id="cb28-10"><a href="5.3-data-export.html#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized)) {</span>
+<span id="cb28-11"><a href="5.3-data-export.html#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb28-12"><a href="5.3-data-export.html#cb28-12" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span></span>
+<span id="cb28-13"><a href="5.3-data-export.html#cb28-13" aria-hidden="true" tabindex="-1"></a>    all_replicate_data_reorganized[[i]] <span class="sc">%&gt;%</span></span>
+<span id="cb28-14"><a href="5.3-data-export.html#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>()</span>
+<span id="cb28-15"><a href="5.3-data-export.html#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(</span>
+<span id="cb28-16"><a href="5.3-data-export.html#cb28-16" aria-hidden="true" tabindex="-1"></a>    dat,</span>
+<span id="cb28-17"><a href="5.3-data-export.html#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span></span>
+<span id="cb28-18"><a href="5.3-data-export.html#cb28-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(</span>
+<span id="cb28-19"><a href="5.3-data-export.html#cb28-19" aria-hidden="true" tabindex="-1"></a>        export_path,</span>
+<span id="cb28-20"><a href="5.3-data-export.html#cb28-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">names</span>(all_replicate_data_reorganized)[i],</span>
+<span id="cb28-21"><a href="5.3-data-export.html#cb28-21" aria-hidden="true" tabindex="-1"></a>        condition,</span>
+<span id="cb28-22"><a href="5.3-data-export.html#cb28-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;.csv&quot;</span></span>
+<span id="cb28-23"><a href="5.3-data-export.html#cb28-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb28-24"><a href="5.3-data-export.html#cb28-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-25"><a href="5.3-data-export.html#cb28-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span>(dat)</span>
+<span id="cb28-26"><a href="5.3-data-export.html#cb28-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Re-run the above chunk of code per condition you seek to export</p>
+<p>🐢</p>
 
 </div>
 <!-- </div> -->
 <p style="text-align: center;">
-<a href="citation.html"><button class="btn btn-default">Previous</button></a>
-<a href="2-preface.html"><button class="btn btn-default">Next</button></a>
+<a href="5.2-organizing-replicates-required-and-binning-optional.html"><button class="btn btn-default">Previous</button></a>
+<a href="6-raster-and-mean-spike-rate-plots.html"><button class="btn btn-default">Next</button></a>
 </p>
 </div>
 </div>
