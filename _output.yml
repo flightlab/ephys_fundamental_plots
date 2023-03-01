@@ -6,8 +6,10 @@ bookdown::gitbook:
         <li><a href="./">Fundamental plots for electrophysiological data</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/USERNAME/REPO/edit/BRANCH/%s
+    edit: null
     download: ["pdf", "epub"]
+    highlight: tango
+    info: true
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex

@@ -17,11 +17,18 @@ github-repo: flightlab/ephys_fundamental_plots
 
 # About
 
-This site is a work in progress. Ultimately, it will provide a walkthrough on how to produce fundamental plots from  electrophysiological data. The content was initialized using a bookdown template; accordingly, as this site remains in a developmental stage, content from the template may linger.
+This site is a work in progress. Ultimately, it will provide a walkthrough on
+how to produce fundamental plots from  electrophysiological data. The content
+was initialized using a bookdown template; accordingly, as this site remains in
+a developmental stage, content from the template may linger.
 
-The original content written here is intended to instruct trainees in the Altshuler Lab at the University of British Columbia to take raw recorded data from electrophysiological examinations and then produce preliminary plots that help characterize the recorded neural spike data.
+The original content written here is intended to instruct trainees in the
+Altshuler Lab at the University of British Columbia to take raw recorded data
+from electrophysiological examinations and then produce preliminary plots that
+help characterize the recorded neural spike data.
 
-To get started, please use the left navigation and work through chapters in order.
+To get started, please use the left navigation and work through chapters in
+order.
 
 🐢
 
@@ -32,7 +39,9 @@ TBD
 
 ## License {-}
 
-The content of this work is licensed under CC-BY. For details please see [this web page](https://creativecommons.org/licenses/by/4.0/) or the LICENSE file in [flightlab/ephys_fundamental_plots](https://github.com/flightlab/ephys_fundamental_plots).
+The content of this work is licensed under CC-BY. For details please see 
+[this web page](https://creativecommons.org/licenses/by/4.0/) or the LICENSE 
+file in [flightlab/ephys_fundamental_plots](https://github.com/flightlab/ephys_fundamental_plots).
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
