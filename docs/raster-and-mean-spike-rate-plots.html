@@ -26,7 +26,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="author" content="Vikram B. Baliga" />
 
 
-<meta name="date" content="2023-02-28" />
+<meta name="date" content="2023-03-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,7 +34,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
   
   
 <link rel="prev" href="data-wrangling.html"/>
-<link rel="next" href="spatiotemporal-tuning.html"/>
+<link rel="next" href="direction-tuning.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -172,13 +172,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-1"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>7</b> Spatiotemporal tuning</a>
+<li class="chapter" data-level="7" data-path="direction-tuning.html"><a href="direction-tuning.html"><i class="fa fa-check"></i><b>7</b> Direction tuning</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>7.1</b> Including Plots</a></li>
+<li class="chapter" data-level="7.1" data-path="direction-tuning.html"><a href="direction-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>7.1</b> Including Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>8</b> Histological verification</a>
+<li class="chapter" data-level="8" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>8</b> Spatiotemporal tuning</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-3"><i class="fa fa-check"></i><b>8.1</b> Including Plots</a></li>
+<li class="chapter" data-level="8.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-3"><i class="fa fa-check"></i><b>8.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>9</b> Histological verification</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-4"><i class="fa fa-check"></i><b>9.1</b> Including Plots</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -204,7 +208,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">6</span> Raster and mean spike rate plots<a href="raster-and-mean-spike-rate-plots.html#raster-and-mean-spike-rate-plots" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
 <p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="raster-and-mean-spike-rate-plots.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cars)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="raster-and-mean-spike-rate-plots.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cars)</span></code></pre></div>
 <pre><code>##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
 ##  1st Qu.:12.0   1st Qu.: 26.00  
@@ -215,7 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="including-plots-1" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Including Plots<a href="raster-and-mean-spike-rate-plots.html#including-plots-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You can also embed plots, for example:</p>
-<p><img src="_main_files/figure-html/pressure4-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/pressure5-1.png" width="672" /></p>
 <p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
 
 </div>
@@ -226,7 +230,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="data-wrangling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="spatiotemporal-tuning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="direction-tuning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>7 Spatiotemporal tuning | Fundamental plots for electrophysiological data</title>
+  <title>8 Spatiotemporal tuning | Fundamental plots for electrophysiological data</title>
   <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
   <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="7 Spatiotemporal tuning | Fundamental plots for electrophysiological data" />
+  <meta property="og:title" content="8 Spatiotemporal tuning | Fundamental plots for electrophysiological data" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
@@ -17,7 +17,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
   <meta name="github-repo" content="flightlab/ephys_fundamental_plots" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="7 Spatiotemporal tuning | Fundamental plots for electrophysiological data" />
+  <meta name="twitter:title" content="8 Spatiotemporal tuning | Fundamental plots for electrophysiological data" />
   
   <meta name="twitter:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
@@ -26,14 +26,14 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="author" content="Vikram B. Baliga" />
 
 
-<meta name="date" content="2023-02-28" />
+<meta name="date" content="2023-03-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="raster-and-mean-spike-rate-plots.html"/>
+<link rel="prev" href="direction-tuning.html"/>
 <link rel="next" href="histological-verification.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -172,13 +172,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-1"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>7</b> Spatiotemporal tuning</a>
+<li class="chapter" data-level="7" data-path="direction-tuning.html"><a href="direction-tuning.html"><i class="fa fa-check"></i><b>7</b> Direction tuning</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>7.1</b> Including Plots</a></li>
+<li class="chapter" data-level="7.1" data-path="direction-tuning.html"><a href="direction-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>7.1</b> Including Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>8</b> Histological verification</a>
+<li class="chapter" data-level="8" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>8</b> Spatiotemporal tuning</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-3"><i class="fa fa-check"></i><b>8.1</b> Including Plots</a></li>
+<li class="chapter" data-level="8.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-3"><i class="fa fa-check"></i><b>8.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>9</b> Histological verification</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-4"><i class="fa fa-check"></i><b>9.1</b> Including Plots</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -200,11 +204,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="spatiotemporal-tuning" class="section level1 hasAnchor" number="7">
-<h1><span class="header-section-number">7</span> Spatiotemporal tuning<a href="spatiotemporal-tuning.html#spatiotemporal-tuning" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="spatiotemporal-tuning" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Spatiotemporal tuning<a href="spatiotemporal-tuning.html#spatiotemporal-tuning" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
 <p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="spatiotemporal-tuning.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cars)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="spatiotemporal-tuning.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cars)</span></code></pre></div>
 <pre><code>##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
 ##  1st Qu.:12.0   1st Qu.: 26.00  
@@ -212,10 +216,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  Mean   :15.4   Mean   : 42.98  
 ##  3rd Qu.:19.0   3rd Qu.: 56.00  
 ##  Max.   :25.0   Max.   :120.00</code></pre>
-<div id="including-plots-2" class="section level2 hasAnchor" number="7.1">
-<h2><span class="header-section-number">7.1</span> Including Plots<a href="spatiotemporal-tuning.html#including-plots-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="including-plots-3" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Including Plots<a href="spatiotemporal-tuning.html#including-plots-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You can also embed plots, for example:</p>
-<p><img src="_main_files/figure-html/pressure5-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/pressure7-1.png" width="672" /></p>
 <p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
 
 </div>
@@ -225,7 +229,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="raster-and-mean-spike-rate-plots.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="direction-tuning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="histological-verification.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

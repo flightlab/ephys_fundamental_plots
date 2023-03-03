@@ -15,7 +15,9 @@ organizing-replicates-required-and-binning-optional
 data-export
 raster-and-mean-spike-rate-plots
 including-plots-1
-spatiotemporal-tuning
+direction-tuning
 including-plots-2
-histological-verification
+spatiotemporal-tuning
 including-plots-3
+histological-verification
+including-plots-4

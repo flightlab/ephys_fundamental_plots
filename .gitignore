@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 data/04132022_009m.mat
+data/11012022_005m.mat
+data/04132022_009m_binsize100.csv
+data/04132022_009m_unbinned.csv

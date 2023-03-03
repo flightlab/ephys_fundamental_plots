@@ -1,8 +1,6 @@
 ############################### package loading ################################
 ## Specify the packages you'll use in the script
 packages <- c("tidyverse",
-              #"readxl",
-              #"magrittr",
               "zoo",
               "gridExtra",
               "R.matlab",
@@ -112,10 +110,43 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     Time = 0.000
   )
 
+  ## Find photodiode
+  ## It is almost always in channel 2, but we should be sure to check before
+  ## extracting automatically
+  photod_default_channel <-
+    mat_import[[stringr::str_which(names(mat_import), "Ch2")[1]]]
+  if (!photod_default_channel[1][[1]][1] == "waveform") {
+    warning("File ", i,": Photodiode channel identity uncertain")
+  }
+
+  ## Find spikes
+  ## Similarly, spikes are almost always in channel 5, but we should check
+  spikes_default_channel <-
+    mat_import[[stringr::str_which(names(mat_import), "Ch5")[1]]]
+  if("codes" %not_in% attributes(spikes_default_channel)$dimnames[[1]]) {
+    warning("File ", i,": Sorted spikes channel identity uncertain")
+  }
+  ## If that worked, see if we can automatically determine the "times" and
+  ## "codes" slot numbers
+  times_location <-
+    which(attributes(spikes_default_channel)$dimnames[[1]] == "times")
+  codes_location <-
+    which(attributes(spikes_default_channel)$dimnames[[1]] == "codes")
+
+  ## Find matlab's stimulus change log
+  stim_change_channel <-
+    mat_import[[stringr::str_which(names(mat_import), "Ch3")[1]]]
+  ## Each sweep should be 5 secs. We'll check that the median is 5
+  ## If this results in an error, then the channel identity could be wrong, or
+  ## there may have been an issue with sweep duration during the recording
+  ## process
+  if(!median(round(diff(stim_change_channel[[5]][,1]),1)) == 5) {
+    warning("File ", i,": stim change channel identity uncertain")
+  }
+
   ## Determine when the onset of motion occurred according to matlab
-  ## NOTE: IF THIS INFO IS NOT IN CHANNEL 3, PLEASE CHANGE ACCCORDINGLY
   first_moving_mat <-
-    mat_import[[stringr::str_which(names(mat_import), "Ch3")[1]]][[5]][,1][1]
+    stim_change_channel[[5]][,1][1]
   ## Find the first "moving" phase in the log file
   first_moving_csv <-
     csv_data_sets[[i]] %>%
@@ -145,6 +176,8 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     ## Then slice to restrict any extraneous partial sweeps
     slice_head(n = (max_moving_sweep + 1)) %>%
     ## Add the first event time to "Time" and subtract first_mvbl_diff (~2 secs)
+    ## What this does is shift the log csv's time stamping to match the matlab
+    ## file's stim change channel's time stamping
     mutate(Time = Time + first_moving_mat - first_mvbl_diff - first_blank) %>%
     ## Make character version of Time for joining later
     ## This will be crucial for _join functions
@@ -165,44 +198,40 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   ## Get final time
   final_time <- first_csv$Stim_end[nrow(first_csv)]
 
-  ## Find photodiode
-  ## It is almost always in channel 2, but we should be sure to check before
-  ## extracting automatically
-  photod_default_channel <-
-    mat_import[[stringr::str_which(names(mat_import), "Ch2")[1]]]
-  if (!photod_default_channel[1][[1]][1] == "waveform") {
-    warning("File ", i,": Photodiode channel identity uncertain")
-  }
-
-  ## Find spikes
-  ## Similarly, spikes are almost always in channel 5, but we should check
-  spikes_default_channel <-
-    mat_import[[stringr::str_which(names(mat_import), "Ch5")[1]]]
-  if("codes" %not_in% attributes(spikes_default_channel)$dimnames[[1]]) {
-    warning("File ", i,": Sorted spikes channel identity uncertain")
-  }
-  ## If that worked, see if we can automatically determine the "times" and
-  ## "codes" slot numbers
-  times_location <-
-    which(attributes(spikes_default_channel)$dimnames[[1]] == "times")
-  codes_location <-
-    which(attributes(spikes_default_channel)$dimnames[[1]] == "codes")
-
   ## Extract photodiode data
-  options(scipen = 999)
+  ## First generate a time sequence to match to the photodiode trace
+  Time_vec <- seq(
+    from = 0.0000,
+    by = 1 / 25000,
+    length.out = length(photod_default_channel[9][[1]][, 1])
+  )
+  ## The key thing is to get a character version of time from this
+  Time_char_vec <- as.character(round(Time_vec, 3))
+
+  ## Grab the photodiode data
   photod_full <-
-    tibble(
-      Photod =
-        photod_default_channel[9][[1]][, 1])
+    tibble(Photod =
+             photod_default_channel[9][[1]][, 1])
+  ## Add numeric time
   photod_full$Time <-
     seq(
-      from = 0,
+      from = 0.0000,
       by = 1 / 25000,
       length.out = nrow(photod_full)
     )
+  options(scipen = 999)
   photod_full <-
     photod_full %>%
-    mutate(Time_char = as.character(round(Time, 5)))
+    ## Add the character time
+    add_column(Time_char = Time_char_vec) %>%
+    ## Use the charcter time to define a group
+    group_by(Time_char) %>%
+    ## Then average the photodiode within
+    summarise(Photod = mean(Photod)) %>%
+    ungroup() %>%
+    mutate(Time = round(as.numeric(Time_char), 3)) %>%
+    arrange(Time) %>%
+    filter(Time <= final_time)
 
   ## Extract all spike data
   all_spike_dat <-
@@ -211,49 +240,58 @@ for (i in 1:nrow(csv_mat_filejoin)) {
         spikes_default_channel[times_location][[1]][, 1],
       code =
         spikes_default_channel[codes_location][[1]][, 1]) %>%
-    ## Get rid of empty rows
-    filter(code > 0) %>%
     ## Characterize time, for purposes of joining later
-    mutate(Time_char = as.character(round(Time, 5))) #%>%
-    #mutate(code = as.character(code))
+    mutate(Time_char = as.character(round(Time, 3)))
 
   ## How many distinct neurons are there?
   n_cells <- sort(unique(all_spike_dat$code))
 
-  if(length(n_cells) > 1) {
+  if(length(n_cells) > 1) { ## if there's more than one distinct neuron
     all_spike_dat_tmp <-
       all_spike_dat %>%
       ## Group by identity of spiking neuron
       group_by(code) %>%
       ## Split into separate dfs, one per neuron
-      #split(factor(all_spike_dat$code))
       group_split()
 
-    ## Keep the name of the first cell's spike column as simply "Spikes"
-    first_cell <-
-      all_spike_dat_tmp[[1]] %>%
-      rename(Spikes = code)
-
     ## Additional cells are labeled as "Spike_n"
-    ad_cells <- n_cells[n_cells > 1]
     all_cells <- NULL
-    for (j in ad_cells) {
-      #print(i)
+    for (j in n_cells) {
+      #print(j)
       new_name = paste0("Spikes_", j)
-      all_cells[[j]] <-
-        all_spike_dat_tmp[[j]]
-      names(all_cells[[j]])[match("code", names(all_cells[[j]]))] <-
-        new_name
-    }
+      all_cells[[j+1]] <-
+        all_spike_dat_tmp[[j+1]]
 
-    ## Add first cell back in
-    all_cells[[1]] <- first_cell
+      ## Consolidate to 3 decimal places
+      all_cells[[j+1]] <-
+        all_cells[[j+1]] %>%
+        group_by(Time_char) %>%
+        summarise(code = mean(code)) %>%
+        mutate(code = ceiling(code)) %>%
+        ungroup() %>%
+        mutate(Time = round(as.numeric(Time_char), 3)) %>%
+        arrange(Time) %>%
+        filter(Time <= final_time)
+
+      names(all_cells[[j+1]])[match("code", names(all_cells[[j+1]]))] <-
+        new_name
+      ## Replace "j" with 1 to indicate presence/absence of spike rather than
+      ## cell identity
+      all_cells[[j+1]][new_name] <- 1
+
+      ## If the identity is 1, replace "Spikes_1" with just "Spikes"
+      if (new_name == "Spikes_1") {
+        names(all_cells[[j+1]])[match(new_name, names(all_cells[[j+1]]))] <-
+          "Spikes"
+      }
+    }
 
     ## Consolidate
     all_spike_dat <-
       all_cells %>%
       ## Tack on additional spike columns
-      reduce(left_join, by = "Time_char") %>%
+      reduce(full_join, by = "Time_char") %>%
+      arrange(Time_char) %>%
       ## Remove time.n columns but
       ## Do not remove Time_char
       select(-contains("Time.")) %>%
@@ -261,12 +299,20 @@ for (i in 1:nrow(csv_mat_filejoin)) {
       mutate(
         Time = as.numeric(Time_char)
       ) %>%
-      select(Time, Time_char, everything())
+      select(Time, Time_char, Spikes, everything()) %>%
+      filter(Time <= final_time)
 
-  } else {
+  } else { ## If there's only 1 neuron
     all_spike_dat <-
       all_spike_dat %>%
+      group_by(Time_char) %>%
+      summarise(code = mean(code)) %>%
+      mutate(code = ceiling(code)) %>%
+      ungroup() %>%
       rename(Spikes = code) %>%
+      mutate(Time = round(as.numeric(Time_char), 3)) %>%
+      arrange(Time) %>%
+      filter(Time <= final_time) %>%
       select(Time, Time_char, everything())
   }
 
@@ -301,7 +347,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     rename(Time_mat = Time.x,
            Time_csv = Time.y) %>%
     ## Convert character time to numeric time
-    mutate(Time = as.numeric(Time_char)) %>%
+    mutate(Time = round(as.numeric(Time_char), 3)) %>%
     ## Carry metadata forward
     mutate(
       Trial = zoo::na.locf(Trial, type = "locf"),
@@ -399,7 +445,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
 endtime <- Sys.time()
 endtime - starttime ## Total elapsed time
 
-## Tidy up
+## Tidy up how R has been using RAM by running garbage collection
 gc()
 
 ## Name each data set according to the basename of the file
@@ -408,7 +454,8 @@ names(meta_splits)   <- csv_mat_filejoin$basename #base_names
 names(data_splits)   <- csv_mat_filejoin$basename #base_names
 
 ## Old method: Extract matlab spike and photodiode data
-# mat_data_sets[[i]] <-
+# #mat_data_sets[[i]] <-
+# spikedat <-
 #   data.frame(
 #     Time =
 #       seq(
@@ -447,18 +494,22 @@ bin_size = 10 ## 10 or 100 or 1 (1 = "unbinned")
 slice_size = NULL
 slicemin = NULL
 slicemax = NULL
+condition = NULL
 if (bin_size == 10){
   slice_size <- 501
   slicemin <- 202
   slicemax <- 498
+  condition <- "_binsize10"
 } else if (bin_size == 100){
   slice_size <- 51
   slicemin <- 21
   slicemax <- 49
+  condition <- "_binsize100"
 } else if (bin_size == 1){
   slice_size <- NULL
   slicemin <- NULL
   slicemax <- NULL
+  condition <- "_unbinned"
 } else {
   stop("bin_size is non-standard")
 }
@@ -515,7 +566,8 @@ for (i in 1:length(meta_splits)){
         doot$bin <-
           rep(1:ceiling(nrow(doot)/bin_size), each = bin_size)[1:nrow(doot)]
 
-        if(bin_size == 1) { ## IF YOU ARE NOT BINNING, RUN THIS:
+        if (bin_size == 1) {
+          ## IF YOU ARE NOT BINNING, RUN THIS:
           replicates_ordered[[k]] <-
             doot %>%
             mutate(
@@ -532,13 +584,15 @@ for (i in 1:length(meta_splits)){
               ## Label the replicate number
               Replicate = k
             ) %>%
-              ## Bring stim info to first few columns
-              select(Speed, SF_cpd, Temporal_Frequency, Direction,
-                     everything()) %>%
-              ## Just in case there some hang over
-              filter(Time_stand >= 0)
-          } else { ## IF YOU ARE BINNING, RUN THIS:
-          replicates_ordered[[k]] <-
+            ## Bring stim info to first few columns
+            select(Speed, SF_cpd, Temporal_Frequency, Direction,
+                   everything()) %>%
+            ## Just in case there some hang over
+            filter(Time_stand >= 0)
+        } else { ## IF YOU ARE BINNING, RUN THIS:
+
+          ## First grab time and meta info
+          time_and_meta <-
             doot %>%
             ## WITHIN EACH BIN:
             group_by(bin) %>%
@@ -552,9 +606,24 @@ for (i in 1:length(meta_splits)){
               ## Bin end
               Time_bin_end = max(Time_mat),
               ## Spike rate = sum of spikes divided by elapsed time
-              Spike_rate = sum(Spikes)/(max(Time_mat) - min(Time_mat)),
+              Spike_rate = sum(Spikes) / (max(Time_mat) - min(Time_mat)),
               Photod_mean = mean(Photod)
-            ) %>%
+            )
+
+          ## Now deal with Spike_N columns
+          hold_spike_n <-
+            doot %>%
+            select(starts_with("Spikes_")) %>%
+            add_column(bin = doot$bin) %>%
+            add_column(Time_mat = doot$Time_mat) %>%
+            group_by(bin) %>%
+            summarise(across(starts_with("Spikes_"),
+                             ~ sum(.x) / (max(Time_mat) - min(Time_mat))))
+
+          ## Put them together
+          replicates_ordered[[k]] <-
+            time_and_meta %>%
+            left_join(hold_spike_n, by = "bin") %>%
             mutate(
               ## Add in metadata (following same definitions above)
               Time_stand = Time_bin_mid - min(Time_bin_mid),
@@ -572,6 +641,8 @@ for (i in 1:length(meta_splits)){
             ## Just in case there some hang over
             filter(Time_stand >= 0) %>%
             filter(bin < slice_size + 1)
+
+          rm(time_and_meta, hold_spike_n)
         }
       }
       }
@@ -585,8 +656,8 @@ for (i in 1:length(meta_splits)){
     all_replicate_data_reorganized[[i]][[j]] <-
       replicate_data_reorganized[[j]]
 
-    ## Toss out temporary object and clean up
-    rm(replicates_ordered)
+    ## Toss out temporary objects and clean up
+    rm(replicates_ordered, d, m, tmp)
     gc()
   }
 }
@@ -622,11 +693,7 @@ for (i in 1:length(all_replicate_data_reorganized)) {
 
 ## Declare export destination
 export_path <- "./data/"
-## The "condition" will be appended to the file name. Choose whichever one
-## corresponds to the bin_size you used above
-condition <-  "_binsize10"
-#condition <-  "_binsize100"
-#condition <-  "_unbinned"
+## The "condition" will be appended to the file name.
 
 ## Export each tibble within all_replicate_data_reorganized
 for (i in 1:length(all_replicate_data_reorganized)) {
