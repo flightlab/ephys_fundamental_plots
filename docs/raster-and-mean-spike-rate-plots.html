@@ -170,19 +170,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html"><i class="fa fa-check"></i><b>6</b> Raster and mean spike rate plots</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#including-plots-1"><i class="fa fa-check"></i><b>6.1</b> Including Plots</a></li>
+<li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#raster-plot"><i class="fa fa-check"></i><b>6.1</b> Raster plot</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#export-to-pdf"><i class="fa fa-check"></i><b>6.1.1</b> Export to PDF</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="direction-tuning.html"><a href="direction-tuning.html"><i class="fa fa-check"></i><b>7</b> Direction tuning</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="direction-tuning.html"><a href="direction-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>7.1</b> Including Plots</a></li>
+<li class="chapter" data-level="7.1" data-path="direction-tuning.html"><a href="direction-tuning.html#including-plots-1"><i class="fa fa-check"></i><b>7.1</b> Including Plots</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>8</b> Spatiotemporal tuning</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-3"><i class="fa fa-check"></i><b>8.1</b> Including Plots</a></li>
+<li class="chapter" data-level="8.1" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html#including-plots-2"><i class="fa fa-check"></i><b>8.1</b> Including Plots</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>9</b> Histological verification</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-4"><i class="fa fa-check"></i><b>9.1</b> Including Plots</a></li>
+<li class="chapter" data-level="9.1" data-path="histological-verification.html"><a href="histological-verification.html#including-plots-3"><i class="fa fa-check"></i><b>9.1</b> Including Plots</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -206,22 +209,93 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="raster-and-mean-spike-rate-plots" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">6</span> Raster and mean spike rate plots<a href="raster-and-mean-spike-rate-plots.html#raster-and-mean-spike-rate-plots" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="raster-and-mean-spike-rate-plots.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cars)</span></code></pre></div>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
-<div id="including-plots-1" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Including Plots<a href="raster-and-mean-spike-rate-plots.html#including-plots-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="_main_files/figure-html/pressure5-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="raster-plot" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Raster plot<a href="raster-and-mean-spike-rate-plots.html#raster-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here is an example of a raster plot, using the wrangled data generated in the
+previous section. This type of plot shows the timing of spike events within
+each replicate sweep, and for our purposes, we’ll produce a view of this for
+each of the various stimulus conditions</p>
+<p>It is important to note that we will need unbinned data for this. This is
+because a raster plot shows discrete spiking events through the course of a time
+sweep.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="raster-and-mean-spike-rate-plots.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Read in unbinned data</span></span>
+<span id="cb33-2"><a href="raster-and-mean-spike-rate-plots.html#cb33-2" aria-hidden="true" tabindex="-1"></a>unbinned_data <span class="ot">&lt;-</span></span>
+<span id="cb33-3"><a href="raster-and-mean-spike-rate-plots.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">&quot;./data/04132022_009m_unbinned.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb33-4"><a href="raster-and-mean-spike-rate-plots.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span></code></pre></div>
+<pre><code>## Rows: 1503298 Columns: 23
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (1): Trial
+## dbl (22): Speed, SF_cpd, Temporal_Frequency, Direction, Time_mat, Time_char,...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="raster-and-mean-spike-rate-plots.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Generate the code for the ggplot and save it as &quot;plot&quot;</span></span>
+<span id="cb35-2"><a href="raster-and-mean-spike-rate-plots.html#cb35-2" aria-hidden="true" tabindex="-1"></a>rasterplot <span class="ot">&lt;-</span></span>
+<span id="cb35-3"><a href="raster-and-mean-spike-rate-plots.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  unbinned_data <span class="sc">%&gt;%</span></span>
+<span id="cb35-4"><a href="raster-and-mean-spike-rate-plots.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Remove any rows where spiking does not occur in the Spikes column</span></span>
+<span id="cb35-5"><a href="raster-and-mean-spike-rate-plots.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Spikes <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-6"><a href="raster-and-mean-spike-rate-plots.html#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Convert Trial and Speed into factors and specify their level ordering</span></span>
+<span id="cb35-7"><a href="raster-and-mean-spike-rate-plots.html#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="do">## This will make it easier to get the subplots in the order we want them</span></span>
+<span id="cb35-8"><a href="raster-and-mean-spike-rate-plots.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Trial =</span> <span class="fu">factor</span>(Trial, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;blank&quot;</span>, <span class="st">&quot;stationary&quot;</span>, <span class="st">&quot;moving&quot;</span>)),</span>
+<span id="cb35-9"><a href="raster-and-mean-spike-rate-plots.html#cb35-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">Speed =</span> <span class="fu">factor</span>(Speed, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1024</span>, <span class="dv">256</span>, <span class="dv">32</span>, <span class="dv">4</span>, <span class="fl">0.5</span>, <span class="fl">0.062</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb35-10"><a href="raster-and-mean-spike-rate-plots.html#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Time_stand, <span class="at">y =</span> Replicate)) <span class="sc">+</span></span>
+<span id="cb35-11"><a href="raster-and-mean-spike-rate-plots.html#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="do">## The next three blocks will undershade each subplot according to stimulus</span></span>
+<span id="cb35-12"><a href="raster-and-mean-spike-rate-plots.html#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="do">## phase (i.e., blank, stationary, moving)</span></span>
+<span id="cb35-13"><a href="raster-and-mean-spike-rate-plots.html#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;rect&quot;</span>,</span>
+<span id="cb35-14"><a href="raster-and-mean-spike-rate-plots.html#cb35-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin =</span> <span class="dv">0</span>, <span class="at">xmax =</span> <span class="fu">first</span>(unbinned_data<span class="sc">$</span>Blank_end),</span>
+<span id="cb35-15"><a href="raster-and-mean-spike-rate-plots.html#cb35-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> <span class="fl">0.5</span>, <span class="at">ymax =</span> <span class="fl">10.5</span>,</span>
+<span id="cb35-16"><a href="raster-and-mean-spike-rate-plots.html#cb35-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-17"><a href="raster-and-mean-spike-rate-plots.html#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;rect&quot;</span>,</span>
+<span id="cb35-18"><a href="raster-and-mean-spike-rate-plots.html#cb35-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin =</span> <span class="fu">first</span>(unbinned_data<span class="sc">$</span>Blank_end),</span>
+<span id="cb35-19"><a href="raster-and-mean-spike-rate-plots.html#cb35-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmax =</span> <span class="fu">first</span>(unbinned_data<span class="sc">$</span>Static_end),</span>
+<span id="cb35-20"><a href="raster-and-mean-spike-rate-plots.html#cb35-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> <span class="fl">0.5</span>, <span class="at">ymax =</span> <span class="fl">10.5</span>,</span>
+<span id="cb35-21"><a href="raster-and-mean-spike-rate-plots.html#cb35-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">&quot;darkgoldenrod1&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-22"><a href="raster-and-mean-spike-rate-plots.html#cb35-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;rect&quot;</span>,</span>
+<span id="cb35-23"><a href="raster-and-mean-spike-rate-plots.html#cb35-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin =</span> <span class="fu">first</span>(unbinned_data<span class="sc">$</span>Static_end), <span class="at">xmax =</span> <span class="dv">5</span>,</span>
+<span id="cb35-24"><a href="raster-and-mean-spike-rate-plots.html#cb35-24" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> <span class="fl">0.5</span>, <span class="at">ymax =</span> <span class="fl">10.5</span>,</span>
+<span id="cb35-25"><a href="raster-and-mean-spike-rate-plots.html#cb35-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">&quot;forestgreen&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-26"><a href="raster-and-mean-spike-rate-plots.html#cb35-26" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Up to 10 replicates were used, so we will force the y-axis to go to 10</span></span>
+<span id="cb35-27"><a href="raster-and-mean-spike-rate-plots.html#cb35-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb35-28"><a href="raster-and-mean-spike-rate-plots.html#cb35-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">10.5</span>),</span>
+<span id="cb35-29"><a href="raster-and-mean-spike-rate-plots.html#cb35-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb35-30"><a href="raster-and-mean-spike-rate-plots.html#cb35-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>)</span>
+<span id="cb35-31"><a href="raster-and-mean-spike-rate-plots.html#cb35-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb35-32"><a href="raster-and-mean-spike-rate-plots.html#cb35-32" aria-hidden="true" tabindex="-1"></a>  <span class="do">## There are multiple ways to plot a spike event. Since 100% of the rows in</span></span>
+<span id="cb35-33"><a href="raster-and-mean-spike-rate-plots.html#cb35-33" aria-hidden="true" tabindex="-1"></a>  <span class="do">## this filtered data set are spike events, we can simply plot a symbol at</span></span>
+<span id="cb35-34"><a href="raster-and-mean-spike-rate-plots.html#cb35-34" aria-hidden="true" tabindex="-1"></a>  <span class="do">## each time (Time_stand) that appears in the data. The `|` symbol is a good</span></span>
+<span id="cb35-35"><a href="raster-and-mean-spike-rate-plots.html#cb35-35" aria-hidden="true" tabindex="-1"></a>  <span class="do">## choice.</span></span>
+<span id="cb35-36"><a href="raster-and-mean-spike-rate-plots.html#cb35-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">pch =</span> <span class="st">&#39;|&#39;</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb35-37"><a href="raster-and-mean-spike-rate-plots.html#cb35-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Time (sec)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-38"><a href="raster-and-mean-spike-rate-plots.html#cb35-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="st">&quot;04132022_009m raster&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb35-39"><a href="raster-and-mean-spike-rate-plots.html#cb35-39" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Use facet_grid() to create a grid of subplots. Rows will correspond to </span></span>
+<span id="cb35-40"><a href="raster-and-mean-spike-rate-plots.html#cb35-40" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Speeds, and columns correspond to Directions</span></span>
+<span id="cb35-41"><a href="raster-and-mean-spike-rate-plots.html#cb35-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(Speed), <span class="at">cols =</span> <span class="fu">vars</span>(Direction)) <span class="sc">+</span></span>
+<span id="cb35-42"><a href="raster-and-mean-spike-rate-plots.html#cb35-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb35-43"><a href="raster-and-mean-spike-rate-plots.html#cb35-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>,</span>
+<span id="cb35-44"><a href="raster-and-mean-spike-rate-plots.html#cb35-44" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>, <span class="st">&quot;lines&quot;</span>))</span>
+<span id="cb35-45"><a href="raster-and-mean-spike-rate-plots.html#cb35-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-46"><a href="raster-and-mean-spike-rate-plots.html#cb35-46" aria-hidden="true" tabindex="-1"></a>rasterplot</span></code></pre></div>
+<p><img src="_main_files/figure-html/raster_plot-1.png" width="672" /></p>
+<div id="export-to-pdf" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Export to PDF<a href="raster-and-mean-spike-rate-plots.html#export-to-pdf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Should you elect to export this plot by itself to a <code>PDF</code>, you can do the
+following:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="raster-and-mean-spike-rate-plots.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Should you elect to export this as a PDF</span></span>
+<span id="cb36-2"><a href="raster-and-mean-spike-rate-plots.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(</span>
+<span id="cb36-3"><a href="raster-and-mean-spike-rate-plots.html#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;./path/to/directory/filename.pdf&quot;</span>,</span>
+<span id="cb36-4"><a href="raster-and-mean-spike-rate-plots.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="fl">10.5</span>,</span>
+<span id="cb36-5"><a href="raster-and-mean-spike-rate-plots.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">8</span>,</span>
+<span id="cb36-6"><a href="raster-and-mean-spike-rate-plots.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;04132022_009m raster&quot;</span>,</span>
+<span id="cb36-7"><a href="raster-and-mean-spike-rate-plots.html#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">paper =</span> <span class="st">&quot;USr&quot;</span>,</span>
+<span id="cb36-8"><a href="raster-and-mean-spike-rate-plots.html#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb36-9"><a href="raster-and-mean-spike-rate-plots.html#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">pagecentre =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb36-10"><a href="raster-and-mean-spike-rate-plots.html#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">colormodel =</span> <span class="st">&quot;srgb&quot;</span></span>
+<span id="cb36-11"><a href="raster-and-mean-spike-rate-plots.html#cb36-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-12"><a href="raster-and-mean-spike-rate-plots.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rasterplot)</span>
+<span id="cb36-13"><a href="raster-and-mean-spike-rate-plots.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
 
+</div>
 </div>
 </div>
             </section>

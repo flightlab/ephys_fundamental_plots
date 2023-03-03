@@ -716,107 +716,69 @@ for (i in 1:length(all_replicate_data_reorganized)) {
 
 gc()
 
-################################## quality check ###############################
-## To guard against spurious matlab pulses, ensure that each replicate consists
-## of:
-## 1) 1-sec blank
-## 2) 1-sec stationary
-## 3) 3-sec moving
+################################# raster plot ##################################
+## read in data
+unbinned_data <-
+  read_csv("./data/04132022_009m_unbinned.csv") %>%
+  as_tibble()
 
-converted_csv_mats <-
-  csv_mat_filejoin %>%
-  filter(basename %in% unbinned_basenames)
+## Generate the ggplot
+rasterplot <-
+  unbinned_data %>%
+  ## Remove any rows where spiking does not occur in the Spikes column
+  filter(Spikes == 1) %>%
+  ## Convert Trial and Speed into factors and specify their level ordering
+  ## This will make it easier to get the subplots in the order we want them
+  mutate(Trial = factor(Trial, levels = c("blank", "stationary", "moving")),
+         Speed = factor(Speed, levels = c(1024, 256, 32, 4, 0.5, 0.062))) %>%
+  ggplot(aes(x = Time_stand, y = Replicate)) +
+  ## The next three blocks will undershade each subplot according to stimulus
+  ## phase (i.e., blank, stationary, moving)
+  annotate("rect",
+           xmin = 0, xmax = first(unbinned_data$Blank_end),
+           ymin = 0.5, ymax = 10.5,
+           alpha = 0.1, color = NA, fill = "red") +
+  annotate("rect",
+           xmin = first(unbinned_data$Blank_end),
+           xmax = first(unbinned_data$Static_end),
+           ymin = 0.5, ymax = 10.5,
+           alpha = 0.1, color = NA, fill = "darkgoldenrod1") +
+  annotate("rect",
+           xmin = first(unbinned_data$Static_end), xmax = 5,
+           ymin = 0.5, ymax = 10.5,
+           alpha = 0.1, color = NA, fill = "forestgreen") +
+  ## Up to 10 replicates were used, so we will force the y-axis to go to 10
+  scale_y_continuous(
+    limits = c(0.5, 10.5),
+    expand = c(0, 0),
+    breaks = c(5, 10)
+  ) +
+  ## There are multiple ways to plot a spike event. Since 100% of the rows in
+  ## this filtered data set are spike events, we can simply plot a symbol at
+  ## each time (Time_stand) that appears in the data. The `|` symbol is a good
+  ## choice.
+  geom_point(pch = '|', size = 1.5) +
+  xlab("Time (sec)") +
+  ggtitle(paste0("04132022_009m raster")) +
+  ## Use facet_grid() to create a grid of subplots. Rows will correspond to
+  ## Speeds, and columns correspond to Directions
+  facet_grid(rows = vars(Speed), cols = vars(Direction)) +
+  theme_classic() +
+  theme(legend.position = 'none',
+        panel.spacing = unit(0.1, "lines"))
 
-csv_assessment <- NULL
-for (i in 1:nrow(converted_csv_mats)) {
+rasterplot
 
-  print (i)
-
-  csv_read <- NULL
-  # mat_data_sets <- NULL
-  # joined_data_sets <- NULL
-
-  ## import the csv
-  csv_read <-
-    read_csv(converted_csv_mats[i,"csv_files"],
-             show_col_types = FALSE) %>%
-    rename(
-      Spatial_Frequency = `Spatial Frequency`,
-      Temporal_Frequency = `Temporal Frequency`
-    )
-  csv_read$SF_cpd[csv_read$Spatial_Frequency == 0.000668] <-
-    2^-6
-  csv_read$SF_cpd[csv_read$Spatial_Frequency == 0.001336] <-
-    2^-5
-  csv_read$SF_cpd[csv_read$Spatial_Frequency == 0.00267]  <-
-    2^-4
-  csv_read$SF_cpd[csv_read$Spatial_Frequency == 0.0053]   <-
-    2^-3
-  csv_read$SF_cpd[csv_read$Spatial_Frequency == 0.0106]   <-
-    2^-2
-  csv_read$SF_cpd[csv_read$Spatial_Frequency == 0.0212]   <-
-    2^-1
-
-  ## get diffs in time
-  time_diffs <-
-    diff(csv_read$Time) %>%
-    ## round to nearest second
-    round()
-
-  if (any(time_diffs %not_in% c(1, 3))) {
-    print("fuckery")
-    csv_assessment[i] <- "investigate"
-  } else(
-    csv_assessment[i] <- "all clear"
-  )
-
-  rm(csv_read, time_diffs)
-
-}
-
-################################## export matching #############################
-
-unbinned_original_filelist <-
-  list.files("./data_csv_exports/", pattern = "_unbinned.csv",
-             full.names = TRUE)
-unbinned_original_basenames <-
-  unbinned_original_filelist %>%
-  str_remove("./data_csv_exports/") %>%
-  str_remove("_unbinned.csv")
-
-unbinned_newer_filelist <-
-  list.files("./reformatted_data_csv/", pattern = "_unbinned.csv",
-             full.names = TRUE)
-unbinned_newer_basenames <-
-  unbinned_newer_filelist %>%
-  str_remove("./reformatted_data_csv/") %>%
-  str_remove("_unbinned.csv")
-
-## first check
-identical(unbinned_original_basenames, unbinned_newer_basenames)
-
-file_checks <- NULL
-## second check
-for (i in 1:length(unbinned_original_filelist)) {
-
-  print(i)
-
-  original <-
-    read_csv(unbinned_original_filelist[i],
-             show_col_types = FALSE) %>%
-    select(-any_of(c("bin")))
-
-  newer <-
-    read_csv(unbinned_newer_filelist[i],
-             show_col_types = FALSE) %>%
-    select(-any_of(c("bin")))
-
-  file_checks[[i]] <- all.equal(original, newer)
-
-  if(!identical(original,newer)) {
-    paste0("file #", i, ", ", unbinned_original_basenames[i], " not identical")
-  }
-
-  rm(original, newer)
-
-}
+## Should you elect to export this as a PDF
+pdf(
+  file = "./path/to/directory/filename.pdf",
+  width = 10.5,
+  height = 8,
+  title = "04132022_009m raster",
+  paper = "USr",
+  bg = "white",
+  pagecentre = TRUE,
+  colormodel = "srgb"
+)
+plot(rasterplot)
+dev.off()

@@ -14,10 +14,11 @@ data-import-and-preliminary-labeling
 organizing-replicates-required-and-binning-optional
 data-export
 raster-and-mean-spike-rate-plots
-including-plots-1
+raster-plot
+export-to-pdf
 direction-tuning
-including-plots-2
+including-plots-1
 spatiotemporal-tuning
-including-plots-3
+including-plots-2
 histological-verification
-including-plots-4
+including-plots-3

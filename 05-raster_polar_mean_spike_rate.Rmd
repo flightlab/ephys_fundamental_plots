@@ -1,19 +1,88 @@
 # Raster and mean spike rate plots
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Raster plot
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Here is an example of a raster plot, using the wrangled data generated in the
+previous section. This type of plot shows the timing of spike events within
+each replicate sweep, and for our purposes, we'll produce a view of this for
+each of the various stimulus conditions
 
-```{r cars5}
-summary(cars)
+It is important to note that we will need unbinned data for this. This is
+because a raster plot shows discrete spiking events through the course of a time
+sweep.
+
+```{r raster_plot}
+## Read in unbinned data
+unbinned_data <-
+  read_csv("./data/04132022_009m_unbinned.csv") %>%
+  as_tibble()
+
+## Generate the code for the ggplot and save it as "plot"
+rasterplot <-
+  unbinned_data %>%
+  ## Remove any rows where spiking does not occur in the Spikes column
+  filter(Spikes == 1) %>%
+  ## Convert Trial and Speed into factors and specify their level ordering
+  ## This will make it easier to get the subplots in the order we want them
+  mutate(Trial = factor(Trial, levels = c("blank", "stationary", "moving")),
+         Speed = factor(Speed, levels = c(1024, 256, 32, 4, 0.5, 0.062))) %>%
+  ggplot(aes(x = Time_stand, y = Replicate)) +
+  ## The next three blocks will undershade each subplot according to stimulus
+  ## phase (i.e., blank, stationary, moving)
+  annotate("rect",
+           xmin = 0, xmax = first(unbinned_data$Blank_end),
+           ymin = 0.5, ymax = 10.5,
+           alpha = 0.1, color = NA, fill = "red") +
+  annotate("rect",
+           xmin = first(unbinned_data$Blank_end),
+           xmax = first(unbinned_data$Static_end),
+           ymin = 0.5, ymax = 10.5,
+           alpha = 0.1, color = NA, fill = "darkgoldenrod1") +
+  annotate("rect",
+           xmin = first(unbinned_data$Static_end), xmax = 5,
+           ymin = 0.5, ymax = 10.5,
+           alpha = 0.1, color = NA, fill = "forestgreen") +
+  ## Up to 10 replicates were used, so we will force the y-axis to go to 10
+  scale_y_continuous(
+    limits = c(0.5, 10.5),
+    expand = c(0, 0),
+    breaks = c(5, 10)
+  ) +
+  ## There are multiple ways to plot a spike event. Since 100% of the rows in
+  ## this filtered data set are spike events, we can simply plot a symbol at
+  ## each time (Time_stand) that appears in the data. The `|` symbol is a good
+  ## choice.
+  geom_point(pch = '|', size = 1.5) +
+  xlab("Time (sec)") +
+  ggtitle(paste0("04132022_009m raster")) +
+  ## Use facet_grid() to create a grid of subplots. Rows will correspond to 
+  ## Speeds, and columns correspond to Directions
+  facet_grid(rows = vars(Speed), cols = vars(Direction)) +
+  theme_classic() +
+  theme(legend.position = 'none',
+        panel.spacing = unit(0.1, "lines"))
+
+rasterplot
 ```
 
-## Including Plots
+### Export to PDF
 
-You can also embed plots, for example:
+Should you elect to export this plot by itself to a `PDF`, you can do the
+following:
 
-```{r pressure5, echo=FALSE}
-plot(pressure)
+```{r export_raster_pdf, eval=F, echo=T}
+## Should you elect to export this as a PDF
+pdf(
+  file = "./path/to/directory/filename.pdf",
+  width = 10.5,
+  height = 8,
+  title = "04132022_009m raster",
+  paper = "USr",
+  bg = "white",
+  pagecentre = TRUE,
+  colormodel = "srgb"
+)
+plot(rasterplot)
+dev.off()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
