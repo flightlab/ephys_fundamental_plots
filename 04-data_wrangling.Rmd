@@ -39,8 +39,8 @@ The following code is based on the assumptions that:
 
 2)  The basename of each file (i.e., the name of the file, excluding the file
 extension) is identical for each set of spike sorted data and corresponding
-metadata log file (e.g., `04132022_009m.mat` and `04132022_009m` have the same
-basename, which is `04132022_009m`).
+metadata log file (e.g., `2023-02-16_001.mat` and `2023-02-16_001.csv` have the
+same basename, which is `2023-02-16_001`).
 
 ```{r list_files}
 ## List all files of each file type
@@ -104,6 +104,7 @@ Please see in-line comments for further guidance
 metadata_sets <- NULL
 meta_splits <- NULL
 data_splits <- NULL
+gc()
 
 starttime <- Sys.time() ## Optional, will help you assess run time
 for (i in 1:nrow(csv_mat_filejoin)) {
@@ -127,28 +128,16 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     ## Rename columns for convenience
     rename(
       Spatial_Frequency = `Spatial Frequency`,
-      Temporal_Frequency = `Temporal Frequency`
+      Temporal_Frequency = `Temporal Frequency`,
+      Cycles_Per_Pixel = `Cycles Per Pixel`
     )
-  ## Set up a `SF_cpd` column that tranlates SFs to cycles per degree
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.000668] <-
-    2^-6
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.001336] <-
-    2^-5
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.00267]  <-
-    2^-4
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.0053]   <-
-    2^-3
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.0106]   <-
-    2^-2
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.0212]   <-
-    2^-1
 
   ## The log file does not have time = 0, so set up a separate tibble to
   ## add this info in later. Some of the metadata will just be filler for now.
   initial <- tibble(
     Trial = "initialization",
-    Spatial_Frequency = csv_data_sets[[i]]$Spatial_Frequency[1],
-    SF_cpd = csv_data_sets[[i]]$SF_cpd[1],
+    Spatial_Frequency =  csv_data_sets[[i]]$Spatial_Frequency[1],
+    Cycles_Per_Pixel  =  csv_data_sets[[i]]$Cycles_Per_Pixel[1],
     Temporal_Frequency = csv_data_sets[[i]]$Temporal_Frequency[1],
     Direction  = csv_data_sets[[i]]$Direction[1],
     Time = 0.000
@@ -184,7 +173,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   ## If this results in an error, then the channel identity could be wrong, or
   ## there may have been an issue with sweep duration during the recording
   ## process
-  if(!median(round(diff(stim_change_channel[[5]][,1]),1)) == 5) {
+  if(!median(round(diff(stim_change_channel[[5]][,1]),0)) == 5) {
     warning("File ", i,": stim change channel identity uncertain")
   }
 
@@ -372,10 +361,12 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     left_join(photod_full, by = "Time_char") %>%
     select(-Time.y) %>%
     rename(Time = Time.x) %>%
+    arrange(Time) %>%
     ## Join in the spike data
     left_join(all_spike_dat, by = "Time_char") %>%
     select(-Time.y) %>%
     rename(Time = Time.x) %>%
+    arrange(Time) %>%
     filter(Time <= final_time) %>%
     ## Replace NAs with 0 in the Spike columns only
     mutate(
@@ -396,7 +387,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     mutate(
       Trial = zoo::na.locf(Trial, type = "locf"),
       Spatial_Frequency = zoo::na.locf(Spatial_Frequency, type = "locf"),
-      SF_cpd = zoo::na.locf(SF_cpd, type = "locf"),
+      Cycles_Per_Pixel  = zoo::na.locf(Cycles_Per_Pixel, type = "locf"),
       Temporal_Frequency = zoo::na.locf(Temporal_Frequency, type = "locf"),
       Direction = zoo::na.locf(Direction, type = "locf"),
       Time_csv = zoo::na.locf(Time_csv, type = "locf"),
@@ -404,7 +395,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     ) %>%
     ## Calculate velocity
     mutate(
-      Speed = Temporal_Frequency/SF_cpd,
+      Speed = round(Temporal_Frequency/Spatial_Frequency, 0),
       Log2_Speed = log2(Speed)
     )
 
@@ -412,7 +403,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   metadata_one_full <-
     first_csv %>%
     mutate(
-      Speed = Temporal_Frequency/SF_cpd,
+      Speed = round(Temporal_Frequency/Spatial_Frequency, 0),
       Log2_Speed = log2(Speed),
       Stim_end_diff = c(0, diff(Stim_end))
     )
@@ -478,7 +469,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   rm(
     first_csv, inception, initial, mat_import, first_csv_tmp,
     photod_default_channel, spikes_default_channel, photod_full,
-    all_spike_dat, all_spike_dat_tmp, first_cell, all_cells,
+    all_spike_dat, all_spike_dat_tmp, all_cells,
     metadata_one_full, joined_one_full, joined_data_sets,
     csv_data_sets, mat_data_sets
   )
@@ -505,10 +496,10 @@ for (i in 1:length(metadata_sets)) {
   metadata_combos[[i]] <-
     metadata_sets[[i]] %>%
     ## Get unique stimulus parameters
-    distinct(SF_cpd, Temporal_Frequency, Speed, Direction) %>%
+    distinct(Spatial_Frequency, Temporal_Frequency, Speed, Direction) %>%
     arrange(Direction) %>%
-    ## Sort by SF_cpd (smallest to largest)
-    arrange(desc(SF_cpd)) %>%
+    ## Sort by SF (smallest to largest)
+    arrange(desc(Spatial_Frequency)) %>%
     mutate(
       ## Set a "plot_order" which provides a running order of stimuli
       plot_order = 1:length(meta_splits[[i]]),
@@ -661,7 +652,7 @@ for (i in 1:length(meta_splits)){
               Replicate = k
             ) %>%
             ## Bring stim info to first few columns
-            select(Speed, SF_cpd, Temporal_Frequency, Direction,
+            select(Speed, Spatial_Frequency, Temporal_Frequency, Direction,
                    everything()) %>%
             ## Just in case there some hang over
             filter(Time_stand >= 0)
@@ -705,14 +696,14 @@ for (i in 1:length(meta_splits)){
               Time_stand = Time_bin_mid - min(Time_bin_mid),
               Blank_end = tmp$Stim_end[1] - min(Time_bin_mid),
               Static_end = tmp$Stim_end[2] - min(Time_bin_mid),
-              SF_cpd = m$SF_cpd[1],
+              Spatial_Frequency = m$Spatial_Frequency[1],
               Temporal_Frequency = m$Temporal_Frequency[1],
               Speed = m$Speed[1],
               Direction = m$Direction[1],
               Replicate = k
             ) %>%
             ## Bring stim info to first few columns
-            select(Speed, SF_cpd, Temporal_Frequency, Direction,
+            select(Speed, Spatial_Frequency, Temporal_Frequency, Direction,
                    everything()) %>%
             ## Just in case there some hang over
             filter(Time_stand >= 0) %>%
@@ -817,7 +808,7 @@ for (i in 1:length(all_replicate_data_reorganized)) {
 ```
 
 Re-run the above chunk of code per condition you seek to export. For me, this
-process creates 3 files: `04132022_009m_unbinned.csv`,
-`04132022_009m_binsize10.csv`, and `04132022_009m_binsize100.csv`.
+process creates 3 files: `2023-02-16_001_unbinned.csv`,
+`2023-02-16_001_binsize10.csv`, and `2023-02-16_001_binsize100.csv`.
 
 🐢

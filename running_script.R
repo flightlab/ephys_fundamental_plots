@@ -461,14 +461,20 @@ names(data_splits)   <- csv_mat_filejoin$basename #base_names
 
 ################################# preprocessing ################################
 
+## Get organized lists of stimuli that were used
+## This will ultimately be used for arranging data by stimuli in a sensible
+## order
 metadata_combos <- NULL
 for (i in 1:length(metadata_sets)) {
   metadata_combos[[i]] <-
     metadata_sets[[i]] %>%
+    ## Get unique stimulus parameters
     distinct(Spatial_Frequency, Temporal_Frequency, Speed, Direction) %>%
     arrange(Direction) %>%
+    ## Sort by SF (smallest to largest)
     arrange(desc(Spatial_Frequency)) %>%
     mutate(
+      ## Set a "plot_order" which provides a running order of stimuli
       plot_order = 1:length(meta_splits[[i]]),
       name = paste(Direction, "Deg,",  Speed, "Deg/s")
     )
@@ -749,7 +755,7 @@ unbinned_data <-
 ## determine the max number of replicates
 max_reps <- max(unbinned_data$Replicate)
 
-## Generate the ggplot
+## Generate the code for the ggplot and save it as "rasterplot"
 rasterplot <-
   unbinned_data %>%
   ## Remove any rows where spiking does not occur in the Spikes column
