@@ -11,7 +11,6 @@ CRAN. Finally, all of the packages are loaded into the environment.
 ```{r package_loading, echo=TRUE, message=FALSE, warning=FALSE}
 ## Specify the packages you'll use in the script
 packages <- c("tidyverse",
-              "readxl",
               "zoo",
               "gridExtra",
               "R.matlab",

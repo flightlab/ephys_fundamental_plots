@@ -14,8 +14,10 @@ data-import-and-preliminary-labeling
 organizing-replicates-required-and-binning-optional
 data-export
 raster-and-mean-spike-rate-plots
+data-sets
 raster-plot
 export-to-pdf
+mean-spike-rate-plots
 direction-tuning
 including-plots-1
 spatiotemporal-tuning

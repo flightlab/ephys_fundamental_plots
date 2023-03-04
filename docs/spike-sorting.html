@@ -26,7 +26,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="author" content="Vikram B. Baliga" />
 
 
-<meta name="date" content="2023-03-02" />
+<meta name="date" content="2023-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -170,10 +170,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html"><i class="fa fa-check"></i><b>6</b> Raster and mean spike rate plots</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#raster-plot"><i class="fa fa-check"></i><b>6.1</b> Raster plot</a>
+<li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#data-sets"><i class="fa fa-check"></i><b>6.1</b> Data sets</a></li>
+<li class="chapter" data-level="6.2" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#raster-plot"><i class="fa fa-check"></i><b>6.2</b> Raster plot</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#export-to-pdf"><i class="fa fa-check"></i><b>6.1.1</b> Export to PDF</a></li>
+<li class="chapter" data-level="6.2.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#export-to-pdf"><i class="fa fa-check"></i><b>6.2.1</b> Export to PDF</a></li>
 </ul></li>
+<li class="chapter" data-level="6.3" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#mean-spike-rate-plots"><i class="fa fa-check"></i><b>6.3</b> Mean spike rate plots</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="direction-tuning.html"><a href="direction-tuning.html"><i class="fa fa-check"></i><b>7</b> Direction tuning</a>
 <ul>
@@ -209,8 +211,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="spike-sorting" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">3</span> Spike sorting<a href="spike-sorting.html#spike-sorting" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>We’ll cover how to spike sort using two programs: 1) Spike2 (written by Tony
-Lapsanksy), and 2) Neuralynx (written by Eric Press)</p>
+<p>We’ll cover how to spike sort using two programs: 1) Spike2 (written
+by Tony Lapsanksy), and 2) Neuralynx (written by Eric Press)</p>
 <div id="spike2" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Spike2<a href="spike-sorting.html#spike2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Written by Tony Lapsansky, February 24, 2023</p>
@@ -222,86 +224,98 @@ Lapsanksy), and 2) Neuralynx (written by Eric Press)</p>
 <code>“C:\InvestigatorName\ephys\YEAR-MO-DA”</code></li>
 </ol></li>
 <li>Open <code>Spike2</code> and open the file</li>
-<li>Apply a digital high pass filter if needed. Note that if the data were
-collected with the high pass filter set at greater than 100 Hz (no LFP
-signal) then skip to step 4.
+<li>Apply a digital high pass filter if needed. Note that if the data
+were collected with the high pass filter set at greater than 100
+Hz (no LFP signal) then skip to step 4.
 <ol style="list-style-type: decimal">
-<li>Right click on channel and select <code>FIR Digital Filters…</code> (see Spike 2
-help → index <code>Digital Filter</code> for explanation)</li>
+<li>Right click on channel and select <code>FIR Digital Filters…</code> (see
+Spike 2 help → index <code>Digital Filter</code> for explanation)</li>
 <li>Under the pull down menu for <code>Filter</code> change from
 <code>Example low pass filter</code> to <code>Example high pass filter</code></li>
 <li>Select the <code>Show Details</code> button in the bottom right</li>
-<li>Adjust blue slider to shift the colour dots above the slider from red to
-yellow to green, but use the minimum level to achieve green. Fine
-adjustments can be made just under the slider.</li>
+<li>Adjust blue slider to shift the colour dots above the slider
+from red to yellow to green, but use the minimum level to
+achieve green. Fine adjustments can be made just under the
+slider.</li>
 <li>Hit <code>Apply</code></li>
-<li>Set <code>Destination</code> to the next available channel (often channel 4)</li>
+<li>Set <code>Destination</code> to the next available channel (often channel
+<ol start="4" style="list-style-type: decimal">
+<li></li>
+</ol></li>
 <li>Click Okay</li>
-<li>Close the filtering window. You are given the option to save the filter.
-Do not do this. It is important to set the filter each time. (?)</li>
+<li>Close the filtering window. You are given the option to save
+the filter. Do not do this. It is important to set the filter
+each time. (?)</li>
 </ol></li>
 <li>Set thresholds for spikes
 <ol style="list-style-type: decimal">
 <li>Right click on the filtered channel and select <code>New WaveMark</code></li>
-<li>Clear previous templates if any are present. To do so, select the trash
-can icon within each template.</li>
-<li>Locate the dashed vertical line, which can be found at time 0 in the
-main window. This line indicates your cursor position.</li>
-<li>Move the dashed line through the trace to observe potential spike as
-determined by the default upper and lower thresholds.</li>
-<li>Right click the upper bound marker (the upper horizontal dashed line in
-the <code>WaveMark</code> window) and select <code>move away</code></li>
-<li>Identify spikes based on the lower bound. It is usually helpful to zoom
-in on the x-axis (time) to do this. Set the lower bound so that obvious
-spikes are included and ambiguous spikes are excluded.</li>
+<li>Clear previous templates if any are present. To do so, select
+the trash can icon within each template.</li>
+<li>Locate the dashed vertical line, which can be found at time 0
+in the main window. This line indicates your cursor position.</li>
+<li>Move the dashed line through the trace to observe potential
+spike as determined by the default upper and lower thresholds.</li>
+<li>Right click the upper bound marker (the upper horizontal
+dashed line in the <code>WaveMark</code> window) and select <code>move away</code></li>
+<li>Identify spikes based on the lower bound. It is usually
+helpful to zoom in on the x-axis (time) to do this. Set the
+lower bound so that obvious spikes are included and ambiguous
+spikes are excluded.</li>
 </ol></li>
 <li>Choose template setting
 <ol style="list-style-type: decimal">
-<li>Move the cursor to a typical spike. The upper window is a base template.
-Click and hold on the upper trace and drag it to the first available
-template window.</li>
-<li>Click on the button just to the left of the trash can icon (on the top
-half, upper right of the <code>WaveMark</code> window). This is the “parameters
-dialog” button. This opens a template settings window.</li>
-<li>For the line <code>Maximum amplitude change for a match</code> enter <code>20</code>. This
-will allow a spike that fits a template to vary in maximum amplitude by
-up to 20%.</li>
-<li>For the line <code>Remove the DC offset before template matching</code>, confirm
-that the box is checked.</li>
+<li>Move the cursor to a typical spike. The upper window is a base
+template. Click and hold on the upper trace and drag it to the
+first available template window.</li>
+<li>Click on the button just to the left of the trash can icon (on
+the top half, upper right of the <code>WaveMark</code> window). This is
+the “parameters dialog” button. This opens a template settings
+window.</li>
+<li>For the line <code>Maximum amplitude change for a match</code> enter
+<code>20</code>. This will allow a spike that fits a template to vary in
+maximum amplitude by up to 20%.</li>
+<li>For the line <code>Remove the DC offset before template matching</code>,
+confirm that the box is checked.</li>
 <li>Nothing else should need to be changed. Click <code>OK</code>.</li>
 </ol></li>
 <li>Spike sorting
 <ol style="list-style-type: decimal">
-<li>Back in the <code>WaveMark</code> window, make sure that the box <code>Circular replay</code>
-is unchecked, and that the box <code>Make Templates</code> is checked.</li>
-<li>Ensure that the vertical cursor on the main window is at time zero (or
-the first spike).</li>
-<li>Hit the play button ▶️, which is called “run forward”. This will take
-several minutes.</li>
+<li>Back in the <code>WaveMark</code> window, make sure that the box
+<code>Circular replay</code> is unchecked, and that the box
+<code>Make Templates</code> is checked.</li>
+<li>Ensure that the vertical cursor on the main window is at time
+zero (or the first spike).</li>
+<li>Hit the play button ▶️, which is called “run forward”. This
+will take several minutes.</li>
 </ol></li>
 <li>Use PCA to delete and merge spike templates
 <ol style="list-style-type: decimal">
-<li>Select <code>New Channel</code> on the <code>WaveMark</code> window to place the spike data in
-the next available channel (typically, Channel 5)</li>
+<li>Select <code>New Channel</code> on the <code>WaveMark</code> window to place the
+spike data in the next available channel (typically, Channel
+<ol start="5" style="list-style-type: decimal">
+<li></li>
+</ol></li>
 <li>Close the <code>WaveMark</code> window.</li>
 <li>Right click on the sorted channel and select <code>Edit WaveMark</code></li>
-<li>Within the <code>WaveMark</code> window, go the pull down menu <code>Analyse</code> and select
-<code>Principal components</code>. Select <code>OK</code>. This opens a window of all spikes
-colored by template.</li>
-<li>Rotate around all three axes to determine if there is one, two, or more
-clusters.</li>
-<li>Identify templates that should be deleted and those that should be
-merged. Delete templates that sparse and peripheral.</li>
-<li>Delete the template(s) in the <code>WaveMark</code> window by selecting that
-template’s trash can icon.</li>
+<li>Within the <code>WaveMark</code> window, go the pull down menu <code>Analyse</code>
+and select <code>Principal components</code>. Select <code>OK</code>. This opens a
+window of all spikes colored by template.</li>
+<li>Rotate around all three axes to determine if there is one,
+two, or more clusters.</li>
+<li>Identify templates that should be deleted and those that
+should be merged. Delete templates that sparse and peripheral.</li>
+<li>Delete the template(s) in the <code>WaveMark</code> window by selecting
+that template’s trash can icon.</li>
 <li>Merge templates by dragging them into the same window</li>
 <li>Hit the <code>reclassify</code> button in the <code>WaveMark</code> window.</li>
 </ol></li>
 <li>Export the spike-sorted data
 <ol style="list-style-type: decimal">
 <li><code>File → Export As</code></li>
-<li>Select <code>.mat</code> (Matlab data)</li>
-<li>Use the same filename and location but with the .mat extension.</li>
+<li>Select <code>.mat</code> (<code>matlab</code> data)</li>
+<li>Use the same filename and location but with the <code>.mat</code>
+extension.</li>
 <li>Hit <code>Save</code></li>
 <li>Select <code>Add</code> for <code>All Channels</code></li>
 <li>Click <code>Export</code></li>
@@ -313,139 +327,145 @@ template’s trash can icon.</li>
 <h2><span class="header-section-number">3.2</span> Neuralynx<a href="spike-sorting.html#neuralynx" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Written by Eric Press, November 11, 2022</p>
 <ol style="list-style-type: decimal">
-<li><p>Spike sorting database:</p>
+<li>Spike sorting database:
 <ol style="list-style-type: decimal">
-<li>Check the column labelled <code>Sorting status</code> to find days of recording
-that are <code>cued</code> meaning they are ready to be sorted. Recordings are cued
-for spike sorting once information about the recording has been added to
-the database. This includes observations from the day’s recording,
-whether the electrode position was moved from the previous recording,
-and the stimulus condition for each recording. The recordings are stored
-at the following location and are named/organized by date and time of
-recording:<br />
+<li>Check the column labelled <code>Sorting status</code> to find days of
+recording that are <code>cued</code> meaning they are ready to be sorted.
+Recordings are cued for spike sorting once information about
+the recording has been added to the database. This includes
+observations from the day’s recording, whether the electrode
+position was moved from the previous recording, and the
+stimulus condition for each recording. The recordings are
+stored at the following location and are named/organized by
+date and time of recording:<br />
 <code>Computer/LaCie (D:)/Eric’s data/nlx_recordings</code></li>
 </ol></li>
-<li><p>Filtering the raw traces (CSCs):</p>
+<li>Filtering the raw traces (CSCs):
 <ol style="list-style-type: decimal">
-<li><p>Use the <code>NlxCSCFiltering</code> tool on any Windows machine to run a band-pass
-filter on input <code>CSC</code> files.</p></li>
-<li><p>Choose all the <code>CSC</code> files for a given recording, change the <code>PreAppend</code>
-field to <code>spfilt</code>, which stands for spike-filtered and adjust the <code>DSP</code>
-filtering fields to match the image to the right. This selects for
-frequencies in the raw traces where spikes will be found, but removes
-low frequency (LFP) and high frequency components of the traces.</p></li>
+<li>Use the <code>NlxCSCFiltering</code> tool on any Windows machine to run a
+band-pass filter on input <code>CSC</code> files.</li>
+<li>Choose all the <code>CSC</code> files for a given recording, change the
+<code>PreAppend</code> field to <code>spfilt</code>, which stands for spike-filtered
+and adjust the <code>DSP</code> filtering fields to match the image to
+the right. This selects for frequencies in the raw traces
+where spikes will be found, but removes low frequency (LFP)
+and high frequency components of the traces.
+<img src="source_images/sec3.2.1_nix_csc_filter.png" alt="Nix csc filter" /></li>
 </ol></li>
-</ol>
-<div class="figure">
-<img src="source_images/sec3.2.1_nix_csc_filter.png" alt="" />
-<p class="caption">Nix csc filter</p>
-</div>
-<ol start="3" style="list-style-type: decimal">
-<li><p>Examine the filtered traces:</p>
+<li>Examine the filtered traces:
 <ol style="list-style-type: decimal">
-<li>Take a closer look at the filtered traces (Open in <code>Neuraview</code> on any
-Windows machine) and determine which channels are likely to have
-isolatable spikes and how many distinct spikes there might be. It helps
-to keep <code>Neuraview</code> open when setting thresholds in the next step.</li>
+<li>Take a closer look at the filtered traces (Open in <code>Neuraview</code>
+on any Windows machine) and determine which channels are
+likely to have isolatable spikes and how many distinct spikes
+there might be. It helps to keep <code>Neuraview</code> open when setting
+thresholds in the next step.</li>
 </ol></li>
-<li><p>Spike detection from filtered traces:</p>
+<li>Spike detection from filtered traces:
 <ol style="list-style-type: decimal">
-<li><p>Use the <code>CSCSpikeExtractor</code> tool on any Windows machine to detect spikes
-above or below a given µV) threshold. The units displayed in the program
-will be AdBitVolts which are simply 10.92x from the µV value.</p></li>
-<li><p>Based on the filtered traces, within <code>CSCSpikeExtractor</code>, set the spike
-extraction properties (<code>Spike Extraction -&gt; Properties</code> OR <code>Ctrl+P</code>) as
-shown above. The <code>Extraction Value</code> is set to 10.92x the µV you chose by
-viewing the filtered traces.</p></li>
-<li><p>Press <code>Ctrl+S</code> to extract spikes from the selected file at the desired
-settings. The resulting file will be placed in the <code>extracted spikes</code>
-filter on the <code>Desktop</code>.</p></li>
-<li><p>Create subfolders in the recording folder for each threshold and move
-the extracted spikes at each threshold into the appropriate folder.
-These spike-detected files will be used for spike sorting in the next
-step.</p></li>
-<li><p><strong>If it helps with detecting real spike waveforms while eliminating
-noise, run recordings through spike detection at multiple threshold
-(positive or negative) such that only all putative neurons are accounted
-for a minimal noise is detected.</strong></p></li>
+<li>Use the <code>CSCSpikeExtractor</code> tool on any Windows machine to
+detect spikes above or below a given µV) threshold. The units
+displayed in the program will be AdBitVolts which are simply
+10.92x from the µV value.</li>
+<li>Based on the filtered traces, within <code>CSCSpikeExtractor</code>, set
+the spike extraction properties
+(<code>Spike Extraction -&gt; Properties</code> OR <code>Ctrl+P</code>) as shown above.
+The <code>Extraction Value</code> is set to 10.92x the µV you chose by
+viewing the filtered traces.</li>
+<li>Press <code>Ctrl+S</code> to extract spikes from the selected file at the
+desired settings. The resulting file will be placed in the
+<code>extracted spikes</code> filter on the <code>Desktop</code>.</li>
+<li>Create subfolders in the recording folder for each threshold
+and move the extracted spikes at each threshold into the
+appropriate folder. These spike-detected files will be used
+for spike sorting in the next step.</li>
+<li><strong>If it helps with detecting real spike waveforms while
+eliminating noise, run recordings through spike detection at
+multiple threshold (positive or negative) such that only all
+putative neurons are accounted for a minimal noise is
+detected.</strong>
+<img src="source_images/sec3.2.2_spike_extraction_properties.png" alt="Spike extraction properties" /></li>
 </ol></li>
-</ol>
-<div class="figure">
-<img src="source_images/sec3.2.2_spike_extraction_properties.png" alt="" />
-<p class="caption">Spike extraction
-properties</p>
-</div>
-<ol start="5" style="list-style-type: decimal">
-<li><p>Spike sorting:</p>
+<li>Spike sorting:
 <ol style="list-style-type: decimal">
-<li><p>Open the extracted spikes in <code>Spikesort3D</code> on either the Neuralynx
-machine or another Windows machine that has an active <code>SpikeSort3D</code>
-licence. You can also use <code>TeamViewer</code> to control the Neuralynx machine
-but this works much better with another Windows machine.</p></li>
-<li><p>Press OK when the feature selection window appears. If you want to
-select alternate features to display, select them from the list
-provided. Sometimes it can be helpful to use PCA1 – 3 in isolating
-neurons but often it makes things more challenging.</p></li>
-<li><p>Using the 3D Plot, examine the clustering of spikes. Follow the image
-below to aid in interacting with the 3D plot (MB = the scroll wheel
-button i.e. middle mouse button). You can change the features displayed
-on each axis with <code>Q/W</code>, <code>A/S</code>, and <code>Z/X</code> respectively. Also, <code>Ctrl+P</code>
-brings up a window that allows you to change the size and opacity of
-points on the plot (I find <code>size = 2</code>, <code>alpha = 0.5</code> works well to
-improve visual definition of the clusters). If distinct clusters are
-difficult to see, find the combination of 3 features that produces the
-most noticeable clustering or the greatest spread of points in the
-space. The features displayed in the 3D plot are shown at the top left
-of the plot (i.e. X(3) Height # # # #). Use those features for the
-next step. <img src="source_images/sec3.2.3_3d_plot_movement.png" alt="3D plot movement and interaction" /></p></li>
-<li><p>Run <code>KlustaKwik</code> (<code>Cluster → Autocluster using KlustaKwik</code>) and select
-the 3 features that generate the most clearly separable clusters on the
-3D view – often, the first 3 (<code>Peak</code>, <code>Valley</code>, <code>Energy</code>) do a decent
-job. Change the <code>MaxPossibleClusters</code> to <code>10</code> before pressing <code>Run</code>. The
-remaining settings should match the image below. <img src="source_images/sec3.2.4_klustakwik.png" alt="KlustaKwik interface" /></p></li>
-<li><p>Following calculations, use the <code>Waveform</code> window and the 3D plot to
-group the distinct clusters into what you believe are waveforms produced
-by distinct neurons. Use the number keys to highlight distinct clusters
-and <code>Ctrl+M</code> to merge clusters together. <code>Ctrl+C</code> copies the selected
-cluster and can be used to split a cluster into 2 if you believe
-portions of the cluster belong to distinct putative neurons. This step
-takes some practice. You can use <code>Ctrl+Z</code> to undo only one move.
-Otherwise, you may need to exit without saving and start again at
-step 4. Save with <code>Ctrl+S</code> often and click OK to overwrite the file.</p></li>
-<li><p>Once you are satisfied with the waveforms left, note how many there are,
-and whether it seems possible that some of the groups belong to the same
-neuron. Consider what you know about excitable membranes to make these
-decisions. Fill out the <code>Spike Sorting Database</code> with the information
-used to reach this point. This includes, the threshold(s), # of
-clusters, # of putative neurons (often 1 less than the # of clusters
-because it would be a stretch to include the smallest amplitude waveform
-as a distinct, separable neuron), and any else to note from performing
-sorting.</p></li>
-<li><p>Save each cluster to its own spike file
-(<code>File → Save Multiple Spike Files</code>)</p></li>
-<li><p>Open the separate spike files you just created, along with the original
-filtered trace in <code>Neuraview</code>. Scroll along the recording and examine if
-the sorting you performed seems believable. Do the spikes in different
-rows really seem like they’re different in the filtered trace? Do some
-spikes not seem like real spikes? If anything seems amiss, make the
-appropriate merges in <code>SpikeSort3D</code> before proceding.</p></li>
-<li><p>Export the relevant data from the sorting. Perform the following:</p>
+<li>Open the extracted spikes in <code>Spikesort3D</code> on either the
+Neuralynx machine or another Windows machine that has an
+active <code>SpikeSort3D</code> licence. You can also use <code>TeamViewer</code> to
+control the Neuralynx machine but this works much better with
+another Windows machine.</li>
+<li>Press OK when the feature selection window appears. If you
+want to select alternate features to display, select them from
+the list provided. Sometimes it can be helpful to use PCA1 –
+3 in isolating neurons but often it makes things more
+challenging.</li>
+<li>Using the 3D Plot, examine the clustering of spikes. Follow
+the image below to aid in interacting with the 3D plot (MB =
+the scroll wheel button i.e. middle mouse button). You can
+change the features displayed on each axis with <code>Q/W</code>, <code>A/S</code>,
+and <code>Z/X</code> respectively. Also, <code>Ctrl+P</code> brings up a window that
+allows you to change the size and opacity of points on the
+plot (I find <code>size = 2</code>, <code>alpha = 0.5</code> works well to improve
+visual definition of the clusters). If distinct clusters are
+difficult to see, find the combination of 3 features that
+produces the most noticeable clustering or the greatest spread
+of points in the space. The features displayed in the 3D plot
+are shown at the top left of the plot (i.e. X(3) Height # #
+# #). Use those features for the next step.
+<img src="source_images/sec3.2.3_3d_plot_movement.png" alt="3D plot movement and interaction" /></li>
+<li>Run <code>KlustaKwik</code> (<code>Cluster → Autocluster using KlustaKwik</code>)
+and select the 3 features that generate the most clearly
+separable clusters on the 3D view – often, the first 3
+(<code>Peak</code>, <code>Valley</code>, <code>Energy</code>) do a decent job. Change the
+<code>MaxPossibleClusters</code> to <code>10</code> before pressing <code>Run</code>. The
+remaining settings should match the image below.
+<img src="source_images/sec3.2.4_klustakwik.png" alt="KlustaKwik interface" /></li>
+<li>Following calculations, use the <code>Waveform</code> window and the 3D
+plot to group the distinct clusters into what you believe are
+waveforms produced by distinct neurons. Use the number keys to
+highlight distinct clusters and <code>Ctrl+M</code> to merge clusters
+together. <code>Ctrl+C</code> copies the selected cluster and can be used
+to split a cluster into 2 if you believe portions of the
+cluster belong to distinct putative neurons. This step takes
+some practice. You can use <code>Ctrl+Z</code> to undo only one move.
+Otherwise, you may need to exit without saving and start again
+at step 4. Save with <code>Ctrl+S</code> often and click OK to overwrite
+the file.</li>
+<li>Once you are satisfied with the waveforms left, note how many
+there are, and whether it seems possible that some of the
+groups belong to the same neuron. Consider what you know about
+excitable membranes to make these decisions. Fill out the
+<code>Spike Sorting Database</code> with the information used to reach
+this point. This includes, the threshold(s), # of clusters,
+# of putative neurons (often 1 less than the # of clusters
+because it would be a stretch to include the smallest
+amplitude waveform as a distinct, separable neuron), and any
+else to note from performing sorting.</li>
+<li>Save each cluster to its own spike file
+(<code>File → Save Multiple Spike Files</code>)</li>
+<li>Open the separate spike files you just created, along with the
+original filtered trace in <code>Neuraview</code>. Scroll along the
+recording and examine if the sorting you performed seems
+believable. Do the spikes in different rows really seem like
+they’re different in the filtered trace? Do some spikes not
+seem like real spikes? If anything seems amiss, make the
+appropriate merges in <code>SpikeSort3D</code> before proceding.</li>
+<li>Export the relevant data from the sorting. Perform the
+following:
 <ol style="list-style-type: decimal">
-<li><p><code>File → Save ASCII Timestamp Files</code></p></li>
-<li><p><code>File → Save Multiple Spike Files</code></p></li>
-<li><p><code>File → Save ASCII Avg Waveforms</code></p></li>
-<li><p>Also, save the file itself with <code>Ctrl+S</code></p></li>
+<li><code>File → Save ASCII Timestamp Files</code></li>
+<li><code>File → Save Multiple Spike Files</code></li>
+<li><code>File → Save ASCII Avg Waveforms</code></li>
+<li>Also, save the file itself with <code>Ctrl+S</code></li>
 </ol></li>
-<li><p>Lastly, bring up all the waveforms together on the waveform plot. Take a
-screenshot and save it to the folder where the extracted spikes (and now
-timestamps files) are stored.</p></li>
+<li>Lastly, bring up all the waveforms together on the waveform
+plot. Take a screenshot and save it to the folder where the
+extracted spikes (and now timestamps files) are stored.</li>
 </ol></li>
-<li><p>Moving sorted files to other locations:</p>
+<li>Moving sorted files to other locations:
 <ol style="list-style-type: decimal">
-<li><p>Once a chunk of recordings have been sorted, copy/paste the entire
-recording file to Eric’s orange 1TB storage drive (Lacie). Place them in
-the following folder:</p>
-<p><code>Eric's data/sorted_recordings</code></p></li>
+<li>Once a chunk of recordings have been sorted, copy/paste the
+entire recording file to Eric’s orange 1TB storage drive
+(Lacie). Place them in the following folder:
+<code>Eric's data/sorted_recordings</code></li>
 </ol></li>
 </ol>
 

@@ -56,10 +56,10 @@ base_names <- csv_mat_filejoin$basename
 
 ########################## data import and processing ##########################
 ## now work on importing
-gc()
 metadata_sets <- NULL
 meta_splits <- NULL
 data_splits <- NULL
+gc()
 
 starttime <- Sys.time() ## Optional, will help you assess run time
 for (i in 1:nrow(csv_mat_filejoin)) {
@@ -83,28 +83,16 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     ## Rename columns for convenience
     rename(
       Spatial_Frequency = `Spatial Frequency`,
-      Temporal_Frequency = `Temporal Frequency`
+      Temporal_Frequency = `Temporal Frequency`,
+      Cycles_Per_Pixel = `Cycles Per Pixel`
     )
-  ## Set up a `SF_cpd` column that tranlates SFs to cycles per degree
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.000668] <-
-    2^-6
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.001336] <-
-    2^-5
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.00267]  <-
-    2^-4
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.0053]   <-
-    2^-3
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.0106]   <-
-    2^-2
-  csv_data_sets[[i]]$SF_cpd[csv_data_sets[[i]]$Spatial_Frequency == 0.0212]   <-
-    2^-1
 
   ## The log file does not have time = 0, so set up a separate tibble to
   ## add this info in later. Some of the metadata will just be filler for now.
   initial <- tibble(
     Trial = "initialization",
-    Spatial_Frequency = csv_data_sets[[i]]$Spatial_Frequency[1],
-    SF_cpd = csv_data_sets[[i]]$SF_cpd[1],
+    Spatial_Frequency =  csv_data_sets[[i]]$Spatial_Frequency[1],
+    Cycles_Per_Pixel  =  csv_data_sets[[i]]$Cycles_Per_Pixel[1],
     Temporal_Frequency = csv_data_sets[[i]]$Temporal_Frequency[1],
     Direction  = csv_data_sets[[i]]$Direction[1],
     Time = 0.000
@@ -140,7 +128,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   ## If this results in an error, then the channel identity could be wrong, or
   ## there may have been an issue with sweep duration during the recording
   ## process
-  if(!median(round(diff(stim_change_channel[[5]][,1]),1)) == 5) {
+  if(!median(round(diff(stim_change_channel[[5]][,1]),0)) == 5) {
     warning("File ", i,": stim change channel identity uncertain")
   }
 
@@ -328,10 +316,12 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     left_join(photod_full, by = "Time_char") %>%
     select(-Time.y) %>%
     rename(Time = Time.x) %>%
+    arrange(Time) %>%
     ## Join in the spike data
     left_join(all_spike_dat, by = "Time_char") %>%
     select(-Time.y) %>%
     rename(Time = Time.x) %>%
+    arrange(Time) %>%
     filter(Time <= final_time) %>%
     ## Replace NAs with 0 in the Spike columns only
     mutate(
@@ -352,7 +342,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     mutate(
       Trial = zoo::na.locf(Trial, type = "locf"),
       Spatial_Frequency = zoo::na.locf(Spatial_Frequency, type = "locf"),
-      SF_cpd = zoo::na.locf(SF_cpd, type = "locf"),
+      Cycles_Per_Pixel  = zoo::na.locf(Cycles_Per_Pixel, type = "locf"),
       Temporal_Frequency = zoo::na.locf(Temporal_Frequency, type = "locf"),
       Direction = zoo::na.locf(Direction, type = "locf"),
       Time_csv = zoo::na.locf(Time_csv, type = "locf"),
@@ -360,7 +350,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     ) %>%
     ## Calculate velocity
     mutate(
-      Speed = Temporal_Frequency/SF_cpd,
+      Speed = round(Temporal_Frequency/Spatial_Frequency, 0),
       Log2_Speed = log2(Speed)
     )
 
@@ -368,7 +358,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   metadata_one_full <-
     first_csv %>%
     mutate(
-      Speed = Temporal_Frequency/SF_cpd,
+      Speed = round(Temporal_Frequency/Spatial_Frequency, 0),
       Log2_Speed = log2(Speed),
       Stim_end_diff = c(0, diff(Stim_end))
     )
@@ -434,7 +424,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   rm(
     first_csv, inception, initial, mat_import, first_csv_tmp,
     photod_default_channel, spikes_default_channel, photod_full,
-    all_spike_dat, all_spike_dat_tmp, first_cell, all_cells,
+    all_spike_dat, all_spike_dat_tmp, all_cells,
     metadata_one_full, joined_one_full, joined_data_sets,
     csv_data_sets, mat_data_sets
   )
@@ -475,9 +465,9 @@ metadata_combos <- NULL
 for (i in 1:length(metadata_sets)) {
   metadata_combos[[i]] <-
     metadata_sets[[i]] %>%
-    distinct(SF_cpd, Temporal_Frequency, Speed, Direction) %>%
+    distinct(Spatial_Frequency, Temporal_Frequency, Speed, Direction) %>%
     arrange(Direction) %>%
-    arrange(desc(SF_cpd)) %>%
+    arrange(desc(Spatial_Frequency)) %>%
     mutate(
       plot_order = 1:length(meta_splits[[i]]),
       name = paste(Direction, "Deg,",  Speed, "Deg/s")
@@ -489,7 +479,7 @@ names(metadata_combos) <- csv_mat_filejoin$basename #base_names
 
 ## Set bin size here
 ## Units are in ms (e.g. 10 = 10ms)
-bin_size = 10 ## 10 or 100 or 1 (1 = "unbinned")
+bin_size = 100 ## 10 or 100 or 1 (1 = "unbinned")
 
 slice_size = NULL
 slicemin = NULL
@@ -585,7 +575,7 @@ for (i in 1:length(meta_splits)){
               Replicate = k
             ) %>%
             ## Bring stim info to first few columns
-            select(Speed, SF_cpd, Temporal_Frequency, Direction,
+            select(Speed, Spatial_Frequency, Temporal_Frequency, Direction,
                    everything()) %>%
             ## Just in case there some hang over
             filter(Time_stand >= 0)
@@ -629,14 +619,14 @@ for (i in 1:length(meta_splits)){
               Time_stand = Time_bin_mid - min(Time_bin_mid),
               Blank_end = tmp$Stim_end[1] - min(Time_bin_mid),
               Static_end = tmp$Stim_end[2] - min(Time_bin_mid),
-              SF_cpd = m$SF_cpd[1],
+              Spatial_Frequency = m$Spatial_Frequency[1],
               Temporal_Frequency = m$Temporal_Frequency[1],
               Speed = m$Speed[1],
               Direction = m$Direction[1],
               Replicate = k
             ) %>%
             ## Bring stim info to first few columns
-            select(Speed, SF_cpd, Temporal_Frequency, Direction,
+            select(Speed, Spatial_Frequency, Temporal_Frequency, Direction,
                    everything()) %>%
             ## Just in case there some hang over
             filter(Time_stand >= 0) %>%
@@ -716,11 +706,48 @@ for (i in 1:length(all_replicate_data_reorganized)) {
 
 gc()
 
+################################## data sets ###################################
+
+
+## File paths and basenames of _unbinned.csv files
+unbinned_filelist <-
+  list.files("./data/", pattern = "_unbinned.csv",
+             full.names = TRUE)
+unbinned_basenames <-
+  unbinned_filelist %>%
+  str_remove("./data/") %>%
+  str_remove("_unbinned.csv")
+
+## File paths and basenames of _binsize10.csv files
+bin10_filelist <-
+  list.files("./data/", pattern = "_binsize10.csv",
+             full.names = TRUE)
+bin10_basenames <-
+  bin10_filelist %>%
+  str_remove("./data/") %>%
+  str_remove("_binsize10.csv")
+
+## File paths and basenames of _binsize100.csv files
+bin100_filelist <-
+  list.files("./data/", pattern = "_binsize100.csv",
+             full.names = TRUE)
+bin100_basenames <-
+  bin100_filelist %>%
+  str_remove("./data/") %>%
+  str_remove("_binsize100.csv")
+
+
+
 ################################# raster plot ##################################
-## read in data
+## Read in the data
+## Since there is only 1 example file, we'll simplify things by just
+## subsetting unbinned_filelist
 unbinned_data <-
-  read_csv("./data/04132022_009m_unbinned.csv") %>%
+  read_csv(unbinned_filelist[1], show_col_types = FALSE) %>%
   as_tibble()
+
+## determine the max number of replicates
+max_reps <- max(unbinned_data$Replicate)
 
 ## Generate the ggplot
 rasterplot <-
@@ -729,29 +756,32 @@ rasterplot <-
   filter(Spikes == 1) %>%
   ## Convert Trial and Speed into factors and specify their level ordering
   ## This will make it easier to get the subplots in the order we want them
-  mutate(Trial = factor(Trial, levels = c("blank", "stationary", "moving")),
-         Speed = factor(Speed, levels = c(1024, 256, 32, 4, 0.5, 0.062))) %>%
+  mutate(
+    Trial = factor(Trial,
+                   levels = c("blank", "stationary", "moving")),
+    Speed = factor(Speed,
+                   levels = c(1024, 644, 407, 256, 128, 64, 32, 16, 8, 4))) %>%
   ggplot(aes(x = Time_stand, y = Replicate)) +
   ## The next three blocks will undershade each subplot according to stimulus
   ## phase (i.e., blank, stationary, moving)
   annotate("rect",
            xmin = 0, xmax = first(unbinned_data$Blank_end),
-           ymin = 0.5, ymax = 10.5,
+           ymin = 0.5, ymax = max_reps + 0.5,
            alpha = 0.1, color = NA, fill = "red") +
   annotate("rect",
            xmin = first(unbinned_data$Blank_end),
            xmax = first(unbinned_data$Static_end),
-           ymin = 0.5, ymax = 10.5,
+           ymin = 0.5, ymax = max_reps + 0.5,
            alpha = 0.1, color = NA, fill = "darkgoldenrod1") +
   annotate("rect",
            xmin = first(unbinned_data$Static_end), xmax = 5,
-           ymin = 0.5, ymax = 10.5,
+           ymin = 0.5, ymax = max_reps + 0.5,
            alpha = 0.1, color = NA, fill = "forestgreen") +
   ## Up to 10 replicates were used, so we will force the y-axis to go to 10
   scale_y_continuous(
-    limits = c(0.5, 10.5),
+    limits = c(0.5, max_reps + 0.5),
     expand = c(0, 0),
-    breaks = c(5, 10)
+    breaks = c(max_reps/2, max_reps)
   ) +
   ## There are multiple ways to plot a spike event. Since 100% of the rows in
   ## this filtered data set are spike events, we can simply plot a symbol at
@@ -759,7 +789,7 @@ rasterplot <-
   ## choice.
   geom_point(pch = '|', size = 1.5) +
   xlab("Time (sec)") +
-  ggtitle(paste0("04132022_009m raster")) +
+  ggtitle(paste0(unbinned_basenames[1], " raster")) +
   ## Use facet_grid() to create a grid of subplots. Rows will correspond to
   ## Speeds, and columns correspond to Directions
   facet_grid(rows = vars(Speed), cols = vars(Direction)) +
@@ -774,11 +804,569 @@ pdf(
   file = "./path/to/directory/filename.pdf",
   width = 10.5,
   height = 8,
-  title = "04132022_009m raster",
+  title = "2023-02-16_001 raster",
   paper = "USr",
   bg = "white",
   pagecentre = TRUE,
   colormodel = "srgb"
 )
 plot(rasterplot)
+dev.off()
+
+########################### mean spike rate plots ##############################
+
+## Bin size = 100
+
+## Read in the data
+## Since there is only 1 example file, we'll simplify things by just
+## subsetting bin100_filelist
+bin100_data <-
+  read_csv(bin100_filelist[1], show_col_types = FALSE) %>%
+  as_tibble()
+
+## compute SEM
+dataslices_100 <-
+  bin100_data %>%
+  group_split(Direction, Speed) %>%
+  purrr::map(group_by, bin) %>%
+  purrr::map(transmute,
+             Speed = first(Speed),
+             Direction = first(Direction),
+             Time_stand = mean(Time_stand),
+             Blank_end = mean(Blank_end),
+             Static_end = mean(Static_end),
+             Mean_spike_rate = mean(Spike_rate),
+             Spike_rate_SEM = sd(Spike_rate)/sqrt(n()),
+             Mean_photod_rate = mean(Photod_mean),
+             Photod_SEM = sd(Photod_mean)/sqrt(n())
+  ) %>%
+  purrr::map(ungroup) %>%
+  bind_rows() %>%
+  mutate(across(
+    Speed,
+    factor,
+    levels = c("1024", "644", "407", "256", "128", "64", "32", "16", "8", "4")
+  ))
+
+bin100_msr_plot <-
+  dataslices_100 %>%
+  ggplot(aes(x = Time_stand,
+             y = Mean_spike_rate #Mean_photod_rate
+  )) +
+  geom_ribbon(aes(
+    ymin = Mean_spike_rate - Spike_rate_SEM,
+    ymax = Mean_spike_rate + Spike_rate_SEM
+    # ymin = Mean_photod_rate - Photod_SEM,
+    # ymax = Mean_photod_rate + Photod_SEM
+  ),
+  fill = "grey80") +
+  geom_line(linewidth = 0.05) +
+  #ylim(c(0, session_ar_ymax[i] * 1.05)) +
+  geom_vline(xintercept = 0, col = "red") +
+  geom_vline(xintercept = first(dataslices_100$Blank_end),
+             col = "darkgoldenrod1") +
+  geom_vline(xintercept = first(dataslices_100$Static_end),
+             col = "forestgreen") +
+  ggtitle(bin10_basenames[1]) +
+  facet_grid(rows = vars(Speed), cols = vars(Direction)) +
+  theme_classic()
+
+bin100_msr_plot
+
+############################### polar plots ####################################
+
+## Read in the data
+## Since there is only 1 example file, we'll simplify things by just
+## subsetting bin10_filelist
+bin10_data <-
+  read_csv(bin10_filelist[1], show_col_types = FALSE) %>%
+  as_tibble() %>%
+  mutate(across(
+    Speed,
+    factor,
+    levels = c("1024", "644", "407", "256", "128", "64", "32", "16", "8", "4")
+  ))
+
+## baselines
+baseline_df <-
+  bin10_data %>%
+  filter(Time_stand >= Blank_end + 0.5) %>% ## 0.5 sec after blank end
+  filter(Time_stand <= Static_end - 0.05)   ## 0.05 sec before static end
+
+global_base <- mean(baseline_df$Spike_rate)
+global_base_se <-
+  sd(baseline_df$Spike_rate) / sqrt(length(baseline_df$Spike_rate)#/45
+  )
+
+baseline_summary_df <-
+  baseline_df %>%
+  group_by(Speed) %>%
+  summarize(
+    baseline_summary_df = mean(Spike_rate),
+    baseline_summary_df_sem = sd(Spike_rate)/sqrt(length(Spike_rate)),
+    global_baseline = global_base,
+    global_baseline_sem = global_base_se
+  )
+
+
+#### __naive ####
+## global baseline values, full 3-sec motion period
+naive_df <-
+  bin10_data %>%
+  filter(Time_stand > Static_end) %>%
+  group_by(Speed, Direction, Replicate) %>%
+  summarize(
+    mean_spike_rate = mean(Spike_rate)
+  )
+naive_360 <-
+  naive_df %>%
+  filter(Direction == 0) %>%
+  transmute(
+    Speed = Speed,
+    Direction = 360,
+    Replicate = Replicate,
+    mean_spike_rate = mean_spike_rate)
+naive_vecsum_df <-
+  naive_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  ## NOTE: FOLLOWING THE JNP AND CB PAPERS, WE ARE SUBTRACTING BASELINE HERE AND
+  ## THEN IF ANY AVERAGED FIRING RATES ARE NEGATIVE, THEY ARE SHIFTED SO THE
+  ## LOWEST ONE IS ZERO. THE GENERATED PLOTS STILL SHOW NON-BASELINE-SUBTRACTED
+  ## FIRING RATES (AND BASELINE AS A RED RING), BUT COMPUTATION OF VECTOR SUM
+  ## AND SI HAVE BEEN BASELINE SUBTRACTED (AND THE ENTIRE CURVE IS SHIFTED
+  ## UPWARDS IF ANY PART IS NEGATIVE)
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      x = cos(Direction * pi / 180) * mean_spike_rate,
+      y = sin(Direction * pi / 180) * mean_spike_rate,
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      x = mean(x),
+      y = mean(y),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      vector_sum = (atan2(y, x) * 180 / pi) %% 360,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+naive_si_df<-
+  naive_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      a = (sin(Direction * pi / 180) * mean_spike_rate),
+      b = (cos(Direction * pi / 180) * mean_spike_rate),
+      c = mean(mean_spike_rate),
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      a = mean(a),
+      b = mean(b),
+      c = mean(c),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      si = sqrt(a ^ 2 + b ^ 2) / c,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+
+naive_data <-
+  naive_df %>%
+  bind_rows(naive_360) %>%
+  left_join(naive_vecsum_df, by = "Speed") %>%
+  left_join(naive_si_df, by = "Speed") %>%
+  drop_na(mean_spike_rate)
+naive_max_y <- max(naive_data$mean_spike_rate)
+
+naive <-
+  naive_data %>%
+  left_join(baseline_summary_df, by = "Speed") %>%
+  ggplot(aes(x = Direction, y = mean_spike_rate)) +
+  geom_ribbon(aes(
+    x = Direction,
+    ymin = global_baseline - global_baseline_sem,
+    ymax = global_baseline + global_baseline_sem
+  ),
+  fill = "red") +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  geom_point() +
+  geom_label(aes(label = round(si, 2) , x = 315, y = naive_max_y * 1.2),
+             size = 3) +
+  geom_vline(aes(xintercept = vector_sum), colour = "grey30",
+             size = 0.75) +
+  coord_polar(direction = 1, start = pi/2) +
+  scale_x_continuous(
+    breaks = c(0, 90, 180, 270),
+    expand = c(0, 0),
+    limits = c(0, 360)
+  )+
+  facet_grid(rows = vars(Speed)) +
+  ggtitle("full 3-sec motion") +
+  #theme_classic()
+  theme_minimal()
+
+
+#### __cb_ss ####
+## global baseline values, second half of motion period
+cbss_df <-
+  bin10_data %>%
+  filter(Time_stand > Static_end + 1.5) %>%
+  filter(Time_stand < 4.95) %>%
+  group_by(Speed, Direction, Replicate) %>%
+  summarize(
+    mean_spike_rate = mean(Spike_rate)
+  )
+cbss_360 <-
+  cbss_df %>%
+  filter(Direction == 0) %>%
+  transmute(
+    Speed = Speed,
+    Direction = 360,
+    Replicate = Replicate,
+    mean_spike_rate = mean_spike_rate)
+cbss_vecsum_df <-
+  cbss_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      x = cos(Direction * pi / 180) * mean_spike_rate,
+      y = sin(Direction * pi / 180) * mean_spike_rate,
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      x = mean(x),
+      y = mean(y),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      vector_sum = (atan2(y, x) * 180 / pi) %% 360,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+cbss_si_df <-
+  cbss_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      a = (sin(Direction * pi / 180) * mean_spike_rate),
+      b = (cos(Direction * pi / 180) * mean_spike_rate),
+      c = mean(mean_spike_rate),
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      a = mean(a),
+      b = mean(b),
+      c = mean(c),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      si = sqrt(a ^ 2 + b ^ 2) / c,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+
+cbss_data <-
+  cbss_df %>%
+  bind_rows(cbss_360) %>%
+  left_join(cbss_vecsum_df, by = "Speed") %>%
+  left_join(cbss_si_df, by = "Speed") %>%
+  drop_na(mean_spike_rate)
+cbss_max_y <- max(cbss_data$mean_spike_rate)
+
+
+cb_ss <-
+  cbss_data %>%
+  left_join(baseline_summary_df, by = "Speed") %>%
+  ggplot(aes(x = Direction, y = mean_spike_rate)) +
+  geom_ribbon(aes(
+    x = Direction,
+    ymin = global_baseline - global_baseline_sem,
+    ymax = global_baseline + global_baseline_sem
+  ),
+  fill = "red") +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  geom_point() +
+  geom_label(aes(label = round(si, 2) , x = 315, y = cbss_max_y * 1.2),
+             size = 3) +
+  geom_vline(aes(xintercept = vector_sum), colour = "grey30",
+             size = 0.75) +
+  coord_polar(direction = 1, start = pi/2) +
+  scale_x_continuous(
+    breaks = c(0, 90, 180, 270),
+    expand = c(0, 0),
+    limits = c(0, 360)
+  )+
+  facet_grid(rows = vars(Speed)) +
+  ggtitle("steady state motion") +
+  #theme_classic()
+  theme_minimal()
+
+#### __cb_it ####
+## global baseline values, 40-200 msec motion period
+cbit_df <-
+  bin10_data %>%
+  filter(Time_stand >= Static_end + 0.04) %>%
+  filter(Time_stand <= Static_end + 0.2) %>%
+  group_by(Speed, Direction, Replicate) %>%
+  summarize(
+    mean_spike_rate = mean(Spike_rate)
+  )
+cbit_360 <-
+  cbit_df %>%
+  filter(Direction == 0) %>%
+  transmute(
+    Speed = Speed,
+    Direction = 360,
+    Replicate = Replicate,
+    mean_spike_rate = mean_spike_rate)
+cbit_vecsum_df <-
+  cbit_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      x = cos(Direction * pi / 180) * mean_spike_rate,
+      y = sin(Direction * pi / 180) * mean_spike_rate,
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      x = mean(x),
+      y = mean(y),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      vector_sum = (atan2(y, x) * 180 / pi) %% 360,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+cbit_si_df <-
+  cbit_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      a = (sin(Direction * pi / 180) * mean_spike_rate),
+      b = (cos(Direction * pi / 180) * mean_spike_rate),
+      c = mean(mean_spike_rate),
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      a = mean(a),
+      b = mean(b),
+      c = mean(c),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      si = sqrt(a ^ 2 + b ^ 2) / c,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+
+cbit_data <-
+  cbit_df %>%
+  bind_rows(cbit_360) %>%
+  left_join(cbit_vecsum_df, by = "Speed") %>%
+  left_join(cbit_si_df, by = "Speed") %>%
+  drop_na(mean_spike_rate)
+cbit_max_y <- max(cbit_data$mean_spike_rate)
+
+cb_it <-
+  cbit_data %>%
+  left_join(baseline_summary_df, by = "Speed") %>%
+  ggplot(aes(x = Direction, y = mean_spike_rate)) +
+  geom_ribbon(aes(
+    x = Direction,
+    ymin = global_baseline - global_baseline_sem,
+    ymax = global_baseline + global_baseline_sem
+  ),
+  fill = "red") +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  geom_point() +
+  geom_label(aes(label = round(si, 2) , x = 315, y = cbit_max_y * 1.2),
+             size = 3) +
+  geom_vline(aes(xintercept = vector_sum), colour = "grey30",
+             size = 0.75) +
+  coord_polar(direction = 1, start = pi/2) +
+  scale_x_continuous(
+    breaks = c(0, 90, 180, 270),
+    expand = c(0, 0),
+    limits = c(0, 360)
+  )+
+  facet_grid(rows = vars(Speed)) +
+  ggtitle("40-200 msec motion") +
+  #theme_classic()
+  theme_minimal()
+
+#### __arb ####
+## global baseline values, 0-500 msec motion period
+arb_df <-
+  bin10_data %>%
+  filter(Time_stand >= Static_end + 0.001) %>%
+  filter(Time_stand <= Static_end + 0.500) %>%
+  group_by(Speed, Direction, Replicate) %>%
+  summarize(
+    mean_spike_rate = mean(Spike_rate)
+  )
+arb_360 <-
+  arb_df %>%
+  filter(Direction == 0) %>%
+  transmute(
+    Speed = Speed,
+    Direction = 360,
+    Replicate = Replicate,
+    mean_spike_rate = mean_spike_rate)
+arb_vecsum_df <-
+  arb_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      x = cos(Direction * pi / 180) * mean_spike_rate,
+      y = sin(Direction * pi / 180) * mean_spike_rate,
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      x = mean(x),
+      y = mean(y),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      vector_sum = (atan2(y, x) * 180 / pi) %% 360,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+arb_si_df <-
+  arb_df %>%
+  ungroup() %>%
+  drop_na(mean_spike_rate) %>%
+  group_split(Speed) %>%
+  map(group_by, Direction) %>%
+  map(summarize,
+      mean_spike_rate = mean(mean_spike_rate) - global_base,
+      Speed = first(Speed)) %>%
+  map(mutate,
+      mean_spike_rate =
+        case_when(min(mean_spike_rate) < 0 ~ mean_spike_rate + abs(min(mean_spike_rate)),
+                  TRUE ~ mean_spike_rate)) %>%
+  map(transmute,
+      a = (sin(Direction * pi / 180) * mean_spike_rate),
+      b = (cos(Direction * pi / 180) * mean_spike_rate),
+      c = mean(mean_spike_rate),
+      Speed = first(Speed)
+  ) %>%
+  map(summarise,
+      a = mean(a),
+      b = mean(b),
+      c = mean(c),
+      Speed = first(Speed)) %>%
+  map(transmute,
+      si = sqrt(a ^ 2 + b ^ 2) / c,
+      Speed = first(Speed)
+  ) %>%
+  bind_rows()
+
+arb_data <-
+  arb_df %>%
+  bind_rows(arb_360) %>%
+  left_join(arb_vecsum_df, by = "Speed") %>%
+  left_join(arb_si_df, by = "Speed") %>%
+  drop_na(mean_spike_rate)
+arb_max_y <- max(arb_data$mean_spike_rate)
+
+arb <-
+  arb_data %>%
+  left_join(baseline_summary_df, by = "Speed") %>%
+  ggplot(aes(x = Direction, y = mean_spike_rate)) +
+  geom_ribbon(aes(
+    x = Direction,
+    ymin = global_baseline - global_baseline_sem,
+    ymax = global_baseline + global_baseline_sem
+  ),
+  fill = "red") +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  geom_point() +
+  geom_label(aes(label = round(si, 2) , x = 315, y = arb_max_y * 1.2),
+             size = 3) +
+  geom_vline(aes(xintercept = vector_sum), colour = "grey30",
+             size = 0.75) +
+  coord_polar(direction = 1, start = pi/2) +
+  scale_x_continuous(
+    breaks = c(0, 90, 180, 270),
+    expand = c(0, 0),
+    limits = c(0, 360)
+  )+
+  facet_grid(rows = vars(Speed)) +
+  ggtitle("0-500 msec motion") +
+  #theme_classic()
+  theme_minimal()
+
+
+#### __polar cowplot ####
+cow_polar <-
+  plot_grid(naive, cb_it, cb_ss, arb,
+            nrow = 1)
+
+pdf(file =
+      paste0("./",
+             bin10_basenames[i],
+             "_polar_set.pdf"),
+    width = 22, height = 17,
+    pagecentre = TRUE, colormodel = "srgb")
+plot(cow_polar)
 dev.off()

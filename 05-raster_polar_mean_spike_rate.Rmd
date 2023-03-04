@@ -1,5 +1,46 @@
 # Raster and mean spike rate plots
 
+## Data sets
+
+This section will rely on some of the unbinned and binned data we exported in 
+final steps of the previous section. We'll start by loading in information
+
+```{r plotting_data_sets, message=FALSE, warning=FALSE}
+## File paths and basenames of _unbinned.csv files
+unbinned_filelist <-
+  list.files("./data/", pattern = "_unbinned.csv",
+             full.names = TRUE)
+unbinned_basenames <-
+  unbinned_filelist %>%
+  str_remove("./data/") %>%
+  str_remove("_unbinned.csv")
+
+## File paths and basenames of _binsize10.csv files
+bin10_filelist <-
+  list.files("./data/", pattern = "_binsize10.csv",
+             full.names = TRUE)
+bin10_basenames <-
+  bin10_filelist %>%
+  str_remove("./data/") %>%
+  str_remove("_binsize10.csv")
+
+## File paths and basenames of _binsize100.csv files
+bin100_filelist <-
+  list.files("./data/", pattern = "_binsize100.csv",
+             full.names = TRUE)
+bin100_basenames <-
+  bin100_filelist %>%
+  str_remove("./data/") %>%
+  str_remove("_binsize100.csv")
+```
+
+You should have something similar to the following:
+
+```{r confirm_data_paths}
+unbinned_filelist; unbinned_basenames; bin10_filelist; bin10_basenames; bin100_filelist; bin100_basenames
+```
+
+
 ## Raster plot
 
 Here is an example of a raster plot, using the wrangled data generated in the
@@ -14,7 +55,7 @@ sweep.
 ```{r raster_plot}
 ## Read in unbinned data
 unbinned_data <-
-  read_csv("./data/04132022_009m_unbinned.csv") %>%
+  read_csv("./data/04132022_009m_unbinned.csv", show_col_types = FALSE) %>%
   as_tibble()
 
 ## Generate the code for the ggplot and save it as "plot"
@@ -85,4 +126,8 @@ pdf(
 plot(rasterplot)
 dev.off()
 ```
+
+
+## Mean spike rate plots
+
 

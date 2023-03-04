@@ -26,7 +26,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="author" content="Vikram B. Baliga" />
 
 
-<meta name="date" content="2023-03-02" />
+<meta name="date" content="2023-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -170,10 +170,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html"><i class="fa fa-check"></i><b>6</b> Raster and mean spike rate plots</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#raster-plot"><i class="fa fa-check"></i><b>6.1</b> Raster plot</a>
+<li class="chapter" data-level="6.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#data-sets"><i class="fa fa-check"></i><b>6.1</b> Data sets</a></li>
+<li class="chapter" data-level="6.2" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#raster-plot"><i class="fa fa-check"></i><b>6.2</b> Raster plot</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#export-to-pdf"><i class="fa fa-check"></i><b>6.1.1</b> Export to PDF</a></li>
+<li class="chapter" data-level="6.2.1" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#export-to-pdf"><i class="fa fa-check"></i><b>6.2.1</b> Export to PDF</a></li>
 </ul></li>
+<li class="chapter" data-level="6.3" data-path="raster-and-mean-spike-rate-plots.html"><a href="raster-and-mean-spike-rate-plots.html#mean-spike-rate-plots"><i class="fa fa-check"></i><b>6.3</b> Mean spike rate plots</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="direction-tuning.html"><a href="direction-tuning.html"><i class="fa fa-check"></i><b>7</b> Direction tuning</a>
 <ul>
@@ -693,12 +695,12 @@ minutes.</p>
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-wrangling.html#cb12-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb12-2"><a href="data-wrangling.html#cb12-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime <span class="do">## Total elapsed time</span></span></code></pre></div>
-<pre><code>## Time difference of 1.810812 mins</code></pre>
+<pre><code>## Time difference of 1.728763 mins</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-wrangling.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up how R has been using RAM by running garbage collection</span></span>
 <span id="cb14-2"><a href="data-wrangling.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##             used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells   4120782 220.1   12027402  642.4  15034252  803.0
-## Vcells 107147085 817.5  460335988 3512.1 717995968 5477.9</code></pre>
+## Ncells   4118837 220.0   12026327  642.3  15032908  802.9
+## Vcells 107145364 817.5  460334402 3512.1 717891018 5477.1</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-wrangling.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Name each data set according to the basename of the file</span></span>
 <span id="cb16-2"><a href="data-wrangling.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(metadata_sets) <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
 <span id="cb16-3"><a href="data-wrangling.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(meta_splits)   <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
@@ -799,8 +801,8 @@ declared beforehand – please pay attention.</p>
 <span id="cb17-32"><a href="data-wrangling.html#cb17-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(meta_splits))</span>
 <span id="cb17-33"><a href="data-wrangling.html#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##             used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells   4120675 220.1   12027402  642.4  15034252  803.0
-## Vcells 107137895 817.4  368268791 2809.7 717995968 5477.9</code></pre>
+## Ncells   4118730 220.0   12026327  642.3  15032908  802.9
+## Vcells 107136174 817.4  368267522 2809.7 717891018 5477.1</code></pre>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="data-wrangling.html#cb19-1" aria-hidden="true" tabindex="-1"></a>starttime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb19-2"><a href="data-wrangling.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(meta_splits)){</span>
 <span id="cb19-3"><a href="data-wrangling.html#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -944,11 +946,11 @@ declared beforehand – please pay attention.</p>
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="data-wrangling.html#cb21-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb21-2"><a href="data-wrangling.html#cb21-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime</span></code></pre></div>
-<pre><code>## Time difference of 1.133233 mins</code></pre>
+<pre><code>## Time difference of 1.031371 mins</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="data-wrangling.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##             used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells   4124892 220.3   12027402  642.4  15034252  803.0
-## Vcells 109634188 836.5  294615033 2247.8 717995968 5477.9</code></pre>
+## Ncells   4122947 220.2   12026327  642.3  15032908  802.9
+## Vcells 109632467 836.5  294614018 2247.8 717891018 5477.1</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="data-wrangling.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized)) {</span>
 <span id="cb25-2"><a href="data-wrangling.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized[[i]])) {</span>
 <span id="cb25-3"><a href="data-wrangling.html#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(all_replicate_data_reorganized[[i]])[[j]] <span class="ot">&lt;-</span> name_sets[[i]][[j]]</span>
@@ -963,21 +965,21 @@ should look:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="data-wrangling.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This object contains 48 individual tibbles. Here&#39;s an example of one</span></span>
 <span id="cb28-2"><a href="data-wrangling.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="do">## pulled at random</span></span>
 <span id="cb28-3"><a href="data-wrangling.html#cb28-3" aria-hidden="true" tabindex="-1"></a>all_replicate_data_reorganized[[<span class="dv">1</span>]][<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">48</span>, <span class="at">size =</span> <span class="dv">1</span>)]</span></code></pre></div>
-<pre><code>## $`0 Deg, 4 Deg/s`
-## # A tibble: 2,505 × 17
+<pre><code>## $`270 Deg, 256 Deg/s`
+## # A tibble: 3,006 × 17
 ##    Speed SF_cpd Temporal_F…¹ Direc…²   bin Trial Time_…³ Time_…⁴ Time_…⁵ Spike…⁶
 ##    &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-##  1     4  0.125          0.5       0     1 blank    617.    617.    617.      0 
-##  2     4  0.125          0.5       0     2 blank    617.    617.    617.      0 
-##  3     4  0.125          0.5       0     3 blank    617.    617.    617.      0 
-##  4     4  0.125          0.5       0     4 blank    617.    617.    617.      0 
-##  5     4  0.125          0.5       0     5 blank    617.    617.    617.      0 
-##  6     4  0.125          0.5       0     6 blank    617.    617.    617.      0 
-##  7     4  0.125          0.5       0     7 blank    617.    617.    617.      0 
-##  8     4  0.125          0.5       0     8 blank    617.    617.    617.    222.
-##  9     4  0.125          0.5       0     9 blank    617.    617.    617.    111.
-## 10     4  0.125          0.5       0    10 blank    617.    617.    617.      0 
-## # … with 2,495 more rows, 7 more variables: Photod_mean &lt;dbl&gt;, Spikes_0 &lt;dbl&gt;,
+##  1   256 0.0312            8     270     1 blank    15.2    15.2    15.2      0 
+##  2   256 0.0312            8     270     2 blank    15.2    15.2    15.2      0 
+##  3   256 0.0312            8     270     3 blank    15.2    15.2    15.2      0 
+##  4   256 0.0312            8     270     4 blank    15.2    15.2    15.2      0 
+##  5   256 0.0312            8     270     5 blank    15.2    15.2    15.2      0 
+##  6   256 0.0312            8     270     6 blank    15.2    15.2    15.2      0 
+##  7   256 0.0312            8     270     7 blank    15.2    15.2    15.2    111.
+##  8   256 0.0312            8     270     8 blank    15.2    15.2    15.2    222.
+##  9   256 0.0312            8     270     9 blank    15.2    15.2    15.3      0 
+## 10   256 0.0312            8     270    10 blank    15.3    15.3    15.3      0 
+## # … with 2,996 more rows, 7 more variables: Photod_mean &lt;dbl&gt;, Spikes_0 &lt;dbl&gt;,
 ## #   Spikes_2 &lt;dbl&gt;, Time_stand &lt;dbl&gt;, Blank_end &lt;dbl&gt;, Static_end &lt;dbl&gt;,
 ## #   Replicate &lt;int&gt;, and abbreviated variable names ¹​Temporal_Frequency,
 ## #   ²​Direction, ³​Time_bin_mid, ⁴​Time_bin_begin, ⁵​Time_bin_end, ⁶​Spike_rate</code></pre>
