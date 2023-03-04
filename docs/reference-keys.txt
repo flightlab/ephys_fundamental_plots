@@ -24,3 +24,10 @@ spatiotemporal-tuning
 including-plots-2
 histological-verification
 including-plots-3
+cover-image-path-to-the-social-sharing-image-like-imagescover.jpg
+spike2-spike2_banner
+spike2_banner
+file-naming-conventions
+file-naming-convention
+spike2-spike2
+spike-sorting-with-spike2

@@ -1,98 +1,141 @@
 # Spike sorting
 
-We'll cover how to spike sort using two programs: 1) Spike2 (written
-by Tony Lapsanksy), and 2) Neuralynx (written by Eric Press)
+We'll cover how to spike sort using two programs: 1) [Spike2](https://ced.co.uk/products/spkovin) (written
+by Tony Lapsansky) and 2) [Neuralynx](https://neuralynx.com/) (written by Eric Press).
 
-## Spike2
+The function of spike sorting is to isolate action potentials from the background voltage signal. These methods use the shape of the waveform to detect and distinguish the spiking activity of each neuron recorded by an electrode. 
+
+
+## Spike2 
 
 Written by Tony Lapsansky, February 24, 2023
 
-1.  Save the Spike2 file
-    1.  Use the name structure `YEARMODA_sequence_investigator`
-    2.  Save data in the corresponding directory
-        `“C:\InvestigatorName\ephys\YEAR-MO-DA”`
-2.  Open `Spike2` and open the file
-3.  Apply a digital high pass filter if needed. Note that if the data
-    were collected with the high pass filter set at greater than 100
-    Hz (no LFP signal) then skip to step 4.
-    1.  Right click on channel and select `FIR Digital Filters…` (see
-        Spike 2 help → index `Digital Filter` for explanation)
-    2.  Under the pull down menu for `Filter` change from
-        `Example low pass filter` to `Example high pass filter`
-    3.  Select the `Show Details` button in the bottom right
-    4.  Adjust blue slider to shift the colour dots above the slider
-        from red to yellow to green, but use the minimum level to
-        achieve green. Fine adjustments can be made just under the
-        slider.
-    5.  Hit `Apply`
-    6.  Set `Destination` to the next available channel (often channel
-        4)
-    7.  Click Okay
-    8.  Close the filtering window. You are given the option to save
-        the filter. Do not do this. It is important to set the filter
-        each time. (?)
-4.  Set thresholds for spikes
-    1.  Right click on the filtered channel and select `New WaveMark`
-    2.  Clear previous templates if any are present. To do so, select
-        the trash can icon within each template.
-    3.  Locate the dashed vertical line, which can be found at time 0
-        in the main window. This line indicates your cursor position.
-    4.  Move the dashed line through the trace to observe potential
-        spike as determined by the default upper and lower thresholds.
-    5.  Right click the upper bound marker (the upper horizontal
-        dashed line in the `WaveMark` window) and select `move away`
-    6.  Identify spikes based on the lower bound. It is usually
-        helpful to zoom in on the x-axis (time) to do this. Set the
-        lower bound so that obvious spikes are included and ambiguous
-        spikes are excluded.
-5.  Choose template setting
-    1.  Move the cursor to a typical spike. The upper window is a base
-        template. Click and hold on the upper trace and drag it to the
-        first available template window.
-    2.  Click on the button just to the left of the trash can icon (on
-        the top half, upper right of the `WaveMark` window). This is
-        the "parameters dialog" button. This opens a template settings
-        window.
-    3.  For the line `Maximum amplitude change for a match` enter
-        `20`. This will allow a spike that fits a template to vary in
-        maximum amplitude by up to 20%.
-    4.  For the line `Remove the DC offset before template matching`,
-        confirm that the box is checked.
-    5.  Nothing else should need to be changed. Click `OK`.
-6.  Spike sorting
-    1.  Back in the `WaveMark` window, make sure that the box
-        `Circular replay` is unchecked, and that the box
-        `Make Templates` is checked.
-    2.  Ensure that the vertical cursor on the main window is at time
-        zero (or the first spike).
-    3.  Hit the play button ▶️, which is called "run forward". This
-        will take several minutes.
-7.  Use PCA to delete and merge spike templates
-    1.  Select `New Channel` on the `WaveMark` window to place the
-        spike data in the next available channel (typically, Channel
-        5)
-    2.  Close the `WaveMark` window.
-    3.  Right click on the sorted channel and select `Edit WaveMark`
-    4.  Within the `WaveMark` window, go the pull down menu `Analyse`
+These instructions assume that you have been given a Spike2 recording file (extension `.smrx`) and asked to spike sort.
+
+Spike2 includes a detailed description of the program, accessible by clicking 
+`Help` → `Index`
+
+![Spike2](source_images/sec3.1.1_spike2_banner.png)
+
+### File naming conventions: 
+
+  * Use the name structure `YEARMODA_sequence_investigator`
+
+  * Save data in the corresponding directory
+    `“C:\InvestigatorName\ephys\YEAR-MO-DA”`
+    
+### Spike sorting with Spike2
+
+1.  **Open the main `Spike2` file** for the recording. This file should have the
+extension `.smrx`. 
+2. **Apply a digital high pass filter**, if needed. Note: if the
+data were collected with the high pass filter set at greater than 100 Hz (no LFP
+signal) then proceed to step 3.
+    *  Right click on the raw data channel (typically Ch1) and select `FIR
+    Digital Filters…`. We want to use an FIR filter rather than an IIR filter as
+    the latter can introduce a variable time lag in the resulting data (see
+    Spike 2 `Help` → `Index` → `Digital Filter` for full explanation).
+    *  Under the pull down menu for `Filter`, change the filter from
+    `Example low pass filter` to `Example high pass filter`.
+    *  Select the `Show Details` button in the bottom right.
+    *  Adjust blue slider change the filter length. Shift the slider until 
+    the coloured dots above the slider from red to yellow to green. This removes
+    wobbles in the data. Use the minimum level (~1019) to achieve green. 
+    Fine adjustments can be made just under the slider.
+    ![FIR Filtering](source_images/sec3.1.1_FIR_filtering.png)
+    *  Hit `Apply`
+    *  Set `Destination` to the next available channel (typically Channel 4)
+    *  Click `Okay`
+    *  Close the filtering window. You are given the option to save
+    the filter. This is unnecessary.
+3.  **Setting the threshold for spike identification**
+    *  Right click on the filtered channel and select `New WaveMark`
+    *  Clear previous templates if any are present. To do so, select
+        the trash can icon within each template. These may be present 
+        from a previous session. 
+    *  Locate your cursor position, indicated by the vertical dashed 
+        line in the main window (typically found at time 0)
+    *  Slide the dashed line horizontally through the trace to observe potential
+        spikes as determined by the default upper and lower thresholds.
+    *  Right click the upper bound marker (the upper horizontal
+        dashed line in the `WaveMark` window) and select `Move Away`. We will
+        rely on the lower bound to identify spikes for sorting, as the activity
+        above baseline is typically closer in magnitude to the background.
+    *  Slide the dashed line horizontally through the trace to observe potential
+        spikes as determined by the lower threshold alone. 
+    * Adjust the lower threshold to catch spikes of interest. This threshold 
+        will vary based based on the distance between the electrode and the 
+        neuron, the quality of the isolate, and the level of background noise. 
+        Values between 50 mV and 200 mV are typical.Set the lower bound so that 
+        spikes of interest are included and ambiguous spikes are excluded.
+4.  **Designing the spike template**
+    *  Move the cursor to a characteristic spike. In the upper window, you will
+        see the provisional template. Click and hold on the trace in the upper 
+        window and drag it to the first available spot in the lower, template window.
+    *  To set parameters for spike sorting, click on the button just to the left 
+        of the trash can icon (on the top half, upper right of the `WaveMark` 
+        window). This is the "parameters dialog" button. This opens a template 
+        settings window.
+    *  For the line `Maximum amplitude change for a match` enter a value between 
+        `10` and `20`. This will allow a spike that fits a template to vary in
+        maximum amplitude by up to 10-20%.
+    *  For the line `Remove the DC offset before template matching`,
+        confirm that the box is checked. This means that Spike2 will account for
+        abrupt shifts in the signal baseline before template matching. This is a
+        stop-gap for any issues with the digital high pass filter.
+    *  Click `OK`.
+    ![Spike template design](source_images/sec3.1.1_spike_template.png)
+5.  **Spike sorting**
+    *  Back in the `WaveMark` window, make sure that the box
+        `Circular replay` is **unchecked**. If checked, spike sorting will loop
+        indefinitely.
+    *  Ensure that the vertical cursor on the main window is at time
+        zero (or the first spike) so that no spikes are missed.
+    *  Back in the `WaveMark` window, make sure that the box
+        `Make templates` is **checked**. If unchecked, only spikes corresponding 
+        to the provisional template will be identified. We want to let spike2
+        help us to identify potential multi-unit activity.
+    *  Hit the play button ▶️, which is called "run forward". Spike sorting will
+        proceed for several minutes. Each identified spike will appear briefly
+        in the `WaveMark` window and will be assigned to a template.
+    ![Spike sorting](source_images/sec3.1.1_spike_sorting.png)
+*In this image, I have selected options for `Overdraw` and `Show template limits`*
+
+6.  **Merge, delete, and save templates**
+    *   After spike sorting has completed, select `New Channel` on the `WaveMark`              window to place the spike sorted data in the next available channel 
+        (typically, Channel 5)
+    *  Close the existing `WaveMark` window.
+    *  Right click on the **spike sorted channel** and select `Edit WaveMark`. 
+    *  Within the `WaveMark` window, go the pull down menu `Analyse`
         and select `Principal components`. Select `OK`. This opens a
-        window of all spikes colored by template.
-    5.  Rotate around all three axes to determine if there is one,
-        two, or more clusters.
-    6.  Identify templates that should be deleted and those that
-        should be merged. Delete templates that sparse and peripheral.
-    7.  Delete the template(s) in the `WaveMark` window by selecting
+        window containing a principal component analysis of all spikes 
+        colored by their assigned template.
+    *  Rotate around all three axes to determine if there is one,
+        two, or more clusters. In theory, each cluster corresponds to a single 
+        neuron. Often, spikes are categorized into multiple templates, but 
+        realistically correspond to the activity of a single neuron.
+    *  Identify templates that should be deleted and those that
+        should be merged. We will delete spikes corresponding to templates that 
+        are sparse and peripheral.
+    *  Delete the template(s) in the `WaveMark` window by selecting
         that template's trash can icon.
-    8.  Merge templates by dragging them into the same window
-    9.  Hit the `reclassify` button in the `WaveMark` window.
-8.  Export the spike-sorted data
-    1.  `File → Export As`
-    2.  Select `.mat` (`matlab` data)
-    3.  Use the same filename and location but with the `.mat`
+    *  Merge templates by dragging them into the same window
+    *  Hit the `reclassify` button in the `WaveMark` window to commit these
+       changes to the data in the main window.
+    ![Spike inspecting](source_images/sec3.1.1_PCA.png)
+*In this example, we have good evidence from the PCA to merge these five templates.*
+    
+7.  **Export the spike-sorted data**
+    *  `File → Export As`
+    *  Select `.mat` (`matlab` data)
+    *  Use the same filename and location but with the `.mat`
         extension.
-    4.  Hit `Save`
-    5.  Select `Add` for `All Channels`
-    6.  Click `Export`
-    7.  Click `OK` (this will take several minutes)
+    *  Hit `Save`
+    *  Select `Add` for `All Channels`
+    *  Click `Export`
+    *  Click `OK` (this will take several minutes)
+    
+*Note: May need to select an earlier MATLAB file convention to work with R.* 
 
 ## Neuralynx
 

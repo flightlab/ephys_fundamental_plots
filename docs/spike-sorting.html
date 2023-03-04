@@ -26,7 +26,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="author" content="Vikram B. Baliga" />
 
 
-<meta name="date" content="2023-03-03" />
+<meta name="date" content="2023-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -139,7 +139,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Fundamental plots for electrophysiological data</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> cover-image: path to the social sharing image like images/cover.jpg</a>
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i>Citation</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
@@ -151,7 +151,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="spike-sorting.html"><a href="spike-sorting.html"><i class="fa fa-check"></i><b>3</b> Spike sorting</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="spike-sorting.html"><a href="spike-sorting.html#spike2"><i class="fa fa-check"></i><b>3.1</b> Spike2</a></li>
+<li class="chapter" data-level="3.1" data-path="spike-sorting.html"><a href="spike-sorting.html#spike2"><i class="fa fa-check"></i><b>3.1</b> Spike2</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="spike-sorting.html"><a href="spike-sorting.html#file-naming-conventions"><i class="fa fa-check"></i><b>3.1.1</b> File naming conventions:</a></li>
+<li class="chapter" data-level="3.1.2" data-path="spike-sorting.html"><a href="spike-sorting.html#spike-sorting-with-spike2"><i class="fa fa-check"></i><b>3.1.2</b> Spike sorting with Spike2</a></li>
+</ul></li>
 <li class="chapter" data-level="3.2" data-path="spike-sorting.html"><a href="spike-sorting.html#neuralynx"><i class="fa fa-check"></i><b>3.2</b> Neuralynx</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html"><i class="fa fa-check"></i><b>4</b> Raw data and spike sorted traces</a>
@@ -211,107 +215,138 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="spike-sorting" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">3</span> Spike sorting<a href="spike-sorting.html#spike-sorting" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>We’ll cover how to spike sort using two programs: 1) Spike2 (written
-by Tony Lapsanksy), and 2) Neuralynx (written by Eric Press)</p>
+<p>We’ll cover how to spike sort using two programs: 1) <a href="https://ced.co.uk/products/spkovin">Spike2</a> (written
+by Tony Lapsansky) and 2) <a href="https://neuralynx.com/">Neuralynx</a> (written by Eric Press).</p>
+<p>The function of spike sorting is to isolate action potentials from the background voltage signal. These methods use the shape of the waveform to detect and distinguish the spiking activity of each neuron recorded by an electrode.</p>
 <div id="spike2" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Spike2<a href="spike-sorting.html#spike2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Written by Tony Lapsansky, February 24, 2023</p>
+<p>These instructions assume that you have been given a Spike2 recording file (extension <code>.smrx</code>) and asked to spike sort.</p>
+<p>Spike2 includes a detailed description of the program, accessible by clicking
+<code>Help</code> → <code>Index</code></p>
+<div class="figure">
+<img src="source_images/sec3.1.1_spike2_banner.png" alt="" />
+<p class="caption">Spike2</p>
+</div>
+<div id="file-naming-conventions" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> File naming conventions:<a href="spike-sorting.html#file-naming-conventions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><p>Use the name structure <code>YEARMODA_sequence_investigator</code></p></li>
+<li><p>Save data in the corresponding directory
+<code>“C:\InvestigatorName\ephys\YEAR-MO-DA”</code></p></li>
+</ul>
+</div>
+<div id="spike-sorting-with-spike2" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Spike sorting with Spike2<a href="spike-sorting.html#spike-sorting-with-spike2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
-<li>Save the Spike2 file
-<ol style="list-style-type: decimal">
-<li>Use the name structure <code>YEARMODA_sequence_investigator</code></li>
-<li>Save data in the corresponding directory
-<code>“C:\InvestigatorName\ephys\YEAR-MO-DA”</code></li>
-</ol></li>
-<li>Open <code>Spike2</code> and open the file</li>
-<li>Apply a digital high pass filter if needed. Note that if the data
-were collected with the high pass filter set at greater than 100
-Hz (no LFP signal) then skip to step 4.
-<ol style="list-style-type: decimal">
-<li>Right click on channel and select <code>FIR Digital Filters…</code> (see
-Spike 2 help → index <code>Digital Filter</code> for explanation)</li>
-<li>Under the pull down menu for <code>Filter</code> change from
-<code>Example low pass filter</code> to <code>Example high pass filter</code></li>
-<li>Select the <code>Show Details</code> button in the bottom right</li>
-<li>Adjust blue slider to shift the colour dots above the slider
-from red to yellow to green, but use the minimum level to
-achieve green. Fine adjustments can be made just under the
-slider.</li>
+<li><strong>Open the main <code>Spike2</code> file</strong> for the recording. This file should have the
+extension <code>.smrx</code>.</li>
+<li><strong>Apply a digital high pass filter</strong>, if needed. Note: if the
+data were collected with the high pass filter set at greater than 100 Hz (no LFP
+signal) then proceed to step 3.
+<ul>
+<li>Right click on the raw data channel (typically Ch1) and select <code>FIR  Digital Filters…</code>. We want to use an FIR filter rather than an IIR filter as
+the latter can introduce a variable time lag in the resulting data (see
+Spike 2 <code>Help</code> → <code>Index</code> → <code>Digital Filter</code> for full explanation).</li>
+<li>Under the pull down menu for <code>Filter</code>, change the filter from
+<code>Example low pass filter</code> to <code>Example high pass filter</code>.</li>
+<li>Select the <code>Show Details</code> button in the bottom right.</li>
+<li>Adjust blue slider change the filter length. Shift the slider until
+the coloured dots above the slider from red to yellow to green. This removes
+wobbles in the data. Use the minimum level (~1019) to achieve green.
+Fine adjustments can be made just under the slider.
+<img src="source_images/sec3.1.1_FIR_filtering.png" alt="FIR Filtering" /></li>
 <li>Hit <code>Apply</code></li>
-<li>Set <code>Destination</code> to the next available channel (often channel
-<ol start="4" style="list-style-type: decimal">
-<li></li>
-</ol></li>
-<li>Click Okay</li>
+<li>Set <code>Destination</code> to the next available channel (typically Channel 4)</li>
+<li>Click <code>Okay</code></li>
 <li>Close the filtering window. You are given the option to save
-the filter. Do not do this. It is important to set the filter
-each time. (?)</li>
-</ol></li>
-<li>Set thresholds for spikes
-<ol style="list-style-type: decimal">
+the filter. This is unnecessary.</li>
+</ul></li>
+<li><strong>Setting the threshold for spike identification</strong>
+<ul>
 <li>Right click on the filtered channel and select <code>New WaveMark</code></li>
 <li>Clear previous templates if any are present. To do so, select
-the trash can icon within each template.</li>
-<li>Locate the dashed vertical line, which can be found at time 0
-in the main window. This line indicates your cursor position.</li>
-<li>Move the dashed line through the trace to observe potential
-spike as determined by the default upper and lower thresholds.</li>
+the trash can icon within each template. These may be present
+from a previous session.</li>
+<li>Locate your cursor position, indicated by the vertical dashed
+line in the main window (typically found at time 0)</li>
+<li>Slide the dashed line horizontally through the trace to observe potential
+spikes as determined by the default upper and lower thresholds.</li>
 <li>Right click the upper bound marker (the upper horizontal
-dashed line in the <code>WaveMark</code> window) and select <code>move away</code></li>
-<li>Identify spikes based on the lower bound. It is usually
-helpful to zoom in on the x-axis (time) to do this. Set the
-lower bound so that obvious spikes are included and ambiguous
-spikes are excluded.</li>
-</ol></li>
-<li>Choose template setting
-<ol style="list-style-type: decimal">
-<li>Move the cursor to a typical spike. The upper window is a base
-template. Click and hold on the upper trace and drag it to the
-first available template window.</li>
-<li>Click on the button just to the left of the trash can icon (on
-the top half, upper right of the <code>WaveMark</code> window). This is
-the “parameters dialog” button. This opens a template settings
-window.</li>
-<li>For the line <code>Maximum amplitude change for a match</code> enter
-<code>20</code>. This will allow a spike that fits a template to vary in
-maximum amplitude by up to 20%.</li>
+dashed line in the <code>WaveMark</code> window) and select <code>Move Away</code>. We will
+rely on the lower bound to identify spikes for sorting, as the activity
+above baseline is typically closer in magnitude to the background.</li>
+<li>Slide the dashed line horizontally through the trace to observe potential
+spikes as determined by the lower threshold alone.</li>
+<li>Adjust the lower threshold to catch spikes of interest. This threshold
+will vary based based on the distance between the electrode and the
+neuron, the quality of the isolate, and the level of background noise.
+Values between 50 mV and 200 mV are typical.Set the lower bound so that
+spikes of interest are included and ambiguous spikes are excluded.</li>
+</ul></li>
+<li><strong>Designing the spike template</strong>
+<ul>
+<li>Move the cursor to a characteristic spike. In the upper window, you will
+see the provisional template. Click and hold on the trace in the upper
+window and drag it to the first available spot in the lower, template window.</li>
+<li>To set parameters for spike sorting, click on the button just to the left
+of the trash can icon (on the top half, upper right of the <code>WaveMark</code>
+window). This is the “parameters dialog” button. This opens a template
+settings window.</li>
+<li>For the line <code>Maximum amplitude change for a match</code> enter a value between
+<code>10</code> and <code>20</code>. This will allow a spike that fits a template to vary in
+maximum amplitude by up to 10-20%.</li>
 <li>For the line <code>Remove the DC offset before template matching</code>,
-confirm that the box is checked.</li>
-<li>Nothing else should need to be changed. Click <code>OK</code>.</li>
-</ol></li>
-<li>Spike sorting
-<ol style="list-style-type: decimal">
+confirm that the box is checked. This means that Spike2 will account for
+abrupt shifts in the signal baseline before template matching. This is a
+stop-gap for any issues with the digital high pass filter.</li>
+<li>Click <code>OK</code>.
+<img src="source_images/sec3.1.1_spike_template.png" alt="Spike template design" /></li>
+</ul></li>
+<li><strong>Spike sorting</strong>
+<ul>
 <li>Back in the <code>WaveMark</code> window, make sure that the box
-<code>Circular replay</code> is unchecked, and that the box
-<code>Make Templates</code> is checked.</li>
+<code>Circular replay</code> is <strong>unchecked</strong>. If checked, spike sorting will loop
+indefinitely.</li>
 <li>Ensure that the vertical cursor on the main window is at time
-zero (or the first spike).</li>
-<li>Hit the play button ▶️, which is called “run forward”. This
-will take several minutes.</li>
-</ol></li>
-<li>Use PCA to delete and merge spike templates
-<ol style="list-style-type: decimal">
-<li>Select <code>New Channel</code> on the <code>WaveMark</code> window to place the
-spike data in the next available channel (typically, Channel
-<ol start="5" style="list-style-type: decimal">
-<li></li>
-</ol></li>
-<li>Close the <code>WaveMark</code> window.</li>
-<li>Right click on the sorted channel and select <code>Edit WaveMark</code></li>
+zero (or the first spike) so that no spikes are missed.</li>
+<li>Back in the <code>WaveMark</code> window, make sure that the box
+<code>Make templates</code> is <strong>checked</strong>. If unchecked, only spikes corresponding
+to the provisional template will be identified. We want to let spike2
+help us to identify potential multi-unit activity.</li>
+<li>Hit the play button ▶️, which is called “run forward”. Spike sorting will
+proceed for several minutes. Each identified spike will appear briefly
+in the <code>WaveMark</code> window and will be assigned to a template.
+<img src="source_images/sec3.1.1_spike_sorting.png" alt="Spike sorting" />
+<em>In this image, I have selected options for <code>Overdraw</code> and <code>Show template limits</code></em></li>
+</ul></li>
+<li><strong>Merge, delete, and save templates</strong>
+<ul>
+<li>After spike sorting has completed, select <code>New Channel</code> on the <code>WaveMark</code> window to place the spike sorted data in the next available channel
+(typically, Channel 5)</li>
+<li>Close the existing <code>WaveMark</code> window.</li>
+<li>Right click on the <strong>spike sorted channel</strong> and select <code>Edit WaveMark</code>.</li>
 <li>Within the <code>WaveMark</code> window, go the pull down menu <code>Analyse</code>
 and select <code>Principal components</code>. Select <code>OK</code>. This opens a
-window of all spikes colored by template.</li>
+window containing a principal component analysis of all spikes
+colored by their assigned template.</li>
 <li>Rotate around all three axes to determine if there is one,
-two, or more clusters.</li>
+two, or more clusters. In theory, each cluster corresponds to a single
+neuron. Often, spikes are categorized into multiple templates, but
+realistically correspond to the activity of a single neuron.</li>
 <li>Identify templates that should be deleted and those that
-should be merged. Delete templates that sparse and peripheral.</li>
+should be merged. We will delete spikes corresponding to templates that
+are sparse and peripheral.</li>
 <li>Delete the template(s) in the <code>WaveMark</code> window by selecting
 that template’s trash can icon.</li>
 <li>Merge templates by dragging them into the same window</li>
-<li>Hit the <code>reclassify</code> button in the <code>WaveMark</code> window.</li>
-</ol></li>
-<li>Export the spike-sorted data
-<ol style="list-style-type: decimal">
+<li>Hit the <code>reclassify</code> button in the <code>WaveMark</code> window to commit these
+changes to the data in the main window.
+<img src="source_images/sec3.1.1_PCA.png" alt="Spike inspecting" />
+<em>In this example, we have good evidence from the PCA to merge these five templates.</em></li>
+</ul></li>
+<li><strong>Export the spike-sorted data</strong>
+<ul>
 <li><code>File → Export As</code></li>
 <li>Select <code>.mat</code> (<code>matlab</code> data)</li>
 <li>Use the same filename and location but with the <code>.mat</code>
@@ -320,8 +355,10 @@ extension.</li>
 <li>Select <code>Add</code> for <code>All Channels</code></li>
 <li>Click <code>Export</code></li>
 <li>Click <code>OK</code> (this will take several minutes)</li>
-</ol></li>
+</ul></li>
 </ol>
+<p><em>Note: May need to select an earlier MATLAB file convention to work with R.</em></p>
+</div>
 </div>
 <div id="neuralynx" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Neuralynx<a href="spike-sorting.html#neuralynx" class="anchor-section" aria-label="Anchor link to header"></a></h2>
