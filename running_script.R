@@ -1,4 +1,5 @@
-############################### package loading ################################
+#### 2.1 R packages & versioning ####
+
 ## Specify the packages you'll use in the script
 packages <- c("tidyverse",
               "zoo",
@@ -23,39 +24,55 @@ package.check <- lapply(packages,
                         }
 )
 
-#### %not_in% ####
+
+#### 2.2 %not_in% ####
 `%not_in%` <- Negate(`%in%`)
 
-############################### metadata import ################################
-## list all files
+
+#### 5.1.1 Identify files to import ####
+
+## List all files of each file type
 csv_files <-
   list.files("./data", pattern = ".csv",
              full.names = TRUE)
 mat_files <-
   list.files("./data", pattern = ".mat",
              full.names = TRUE)
+
+## Generate metadata tibbles for each file type
 csv_file_info <-
   tibble(
     csv_files = csv_files,
+    ## Extract the basename by removing the file extension
     basename =  basename(csv_files) %>% str_remove(".csv"),
+    ## NOTE: PLEASE ADJUST THE FOLLOWING LINE TO BE ABLE TO EXCTRACT OUT THE
+    ## DATE BASED ON YOUR NAMING CONVENTION
     basedate =  basename(csv_files) %>% str_sub(start = 1, end = 12)
   )
 mat_file_info <-
   tibble(
     mat_files = mat_files,
+    ## Extract the basename by removing the file extension
     basename =  basename(mat_files) %>% str_remove(".mat"),
+    ## NOTE: AGAIN, PLEASE ADJUST THE FOLLOWING LINE TO BE ABLE TO EXCTRACT OUT
+    ## THE DATE BASED ON YOUR NAMING CONVENTION
     basedate =  basename(mat_files) %>% str_sub(start = 1, end = 12)
   )
 
-## now find which files have both CSVs and MATs
+## Matchmake between .MAT data and .CSV log files
 csv_mat_filejoin <-
-  inner_join(csv_file_info, mat_file_info, by = "basename")
+  inner_join(csv_file_info, mat_file_info, by = "basename") %>%
+  ## OPTIONAL STEP: remove any rows where either the .MAT or .CSV is missing
+  drop_na()
 
+## Store a vector of basenames in the environment. This will become useful later
 base_names <- csv_mat_filejoin$basename
 
 
-########################## data import and processing ##########################
-## now work on importing
+#### 5.1.2 Data import and preliminary labeling ####
+
+## Set up empty vectors that will collect sets of replicates that we will be
+## splitting up
 metadata_sets <- NULL
 meta_splits <- NULL
 data_splits <- NULL
@@ -459,7 +476,6 @@ names(data_splits)   <- csv_mat_filejoin$basename #base_names
 #   mutate(Time_char = as.character(Time)) %>%
 #   filter(Time <= final_time)
 
-################################# preprocessing ################################
 
 ## Get organized lists of stimuli that were used
 ## This will ultimately be used for arranging data by stimuli in a sensible
@@ -481,6 +497,8 @@ for (i in 1:length(metadata_sets)) {
 }
 names(metadata_combos) <- csv_mat_filejoin$basename #base_names
 
+
+#### 5.2 Organizing replicates (required) and binning (optional) ####
 #### __SET BIN SIZE HERE ####
 
 ## Set bin size here
@@ -684,7 +702,9 @@ for (i in 1:length(all_replicate_data_reorganized)) {
   }
 }
 
-################################### export csv #################################
+
+#### 5.3 Data export ####
+
 ## Export a csv for each session with all data organized
 
 ## Declare export destination
@@ -712,8 +732,8 @@ for (i in 1:length(all_replicate_data_reorganized)) {
 
 gc()
 
-################################## data sets ###################################
 
+#### 6.1 Data sets ####
 
 ## File paths and basenames of _unbinned.csv files
 unbinned_filelist <-
@@ -744,7 +764,8 @@ bin100_basenames <-
 
 
 
-################################# raster plot ##################################
+#### 6.2 Raster plot ####
+
 ## Read in the data
 ## Since there is only 1 example file, we'll simplify things by just
 ## subsetting unbinned_filelist
@@ -803,23 +824,8 @@ rasterplot <-
   theme(legend.position = 'none',
         panel.spacing = unit(0.1, "lines"))
 
-rasterplot
 
-## Should you elect to export this as a PDF
-pdf(
-  file = "./path/to/directory/filename.pdf",
-  width = 10.5,
-  height = 8,
-  title = "2023-02-16_001 raster",
-  paper = "USr",
-  bg = "white",
-  pagecentre = TRUE,
-  colormodel = "srgb"
-)
-plot(rasterplot)
-dev.off()
-
-########################### mean spike rate plots ##############################
+#### 6.3 Mean spike rate plots ####
 
 ## Bin size = 100
 
@@ -830,35 +836,58 @@ bin100_data <-
   read_csv(bin100_filelist[1], show_col_types = FALSE) %>%
   as_tibble()
 
-## compute SEM
+## Compute SEM and other metrics and add this to our data set
 dataslices_100 <-
   bin100_data %>%
+  ## Split by direction and speed, because we will use those to define each
+  ## subplot
   group_split(Direction, Speed) %>%
+  ## Group by time bin
   purrr::map(group_by, bin) %>%
+  ## Within each time bin, compute the following:
   purrr::map(transmute,
+             ## first() can be used for metadata such as Speed or Direction
              Speed = first(Speed),
              Direction = first(Direction),
+             ## I generally compute the mean within each bin for the following:
              Time_stand = mean(Time_stand),
              Blank_end = mean(Blank_end),
              Static_end = mean(Static_end),
              Mean_spike_rate = mean(Spike_rate),
+             ## To get SEM, divide s.d. by the square root of sample size
              Spike_rate_SEM = sd(Spike_rate)/sqrt(n()),
              Mean_photod_rate = mean(Photod_mean),
+             ## SEM of photodiode
              Photod_SEM = sd(Photod_mean)/sqrt(n())
   ) %>%
   purrr::map(ungroup) %>%
   bind_rows() %>%
+  ## We'll manually set the levels of the "Speed" column to ensure they plot in
+  ## a desired order (fastest = highest, slowest = lowest)
   mutate(across(
     Speed,
     factor,
     levels = c("1024", "644", "407", "256", "128", "64", "32", "16", "8", "4")
   ))
 
+## Generate the mean spike rate plot using ggplot
 bin100_msr_plot <-
   dataslices_100 %>%
+  ## The same code block can be used to generate either the mean spike rate
+  ## (shown below) or photodiode trace (commented out)
   ggplot(aes(x = Time_stand,
              y = Mean_spike_rate #Mean_photod_rate
   )) +
+  ## We'll actually start by placing red, yellow, and green vertical lines to
+  ## distinguish between blank, stationary, and moving phases
+  ## This comes first so that it is the bottom-most layer and doesn't obstruct
+  ## the data
+  geom_vline(xintercept = 0, col = "red") +
+  geom_vline(xintercept = first(dataslices_100$Blank_end),
+             col = "darkgoldenrod1") +
+  geom_vline(xintercept = first(dataslices_100$Static_end),
+             col = "forestgreen") +
+  ## We'll use `geom_ribbon()` to shade in the SEM traces
   geom_ribbon(aes(
     ymin = Mean_spike_rate - Spike_rate_SEM,
     ymax = Mean_spike_rate + Spike_rate_SEM
@@ -866,20 +895,41 @@ bin100_msr_plot <-
     # ymax = Mean_photod_rate + Photod_SEM
   ),
   fill = "grey80") +
+  ## `geom_line()` will be used to draw the mean spike rate itself on top of
+  ## the SEM traces
   geom_line(linewidth = 0.05) +
-  #ylim(c(0, session_ar_ymax[i] * 1.05)) +
-  geom_vline(xintercept = 0, col = "red") +
-  geom_vline(xintercept = first(dataslices_100$Blank_end),
-             col = "darkgoldenrod1") +
-  geom_vline(xintercept = first(dataslices_100$Static_end),
-             col = "forestgreen") +
+  ## Add a title to help us know what cell this is
   ggtitle(bin10_basenames[1]) +
+  xlab("Time (sec)") +
+  ylab("Spike rate (spikes/sec)") +
+  ## To sub-plot by Speed and Direction, I typically use `facet_grid()`. This
+  ## method allows me to explicitly declare what the row- and column-wise
+  ## grouping variables are
   facet_grid(rows = vars(Speed), cols = vars(Direction)) +
   theme_classic()
 
-bin100_msr_plot
 
-############################### polar plots ####################################
+#### 6.2.1 Export to PDF ####
+
+## Use the `pdf()` function to start the graphics device driver for producing
+## PDFs
+## Aspects such as page size and centering mode can be adjusted
+pdf(
+  file = "./path/to/directory/filename.pdf",
+  width = 10.5,
+  height = 8,
+  title = "2023-02-16_001 raster",
+  paper = "USr",
+  bg = "white",
+  pagecentre = TRUE,
+  colormodel = "srgb"
+)
+## Now add the plot to the PDF simply by calling plot()
+plot(rasterplot)
+## To declare an end to this PDF writing session, use `dev.off()`
+dev.off()
+
+#### 7.1 Polar direction tuning plots ####
 
 ## Read in the data
 ## Since there is only 1 example file, we'll simplify things by just

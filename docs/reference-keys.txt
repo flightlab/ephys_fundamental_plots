@@ -8,7 +8,6 @@ file-naming-conventions
 spike-sorting-with-spike2
 neuralynx
 raw-data-and-spike-sorted-traces
-including-plots
 data-wrangling
 import-example-file-and-metadata
 identify-files-to-import
@@ -18,11 +17,8 @@ data-export
 raster-and-mean-spike-rate-plots
 data-sets
 raster-plot
-export-to-pdf
 mean-spike-rate-plots
+export-to-pdf
 direction-tuning
-including-plots-1
 spatiotemporal-tuning
-including-plots-2
 histological-verification
-including-plots-3
