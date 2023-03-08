@@ -28,3 +28,5 @@ using-0-500-ms-arbitrary-epoch-length
 construct-a-multi-panel-plot
 spatiotemporal-tuning
 histological-verification
+direct-embedding-method
+hotlinking-method

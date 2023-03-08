@@ -584,7 +584,7 @@ cow_polar
 This plot can also be written directly to `PDF`.
 ```{r polar_plot_pdf, eval=FALSE}
 pdf(file =
-      paste0("./",
+      paste0("./path/to/directory/",
              bin10_basenames[i],
              "_polar_set.pdf"),
     width = 22, height = 17,

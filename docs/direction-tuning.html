@@ -186,7 +186,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="direction-tuning.html"><a href="direction-tuning.html#construct-a-multi-panel-plot"><i class="fa fa-check"></i><b>7.6</b> Construct a multi-panel plot</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>8</b> Spatiotemporal tuning</a></li>
-<li class="chapter" data-level="9" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>9</b> Histological verification</a></li>
+<li class="chapter" data-level="9" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>9</b> Histological verification</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="histological-verification.html"><a href="histological-verification.html#direct-embedding-method"><i class="fa fa-check"></i><b>9.0.1</b> Direct embedding method:</a></li>
+<li class="chapter" data-level="9.0.2" data-path="histological-verification.html"><a href="histological-verification.html#hotlinking-method"><i class="fa fa-check"></i><b>9.0.2</b> Hotlinking method:</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -800,7 +804,7 @@ file and then extract the baseline rate as defined above.</p>
 <p><img src="_main_files/figure-html/polar_cows-1.png" width="672" /></p>
 <p>This plot can also be written directly to <code>PDF</code>.</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="direction-tuning.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="at">file =</span></span>
-<span id="cb61-2"><a href="direction-tuning.html#cb61-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">&quot;./&quot;</span>,</span>
+<span id="cb61-2"><a href="direction-tuning.html#cb61-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">&quot;./path/to/directory/&quot;</span>,</span>
 <span id="cb61-3"><a href="direction-tuning.html#cb61-3" aria-hidden="true" tabindex="-1"></a>             bin10_basenames[i],</span>
 <span id="cb61-4"><a href="direction-tuning.html#cb61-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;_polar_set.pdf&quot;</span>),</span>
 <span id="cb61-5"><a href="direction-tuning.html#cb61-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">22</span>, <span class="at">height =</span> <span class="dv">17</span>,</span>
