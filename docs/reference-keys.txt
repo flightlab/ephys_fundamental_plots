@@ -20,5 +20,11 @@ raster-plot
 mean-spike-rate-plots
 export-to-pdf
 direction-tuning
+data-import-and-baseline-rate-measurement
+using-the-full-3-sec-motion-epoch
+using-40-200ms-initial-transient
+using-1500-3000ms-steady-state
+using-0-500-ms-arbitrary-epoch-length
+construct-a-multi-panel-plot
 spatiotemporal-tuning
 histological-verification

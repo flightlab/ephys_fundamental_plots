@@ -88,16 +88,16 @@ rasterplot <-
   annotate("rect",
            xmin = 0, xmax = first(unbinned_data$Blank_end),
            ymin = 0.5, ymax = max_reps + 0.5,
-           alpha = 0.1, color = NA, fill = "red") +
+           alpha = 0.075, color = NA, fill = "red") +
   annotate("rect",
            xmin = first(unbinned_data$Blank_end),
            xmax = first(unbinned_data$Static_end),
            ymin = 0.5, ymax = max_reps + 0.5,
-           alpha = 0.1, color = NA, fill = "darkgoldenrod1") +
+           alpha = 0.075, color = NA, fill = "darkgoldenrod1") +
   annotate("rect",
            xmin = first(unbinned_data$Static_end), xmax = 5,
            ymin = 0.5, ymax = max_reps + 0.5,
-           alpha = 0.1, color = NA, fill = "forestgreen") +
+           alpha = 0.075, color = NA, fill = "forestgreen") +
   ## Up to 10 replicates were used, so we will force the y-axis to go to 10
   scale_y_continuous(
     limits = c(0.5, max_reps + 0.5),
@@ -145,7 +145,7 @@ bin100_data <-
   read_csv(bin100_filelist[1], show_col_types = FALSE) %>%
   as_tibble()
 
-## Compute SEM and other metrics and add this to our data set
+## Compute SE and other metrics and add this to our data set
 dataslices_100 <-
   bin100_data %>%
   ## Split by direction and speed, because we will use those to define each
@@ -163,11 +163,11 @@ dataslices_100 <-
              Blank_end = mean(Blank_end),
              Static_end = mean(Static_end),
              Mean_spike_rate = mean(Spike_rate),
-             ## To get SEM, divide s.d. by the square root of sample size
-             Spike_rate_SEM = sd(Spike_rate)/sqrt(n()),
+             ## To get SE, divide s.d. by the square root of sample size
+             Spike_rate_SE = sd(Spike_rate)/sqrt(n()),
              Mean_photod_rate = mean(Photod_mean),
-             ## SEM of photodiode
-             Photod_SEM = sd(Photod_mean)/sqrt(n())
+             ## SE of photodiode
+             Photod_SE = sd(Photod_mean)/sqrt(n())
   ) %>%
   purrr::map(ungroup) %>%
   bind_rows() %>%
@@ -196,19 +196,19 @@ bin100_msr_plot <-
              col = "darkgoldenrod1") +
   geom_vline(xintercept = first(dataslices_100$Static_end),
              col = "forestgreen") +
-  ## We'll use `geom_ribbon()` to shade in the SEM traces
+  ## We'll use `geom_ribbon()` to shade in the SE traces
   geom_ribbon(aes(
-    ymin = Mean_spike_rate - Spike_rate_SEM,
-    ymax = Mean_spike_rate + Spike_rate_SEM
-    # ymin = Mean_photod_rate - Photod_SEM,
-    # ymax = Mean_photod_rate + Photod_SEM
+    ymin = Mean_spike_rate - Spike_rate_SE,
+    ymax = Mean_spike_rate + Spike_rate_SE
+    # ymin = Mean_photod_rate - Photod_SE,
+    # ymax = Mean_photod_rate + Photod_SE
   ),
   fill = "grey80") +
   ## `geom_line()` will be used to draw the mean spike rate itself on top of
-  ## the SEM traces
+  ## the SE traces
   geom_line(linewidth = 0.05) +
   ## Add a title to help us know what cell this is
-  ggtitle(paste0(bin10_basenames[1], " mean spike rate (100-ms bins)")) +
+  ggtitle(bin10_basenames[1]) +
   xlab("Time (sec)") +
   ylab("Spike rate (spikes/sec)") +
   ## To sub-plot by Speed and Direction, I typically use `facet_grid()`. This
