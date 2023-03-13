@@ -277,7 +277,8 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     mutate(Time_char = as.character(round(Time, 3)))
 
   ## How many distinct neurons are there?
-  n_cells <- sort(unique(all_spike_dat$code))
+  cell_ids <- sort(unique(all_spike_dat$code))
+  n_cells <- 1:length(cell_ids)
 
   if(length(n_cells) > 1) { ## if there's more than one distinct neuron
     all_spike_dat_tmp <-
@@ -291,13 +292,14 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     all_cells <- NULL
     for (j in n_cells) {
       #print(j)
-      new_name = paste0("Spikes_", j)
-      all_cells[[j+1]] <-
-        all_spike_dat_tmp[[j+1]]
+
+      new_name = paste0("Spikes_", cell_ids[j])
+      all_cells[[j]] <-
+        all_spike_dat_tmp[[j]]
 
       ## Consolidate to 3 decimal places
-      all_cells[[j+1]] <-
-        all_cells[[j+1]] %>%
+      all_cells[[j]] <-
+        all_cells[[j]] %>%
         group_by(Time_char) %>%
         summarise(code = mean(code)) %>%
         mutate(code = ceiling(code)) %>%
@@ -306,15 +308,15 @@ for (i in 1:nrow(csv_mat_filejoin)) {
         arrange(Time) %>%
         filter(Time <= final_time)
 
-      names(all_cells[[j+1]])[match("code", names(all_cells[[j+1]]))] <-
+      names(all_cells[[j]])[match("code", names(all_cells[[j]]))] <-
         new_name
       ## Replace "j" with 1 to indicate presence/absence of spike rather than
       ## cell identity
-      all_cells[[j+1]][new_name] <- 1
+      all_cells[[j]][new_name] <- 1
 
       ## If the identity is 1, replace "Spikes_1" with just "Spikes"
       if (new_name == "Spikes_1") {
-        names(all_cells[[j+1]])[match(new_name, names(all_cells[[j+1]]))] <-
+        names(all_cells[[j]])[match(new_name, names(all_cells[[j]]))] <-
           "Spikes"
       }
     }

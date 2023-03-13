@@ -251,7 +251,8 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     mutate(Time_char = as.character(round(Time, 3)))
 
   ## How many distinct neurons are there?
-  n_cells <- sort(unique(all_spike_dat$code))
+  cell_ids <- sort(unique(all_spike_dat$code))
+  n_cells <- 1:length(cell_ids)
 
   if(length(n_cells) > 1) { ## if there's more than one distinct neuron
     all_spike_dat_tmp <-
@@ -265,13 +266,14 @@ for (i in 1:nrow(csv_mat_filejoin)) {
     all_cells <- NULL
     for (j in n_cells) {
       #print(j)
-      new_name = paste0("Spikes_", j)
-      all_cells[[j+1]] <-
-        all_spike_dat_tmp[[j+1]]
+
+      new_name = paste0("Spikes_", cell_ids[j])
+      all_cells[[j]] <-
+        all_spike_dat_tmp[[j]]
 
       ## Consolidate to 3 decimal places
-      all_cells[[j+1]] <-
-        all_cells[[j+1]] %>%
+      all_cells[[j]] <-
+        all_cells[[j]] %>%
         group_by(Time_char) %>%
         summarise(code = mean(code)) %>%
         mutate(code = ceiling(code)) %>%
@@ -280,15 +282,15 @@ for (i in 1:nrow(csv_mat_filejoin)) {
         arrange(Time) %>%
         filter(Time <= final_time)
 
-      names(all_cells[[j+1]])[match("code", names(all_cells[[j+1]]))] <-
+      names(all_cells[[j]])[match("code", names(all_cells[[j]]))] <-
         new_name
       ## Replace "j" with 1 to indicate presence/absence of spike rather than
       ## cell identity
-      all_cells[[j+1]][new_name] <- 1
+      all_cells[[j]][new_name] <- 1
 
       ## If the identity is 1, replace "Spikes_1" with just "Spikes"
       if (new_name == "Spikes_1") {
-        names(all_cells[[j+1]])[match(new_name, names(all_cells[[j+1]]))] <-
+        names(all_cells[[j]])[match(new_name, names(all_cells[[j]]))] <-
           "Spikes"
       }
     }
@@ -505,7 +507,7 @@ names(metadata_combos) <- csv_mat_filejoin$basename #base_names
 
 ## Set bin size here
 ## Units are in ms (e.g. 10 = 10ms)
-bin_size = 100 ## 10 or 100 or 1 (1 = "unbinned")
+bin_size = 10 ## 10 or 100 or 1 (1 = "unbinned")
 
 slice_size = NULL
 slicemin = NULL
@@ -770,147 +772,156 @@ bin100_basenames <-
 
 #### 6.2 Raster plot ####
 
-## Read in the data
-## Since there is only 1 example file, we'll simplify things by just
-## subsetting unbinned_filelist
-unbinned_data <-
-  read_csv(unbinned_filelist[1], show_col_types = FALSE) %>%
-  as_tibble()
+## For each unbinned file, generate a raster plot
+rasterplots <- NULL
+for (i in 1:length(unbinned_filelist)) {
+  ## Read in the data
+  unbinned_data <-
+    read_csv(unbinned_filelist[i]) %>%
+    as_tibble()
 
-## determine the max number of replicates
-max_reps <- max(unbinned_data$Replicate)
+  ## determine the max number of replicates
+  max_reps <- max(unbinned_data$Replicate)
 
-## Generate the code for the ggplot and save it as "rasterplot"
-rasterplot <-
-  unbinned_data %>%
-  ## Remove any rows where spiking does not occur in the Spikes column
-  filter(Spikes == 1) %>%
-  ## Convert Trial and Speed into factors and specify their level ordering
-  ## This will make it easier to get the subplots in the order we want them
-  mutate(
-    Trial = factor(Trial,
-                   levels = c("blank", "stationary", "moving")),
-    Speed = factor(Speed,
-                   levels = c(1024, 644, 407, 256, 128, 64, 32, 16, 8, 4))) %>%
-  ggplot(aes(x = Time_stand, y = Replicate)) +
-  ## The next three blocks will undershade each subplot according to stimulus
-  ## phase (i.e., blank, stationary, moving)
-  annotate("rect",
-           xmin = 0, xmax = first(unbinned_data$Blank_end),
-           ymin = 0.5, ymax = max_reps + 0.5,
-           alpha = 0.075, color = NA, fill = "red") +
-  annotate("rect",
-           xmin = first(unbinned_data$Blank_end),
-           xmax = first(unbinned_data$Static_end),
-           ymin = 0.5, ymax = max_reps + 0.5,
-           alpha = 0.075, color = NA, fill = "darkgoldenrod1") +
-  annotate("rect",
-           xmin = first(unbinned_data$Static_end), xmax = 5,
-           ymin = 0.5, ymax = max_reps + 0.5,
-           alpha = 0.075, color = NA, fill = "forestgreen") +
-  ## Up to 10 replicates were used, so we will force the y-axis to go to 10
-  scale_y_continuous(
-    limits = c(0.5, max_reps + 0.5),
-    expand = c(0, 0),
-    breaks = c(max_reps/2, max_reps)
-  ) +
-  ## There are multiple ways to plot a spike event. Since 100% of the rows in
-  ## this filtered data set are spike events, we can simply plot a symbol at
-  ## each time (Time_stand) that appears in the data. The `|` symbol is a good
-  ## choice.
-  geom_point(pch = '|', size = 1.5) +
-  xlab("Time (sec)") +
-  ggtitle(paste0(unbinned_basenames[1], " raster")) +
-  ## Use facet_grid() to create a grid of subplots. Rows will correspond to
-  ## Speeds, and columns correspond to Directions
-  facet_grid(rows = vars(Speed), cols = vars(Direction)) +
-  theme_classic() +
-  theme(legend.position = 'none',
-        panel.spacing = unit(0.1, "lines"))
+  ## Generate the code for the ggplot and save it as rasterplots[[i]]
+  rasterplots[[i]] <-
+    unbinned_data %>%
+    ## Remove any rows where spiking does not occur in the Spikes column
+    filter(Spikes == 1) %>%
+    ## Convert Trial and Speed into factors and specify their level ordering
+    ## This will make it easier to get the subplots in the order we want them
+    mutate(
+      Trial = factor(Trial,
+                     levels = c("blank", "stationary", "moving")),
+      Speed = factor(Speed,
+                     levels = c(1024, 644, 407, 256, 128, 64, 32, 16, 8, 4))) %>%
+    ggplot(aes(x = Time_stand, y = Replicate)) +
+    ## The next three blocks will undershade each subplot according to stimulus
+    ## phase (i.e., blank, stationary, moving)
+    annotate("rect",
+             xmin = 0, xmax = first(unbinned_data$Blank_end),
+             ymin = 0.5, ymax = max_reps + 0.5,
+             alpha = 0.075, color = NA, fill = "red") +
+    annotate("rect",
+             xmin = first(unbinned_data$Blank_end),
+             xmax = first(unbinned_data$Static_end),
+             ymin = 0.5, ymax = max_reps + 0.5,
+             alpha = 0.075, color = NA, fill = "darkgoldenrod1") +
+    annotate("rect",
+             xmin = first(unbinned_data$Static_end), xmax = 5,
+             ymin = 0.5, ymax = max_reps + 0.5,
+             alpha = 0.075, color = NA, fill = "forestgreen") +
+    ## Up to 10 replicates were used, so we will force the y-axis to go to 10
+    scale_y_continuous(
+      limits = c(0.5, max_reps + 0.5),
+      expand = c(0, 0),
+      breaks = c(max_reps/2, max_reps)
+    ) +
+    ## There are multiple ways to plot a spike event. Since 100% of the rows in
+    ## this filtered data set are spike events, we can simply plot a symbol at
+    ## each time (Time_stand) that appears in the data. The `|` symbol is a good
+    ## choice.
+    geom_point(pch = '|', size = 1.5) +
+    xlab("Time (sec)") +
+    ggtitle(paste0(unbinned_basenames[1], " raster")) +
+    ## Use facet_grid() to create a grid of subplots. Rows will correspond to
+    ## Speeds, and columns correspond to Directions
+    facet_grid(rows = vars(Speed), cols = vars(Direction)) +
+    theme_classic() +
+    theme(legend.position = 'none',
+          panel.spacing = unit(0.1, "lines"))
+
+  ## Clean up
+  rm(unbinned_data)
+}
 
 
 #### 6.3 Mean spike rate plots ####
 
 ## Bin size = 100
 
-## Read in the data
-## Since there is only 1 example file, we'll simplify things by just
-## subsetting bin100_filelist
-bin100_data <-
-  read_csv(bin100_filelist[1], show_col_types = FALSE) %>%
-  as_tibble()
+## For each 100-ms binned file, generate a mean spike plot
+bin100_msr_plots <- NULL
+for (i in 1:length(bin100_filelist)) {
+  ## Read in the data
+  bin100_data <-
+    read_csv(bin100_filelist[i]) %>%
+    as_tibble()
 
-## Compute SE and other metrics and add this to our data set
-dataslices_100 <-
-  bin100_data %>%
-  ## Split by direction and speed, because we will use those to define each
-  ## subplot
-  group_split(Direction, Speed) %>%
-  ## Group by time bin
-  purrr::map(group_by, bin) %>%
-  ## Within each time bin, compute the following:
-  purrr::map(transmute,
-             ## first() can be used for metadata such as Speed or Direction
-             Speed = first(Speed),
-             Direction = first(Direction),
-             ## I generally compute the mean within each bin for the following:
-             Time_stand = mean(Time_stand),
-             Blank_end = mean(Blank_end),
-             Static_end = mean(Static_end),
-             Mean_spike_rate = mean(Spike_rate),
-             ## To get SE, divide s.d. by the square root of sample size
-             Spike_rate_SE = sd(Spike_rate)/sqrt(n()),
-             Mean_photod_rate = mean(Photod_mean),
-             ## SE of photodiode
-             Photod_SE = sd(Photod_mean)/sqrt(n())
-  ) %>%
-  purrr::map(ungroup) %>%
-  bind_rows() %>%
-  ## We'll manually set the levels of the "Speed" column to ensure they plot in
-  ## a desired order (fastest = highest, slowest = lowest)
-  mutate(across(
-    Speed,
-    factor,
-    levels = c("1024", "644", "407", "256", "128", "64", "32", "16", "8", "4")
-  ))
+  ## Compute SE and other metrics and add this to our data set
+  dataslices_100 <-
+    bin100_data %>%
+    ## Split by direction and speed, because we will use those to define each
+    ## subplot
+    group_split(Direction, Speed) %>%
+    ## Group by time bin
+    purrr::map(group_by, bin) %>%
+    ## Within each time bin, compute the following:
+    purrr::map(transmute,
+               ## first() can be used for metadata such as Speed or Direction
+               Speed = first(Speed),
+               Direction = first(Direction),
+               ## I generally compute the mean within each bin for the following:
+               Time_stand = mean(Time_stand),
+               Blank_end = mean(Blank_end),
+               Static_end = mean(Static_end),
+               Mean_spike_rate = mean(Spike_rate),
+               ## To get SE, divide s.d. by the square root of sample size
+               Spike_rate_SE = sd(Spike_rate)/sqrt(n()),
+               Mean_photod_rate = mean(Photod_mean),
+               ## SE of photodiode
+               Photod_SE = sd(Photod_mean)/sqrt(n())
+    ) %>%
+    purrr::map(ungroup) %>%
+    bind_rows() %>%
+    ## We'll manually set the levels of the "Speed" column to ensure they plot in
+    ## a desired order (fastest = highest, slowest = lowest)
+    mutate(across(
+      Speed,
+      factor,
+      levels = c("1024", "644", "407", "256", "128", "64", "32", "16", "8", "4")
+    ))
 
-## Generate the mean spike rate plot using ggplot
-bin100_msr_plot <-
-  dataslices_100 %>%
-  ## The same code block can be used to generate either the mean spike rate
-  ## (shown below) or photodiode trace (commented out)
-  ggplot(aes(x = Time_stand,
-             y = Mean_spike_rate #Mean_photod_rate
-  )) +
-  ## We'll actually start by placing red, yellow, and green vertical lines to
-  ## distinguish between blank, stationary, and moving phases
-  ## This comes first so that it is the bottom-most layer and doesn't obstruct
-  ## the data
-  geom_vline(xintercept = 0, col = "red") +
-  geom_vline(xintercept = first(dataslices_100$Blank_end),
-             col = "darkgoldenrod1") +
-  geom_vline(xintercept = first(dataslices_100$Static_end),
-             col = "forestgreen") +
-  ## We'll use `geom_ribbon()` to shade in the SE traces
-  geom_ribbon(aes(
-    ymin = Mean_spike_rate - Spike_rate_SE,
-    ymax = Mean_spike_rate + Spike_rate_SE
-    # ymin = Mean_photod_rate - Photod_SE,
-    # ymax = Mean_photod_rate + Photod_SE
-  ),
-  fill = "grey80") +
-  ## `geom_line()` will be used to draw the mean spike rate itself on top of
-  ## the SE traces
-  geom_line(linewidth = 0.05) +
-  ## Add a title to help us know what cell this is
-  ggtitle(bin10_basenames[1]) +
-  xlab("Time (sec)") +
-  ylab("Spike rate (spikes/sec)") +
-  ## To sub-plot by Speed and Direction, I typically use `facet_grid()`. This
-  ## method allows me to explicitly declare what the row- and column-wise
-  ## grouping variables are
-  facet_grid(rows = vars(Speed), cols = vars(Direction)) +
-  theme_classic()
+  ## Generate the mean spike rate plot using ggplot
+  bin100_msr_plots[[i]] <-
+    dataslices_100 %>%
+    ## The same code block can be used to generate either the mean spike rate
+    ## (shown below) or photodiode trace (commented out)
+    ggplot(aes(x = Time_stand,
+               y = Mean_spike_rate #Mean_photod_rate
+    )) +
+    ## We'll actually start by placing red, yellow, and green vertical lines to
+    ## distinguish between blank, stationary, and moving phases
+    ## This comes first so that it is the bottom-most layer and doesn't obstruct
+    ## the data
+    geom_vline(xintercept = 0, col = "red") +
+    geom_vline(xintercept = first(dataslices_100$Blank_end),
+               col = "darkgoldenrod1") +
+    geom_vline(xintercept = first(dataslices_100$Static_end),
+               col = "forestgreen") +
+    ## We'll use `geom_ribbon()` to shade in the SE traces
+    geom_ribbon(aes(
+      ymin = Mean_spike_rate - Spike_rate_SE,
+      ymax = Mean_spike_rate + Spike_rate_SE
+      # ymin = Mean_photod_rate - Photod_SE,
+      # ymax = Mean_photod_rate + Photod_SE
+    ),
+    fill = "grey80") +
+    ## `geom_line()` will be used to draw the mean spike rate itself on top of
+    ## the SE traces
+    geom_line(linewidth = 0.05) +
+    ## Add a title to help us know what cell this is
+    ggtitle(bin10_basenames[1]) +
+    xlab("Time (sec)") +
+    ylab("Spike rate (spikes/sec)") +
+    ## To sub-plot by Speed and Direction, I typically use `facet_grid()`. This
+    ## method allows me to explicitly declare what the row- and column-wise
+    ## grouping variables are
+    facet_grid(rows = vars(Speed), cols = vars(Direction)) +
+    theme_classic()
+
+  rm(bin100_data, dataslices_100)
+}
 
 
 #### 6.2.1 Export to PDF ####
@@ -949,7 +960,7 @@ bin10_data <-
   mutate(across(
     Speed,
     factor,
-    levels = c("1024", "644", "407", "256", "128", "64", "32", "16", "8", "4")
+    levels = c("4", "8", "16", "32", "64", "128", "256", "407", "644", "1024")
   ))
 
 ## Extract all rows corresponding to our desired baseline epoch
@@ -1078,7 +1089,7 @@ naive <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = naive_max_y * 1.2),
              size = 3) +
@@ -1090,8 +1101,9 @@ naive <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
-  ggtitle("full 3-sec motion") +
+  facet_grid(cols = vars(Speed)) +
+  ggtitle("Full 3-sec motion") +
+  ylab("Spike rate (spikes/sec)") +
   theme_minimal()
 
 #### __cb_it ####
@@ -1187,7 +1199,7 @@ cb_it <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = cbit_max_y * 1.2),
              size = 3) +
@@ -1199,8 +1211,9 @@ cb_it <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
-  ggtitle("40-200 msec motion") +
+  facet_grid(cols = vars(Speed)) +
+  ggtitle("40-200 ms (initial transient) motion") +
+  ylab("Spike rate (spikes/sec)") +
   theme_minimal()
 
 #### __cb_ss ####
@@ -1297,7 +1310,7 @@ cb_ss <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = cbss_max_y * 1.2),
              size = 3) +
@@ -1309,8 +1322,9 @@ cb_ss <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
-  ggtitle("steady state motion") +
+  facet_grid(cols = vars(Speed)) +
+  ggtitle("1500-3000 ms (steady state) motion") +
+  ylab("Spike rate (spikes/sec)") +
   theme_minimal()
 
 
@@ -1407,7 +1421,7 @@ arb <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = arb_max_y * 1.2),
              size = 3) +
@@ -1419,7 +1433,7 @@ arb <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
+  facet_grid(cols = vars(Speed)) +
   ggtitle("0-500 msec motion") +
   theme_minimal()
 
@@ -1427,7 +1441,7 @@ arb <-
 #### __polar cowplot ####
 cow_polar <-
   plot_grid(naive, cb_it, cb_ss, arb,
-            nrow = 1)
+            ncol = 1)
 
 pdf(file =
       paste0("./",
