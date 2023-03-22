@@ -576,10 +576,10 @@ arb
 
 We can use the handy `cowplot` package to construct a multi-panel plot.
 
-```{r polar_cows}
+```{r polar_cows, fig.height=8, fig.width=10}
 cow_polar <-
   plot_grid(naive, cb_it, cb_ss, arb,
-            nrow = 1)
+            ncol = 1)
 
 cow_polar
 ```

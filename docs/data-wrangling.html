@@ -315,8 +315,8 @@ minutes.</p>
 <span id="cb8-5"><a href="data-wrangling.html#cb8-5" aria-hidden="true" tabindex="-1"></a>data_splits <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb8-6"><a href="data-wrangling.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##           used  (Mb) gc trigger  (Mb) limit (Mb) max used  (Mb)
-## Ncells 2412866 128.9    4229587 225.9         NA  4229587 225.9
-## Vcells 4155919  31.8    8388608  64.0      16384  6281456  48.0</code></pre>
+## Ncells 2418152 129.2    3962264 211.7         NA  3962264 211.7
+## Vcells 4234368  32.4   10146329  77.5      16384  7320373  55.9</code></pre>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-wrangling.html#cb10-1" aria-hidden="true" tabindex="-1"></a>starttime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="do">## Optional, will help you assess run time</span></span>
 <span id="cb10-2"><a href="data-wrangling.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(csv_mat_filejoin)) {</span>
 <span id="cb10-3"><a href="data-wrangling.html#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -692,12 +692,12 @@ minutes.</p>
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-wrangling.html#cb12-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb12-2"><a href="data-wrangling.html#cb12-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime <span class="do">## Total elapsed time</span></span></code></pre></div>
-<pre><code>## Time difference of 3.142648 mins</code></pre>
+<pre><code>## Time difference of 4.778862 mins</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-wrangling.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Tidy up how R has been using RAM by running garbage collection</span></span>
 <span id="cb14-2"><a href="data-wrangling.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##             used   (Mb) gc trigger   (Mb) limit (Mb)   max used    (Mb)
-## Ncells   5554927  296.7   16140761  862.1         NA   25219938  1346.9
-## Vcells 204511800 1560.4  915507149 6984.8      16384 1430479919 10913.7</code></pre>
+## Ncells   5560801  297.0   16155302  862.8         NA   25242658  1348.2
+## Vcells 204525690 1560.5  915558108 6985.2      16384 1430559543 10914.4</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-wrangling.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Name each data set according to the basename of the file</span></span>
 <span id="cb16-2"><a href="data-wrangling.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(metadata_sets) <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
 <span id="cb16-3"><a href="data-wrangling.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(meta_splits)   <span class="ot">&lt;-</span> csv_mat_filejoin<span class="sc">$</span>basename <span class="co">#base_names</span></span>
@@ -798,8 +798,8 @@ declared beforehand – please pay attention.</p>
 <span id="cb17-32"><a href="data-wrangling.html#cb17-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vector</span>(<span class="at">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="at">length =</span> <span class="fu">length</span>(meta_splits))</span>
 <span id="cb17-33"><a href="data-wrangling.html#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##             used   (Mb) gc trigger   (Mb) limit (Mb)   max used    (Mb)
-## Ncells   5555032  296.7   16140761  862.1         NA   25219938  1346.9
-## Vcells 204504219 1560.3  732405720 5587.9      16384 1430479919 10913.7</code></pre>
+## Ncells   5560907  297.0   16155302  862.8         NA   25242658  1348.2
+## Vcells 204518109 1560.4  732446487 5588.2      16384 1430559543 10914.4</code></pre>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="data-wrangling.html#cb19-1" aria-hidden="true" tabindex="-1"></a>starttime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb19-2"><a href="data-wrangling.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(meta_splits)){</span>
 <span id="cb19-3"><a href="data-wrangling.html#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -943,11 +943,11 @@ declared beforehand – please pay attention.</p>
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="data-wrangling.html#cb21-1" aria-hidden="true" tabindex="-1"></a>endtime <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb21-2"><a href="data-wrangling.html#cb21-2" aria-hidden="true" tabindex="-1"></a>endtime <span class="sc">-</span> starttime</span></code></pre></div>
-<pre><code>## Time difference of 2.393427 mins</code></pre>
+<pre><code>## Time difference of 2.886859 mins</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="data-wrangling.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
 <pre><code>##             used   (Mb) gc trigger   (Mb) limit (Mb)   max used    (Mb)
-## Ncells   5559968  297.0   16140761  862.1         NA   25219938  1346.9
-## Vcells 208853792 1593.5  585924576 4470.3      16384 1430479919 10913.7</code></pre>
+## Ncells   5565843  297.3   16155302  862.8         NA   25242658  1348.2
+## Vcells 208867682 1593.6  585957190 4470.5      16384 1430559543 10914.4</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="data-wrangling.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized)) {</span>
 <span id="cb25-2"><a href="data-wrangling.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(all_replicate_data_reorganized[[i]])) {</span>
 <span id="cb25-3"><a href="data-wrangling.html#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(all_replicate_data_reorganized[[i]])[[j]] <span class="ot">&lt;-</span> name_sets[[i]][[j]]</span>
@@ -962,20 +962,20 @@ should look:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="data-wrangling.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This object contains 48 individual tibbles. Here&#39;s an example of one</span></span>
 <span id="cb28-2"><a href="data-wrangling.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="do">## pulled at random</span></span>
 <span id="cb28-3"><a href="data-wrangling.html#cb28-3" aria-hidden="true" tabindex="-1"></a>all_replicate_data_reorganized[[<span class="dv">1</span>]][<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">48</span>, <span class="at">size =</span> <span class="dv">1</span>)]</span></code></pre></div>
-<pre><code>## $`0 Deg, 1024 Deg/s`
+<pre><code>## $`225 Deg, 64 Deg/s`
 ## # A tibble: 3,507 × 16
 ##    Speed Spatial_F…¹ Tempo…² Direc…³   bin Trial Time_…⁴ Time_…⁵ Time_…⁶ Spike…⁷
 ##    &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-##  1  1024      0.0156      16       0     1 blank    181.    181.    181.      0 
-##  2  1024      0.0156      16       0     2 blank    181.    181.    181.      0 
-##  3  1024      0.0156      16       0     3 blank    181.    181.    181.      0 
-##  4  1024      0.0156      16       0     4 blank    181.    181.    181.      0 
-##  5  1024      0.0156      16       0     5 blank    181.    181.    181.      0 
-##  6  1024      0.0156      16       0     6 blank    181.    181.    181.      0 
-##  7  1024      0.0156      16       0     7 blank    181.    181.    181.      0 
-##  8  1024      0.0156      16       0     8 blank    181.    181.    181.    222.
-##  9  1024      0.0156      16       0     9 blank    181.    181.    181.    222.
-## 10  1024      0.0156      16       0    10 blank    181.    181.    181.    111.
+##  1    64      0.0625       4     225     1 blank    394.    394.    394.      0 
+##  2    64      0.0625       4     225     2 blank    394.    394.    394.      0 
+##  3    64      0.0625       4     225     3 blank    394.    394.    394.      0 
+##  4    64      0.0625       4     225     4 blank    394.    394.    394.      0 
+##  5    64      0.0625       4     225     5 blank    394.    394.    394.      0 
+##  6    64      0.0625       4     225     6 blank    394.    394.    394.      0 
+##  7    64      0.0625       4     225     7 blank    394.    394.    394.      0 
+##  8    64      0.0625       4     225     8 blank    394.    394.    394.    333.
+##  9    64      0.0625       4     225     9 blank    394.    394.    394.    111.
+## 10    64      0.0625       4     225    10 blank    394.    394.    394.      0 
 ## # … with 3,497 more rows, 6 more variables: Photod_mean &lt;dbl&gt;, Spikes_0 &lt;dbl&gt;,
 ## #   Time_stand &lt;dbl&gt;, Blank_end &lt;dbl&gt;, Static_end &lt;dbl&gt;, Replicate &lt;int&gt;, and
 ## #   abbreviated variable names ¹​Spatial_Frequency, ²​Temporal_Frequency,
