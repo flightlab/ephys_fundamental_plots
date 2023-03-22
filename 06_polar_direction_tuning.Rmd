@@ -206,7 +206,7 @@ naive <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = naive_max_y * 1.2),
              size = 3) +
@@ -218,8 +218,9 @@ naive <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
-  ggtitle("full 3-sec motion") +
+  facet_grid(cols = vars(Speed)) +
+  ggtitle("Full 3-sec motion") +
+  ylab("Spike rate (spikes/sec)") +
   theme_minimal()
 
 naive
@@ -321,7 +322,7 @@ cb_it <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = cbit_max_y * 1.2),
              size = 3) +
@@ -333,8 +334,9 @@ cb_it <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
-  ggtitle("40-200 msec motion") +
+  facet_grid(cols = vars(Speed)) +
+  ggtitle("40-200 ms (initial transient) motion") +
+  ylab("Spike rate (spikes/sec)") +
   theme_minimal()
 
 cb_it
@@ -436,7 +438,7 @@ cb_ss <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = cbss_max_y * 1.2),
              size = 3) +
@@ -448,8 +450,9 @@ cb_ss <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
-  ggtitle("steady state motion") +
+  facet_grid(cols = vars(Speed)) +
+  ggtitle("1500-3000 ms (steady state) motion") +
+  ylab("Spike rate (spikes/sec)") +
   theme_minimal()
 
 cb_ss
@@ -550,7 +553,7 @@ arb <-
     ymax = global_baseline + global_baseline_se
   ),
   fill = "red") +
-  stat_smooth(method = "glm", formula = y ~ ns(x,8), size = 0.3) +
+  stat_smooth(method = "glm", formula = y ~ ns(x,8), linewidth = 0.3) +
   geom_point() +
   geom_label(aes(label = round(si, 2) , x = 315, y = arb_max_y * 1.2),
              size = 3) +
@@ -562,7 +565,7 @@ arb <-
     expand = c(0, 0),
     limits = c(0, 360)
   )+
-  facet_grid(rows = vars(Speed)) +
+  facet_grid(cols = vars(Speed)) +
   ggtitle("0-500 msec motion") +
   theme_minimal()
 

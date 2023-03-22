@@ -911,7 +911,7 @@ for (i in 1:length(bin100_filelist)) {
     ## the SE traces
     geom_line(linewidth = 0.05) +
     ## Add a title to help us know what cell this is
-    ggtitle(bin10_basenames[1]) +
+    ggtitle(bin100_basenames[1]) +
     xlab("Time (sec)") +
     ylab("Spike rate (spikes/sec)") +
     ## To sub-plot by Speed and Direction, I typically use `facet_grid()`. This
