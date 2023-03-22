@@ -108,7 +108,7 @@ baseline_summary_df
 
 This will be referred to as the "naive" approach in the code below
 
-```{r naive}
+```{r naive, fig.height=3, fig.width=10}
 ## global baseline values, full 3-sec motion period
 naive_df <-
   bin10_data %>%
@@ -229,7 +229,7 @@ naive
 
 ## Using 40-200ms ("initial transient")
 
-```{r cb_it}
+```{r cb_it, fig.height=3, fig.width=10}
 ## global baseline values, 40-200 msec motion period
 cbit_df <-
   bin10_data %>%
@@ -344,7 +344,7 @@ cb_it
 
 ## Using 1500-3000ms ("steady state")
 
-```{r cb_ss}
+```{r cb_ss, fig.height=3, fig.width=10}
 ## global baseline values, second half of motion period
 cbss_df <-
   bin10_data %>%
@@ -460,7 +460,7 @@ cb_ss
 
 ## Using 0-500 ms (arbitrary epoch length)
 
-```{r arb}
+```{r arb, fig.height=3, fig.width=10}
 ## global baseline values, 0-500 msec motion period
 arb_df <-
   bin10_data %>%
