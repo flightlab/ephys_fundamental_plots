@@ -4,12 +4,12 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Preface | Fundamental plots for electrophysiological data</title>
+  <title>9 Raw data and spike sorted traces | Fundamental plots for electrophysiological data</title>
   <meta name="description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
   <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Preface | Fundamental plots for electrophysiological data" />
+  <meta property="og:title" content="9 Raw data and spike sorted traces | Fundamental plots for electrophysiological data" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
@@ -17,7 +17,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
   <meta name="github-repo" content="flightlab/ephys_fundamental_plots" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Preface | Fundamental plots for electrophysiological data" />
+  <meta name="twitter:title" content="9 Raw data and spike sorted traces | Fundamental plots for electrophysiological data" />
   
   <meta name="twitter:description" content="<p>A walkthrough on how to produce fundamental plots from electrophysiological
 data. Developed by the Alshuler Lab at the University of British Columbia.</p>" />
@@ -33,8 +33,8 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="spike-sorting.html"/>
+<link rel="prev" href="spatiotemporal-tuning.html"/>
+<link rel="next" href="histological-verification.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -158,7 +158,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="spike-sorting.html"><a href="spike-sorting.html#neuralynx"><i class="fa fa-check"></i><b>3.2</b> Neuralynx</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="quick-version---condensed-plots.html"><a href="quick-version---condensed-plots.html"><i class="fa fa-check"></i><b>4</b> Quick version - condensed plots</a></li>
+<li class="chapter" data-level="4" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html"><i class="fa fa-check"></i><b>4</b> Raw data and spike sorted traces</a></li>
 <li class="chapter" data-level="5" data-path="data-wrangling.html"><a href="data-wrangling.html"><i class="fa fa-check"></i><b>5</b> Data wrangling</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="data-wrangling.html"><a href="data-wrangling.html#import-example-file-and-metadata"><i class="fa fa-check"></i><b>5.1</b> Import example file and metadata</a>
@@ -186,7 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.6" data-path="direction-tuning.html"><a href="direction-tuning.html#construct-a-multi-panel-plot"><i class="fa fa-check"></i><b>7.6</b> Construct a multi-panel plot</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="spatiotemporal-tuning.html"><a href="spatiotemporal-tuning.html"><i class="fa fa-check"></i><b>8</b> Spatiotemporal tuning</a></li>
-<li class="chapter" data-level="9" data-path="raw-data-and-spike-sorted-traces.html"><a href="raw-data-and-spike-sorted-traces.html"><i class="fa fa-check"></i><b>9</b> Raw data and spike sorted traces</a></li>
+<li class="chapter" data-level="9" data-path="raw-data-and-spike-sorted-traces-1.html"><a href="raw-data-and-spike-sorted-traces-1.html"><i class="fa fa-check"></i><b>9</b> Raw data and spike sorted traces</a></li>
 <li class="chapter" data-level="10" data-path="histological-verification.html"><a href="histological-verification.html"><i class="fa fa-check"></i><b>10</b> Histological verification</a>
 <ul>
 <li class="chapter" data-level="10.0.1" data-path="histological-verification.html"><a href="histological-verification.html#direct-embedding-method"><i class="fa fa-check"></i><b>10.0.1</b> Direct embedding method:</a></li>
@@ -212,105 +212,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="preface" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">2</span> Preface<a href="preface.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="r-packages-versioning" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> R packages &amp; versioning<a href="preface.html#r-packages-versioning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The R packages listed below will be necessary at some point over the course of
-this book. I recommend installing them all now. The block of code below is
-designed to first check if each of the listed packages is already installed on
-your computer. If any is missing, then an attempt is made to install it from
-CRAN. Finally, all of the packages are loaded into the environment.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="preface.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Specify the packages you&#39;ll use in the script</span></span>
-<span id="cb1-2"><a href="preface.html#cb1-2" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;tidyverse&quot;</span>,</span>
-<span id="cb1-3"><a href="preface.html#cb1-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;zoo&quot;</span>,</span>
-<span id="cb1-4"><a href="preface.html#cb1-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;gridExtra&quot;</span>,</span>
-<span id="cb1-5"><a href="preface.html#cb1-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;R.matlab&quot;</span>,</span>
-<span id="cb1-6"><a href="preface.html#cb1-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;cowplot&quot;</span>,</span>
-<span id="cb1-7"><a href="preface.html#cb1-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;easystats&quot;</span>,</span>
-<span id="cb1-8"><a href="preface.html#cb1-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;circular&quot;</span>,</span>
-<span id="cb1-9"><a href="preface.html#cb1-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;splines&quot;</span>,</span>
-<span id="cb1-10"><a href="preface.html#cb1-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;MESS&quot;</span>, <span class="do">## area under curve</span></span>
-<span id="cb1-11"><a href="preface.html#cb1-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;zoo&quot;</span> <span class="do">## rolling means</span></span>
-<span id="cb1-12"><a href="preface.html#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-13"><a href="preface.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Now for each package listed, first check to see if the package is already</span></span>
-<span id="cb1-14"><a href="preface.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## installed. If it is installed, it&#39;s simply loaded. If not, it&#39;s downloaded </span></span>
-<span id="cb1-15"><a href="preface.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## from CRAN and then installed and loaded.</span></span>
-<span id="cb1-16"><a href="preface.html#cb1-16" aria-hidden="true" tabindex="-1"></a>package.check <span class="ot">&lt;-</span> <span class="fu">lapply</span>(packages,</span>
-<span id="cb1-17"><a href="preface.html#cb1-17" aria-hidden="true" tabindex="-1"></a>                        <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1-18"><a href="preface.html#cb1-18" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb1-19"><a href="preface.html#cb1-19" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">install.packages</span>(x, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-20"><a href="preface.html#cb1-20" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">library</span>(x, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-21"><a href="preface.html#cb1-21" aria-hidden="true" tabindex="-1"></a>                          }</span>
-<span id="cb1-22"><a href="preface.html#cb1-22" aria-hidden="true" tabindex="-1"></a>                        }</span>
-<span id="cb1-23"><a href="preface.html#cb1-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>I will use the <code>sessionInfo()</code> command to detail the specific versions of
-packages I am using (along with other information about my R session). Please
-note that I am not suggesting you obtain exactly the same version of each
-package listed below. Instead, the information below is meant to help you assess
-whether package versioning underlies any trouble you may encounter.</p>
-<pre><code>## R version 4.2.2 (2022-10-31 ucrt)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 10 x64 (build 19045)
-## 
-## Matrix products: default
-## 
-## locale:
-## [1] LC_COLLATE=English_United States.utf8 
-## [2] LC_CTYPE=English_United States.utf8   
-## [3] LC_MONETARY=English_United States.utf8
-## [4] LC_NUMERIC=C                          
-## [5] LC_TIME=English_United States.utf8    
-## 
-## attached base packages:
-## [1] splines   stats     graphics  grDevices utils     datasets  methods  
-## [8] base     
-## 
-## other attached packages:
-##  [1] MESS_0.5.9         circular_0.4-95    see_0.7.4          report_0.5.6      
-##  [5] parameters_0.20.2  performance_0.10.2 modelbased_0.8.6   insight_0.19.0    
-##  [9] effectsize_0.8.3   datawizard_0.6.5   correlation_0.8.3  bayestestR_0.13.0 
-## [13] easystats_0.6.0    cowplot_1.1.1      R.matlab_3.7.0     gridExtra_2.3     
-## [17] zoo_1.8-11         lubridate_1.9.2    forcats_1.0.0      stringr_1.5.0     
-## [21] dplyr_1.1.0        purrr_1.0.1        readr_2.1.4        tidyr_1.3.0       
-## [25] tibble_3.1.8       ggplot2_3.4.1      tidyverse_2.0.0   
-## 
-## loaded via a namespace (and not attached):
-##  [1] sass_0.4.5         jsonlite_1.8.4     R.utils_2.12.2     bslib_0.4.2       
-##  [5] ggstance_0.3.6     yaml_2.3.7         backports_1.4.1    pillar_1.8.1      
-##  [9] lattice_0.20-45    glue_1.6.2         digest_0.6.31      polyclip_1.10-4   
-## [13] colorspace_2.1-0   htmltools_0.5.4    Matrix_1.5-1       R.oo_1.25.0       
-## [17] pkgconfig_2.0.3    labelled_2.10.0    broom_1.0.3        haven_2.5.1       
-## [21] bookdown_0.32      xtable_1.8-4       mvtnorm_1.1-3      scales_1.2.1      
-## [25] tweenr_2.0.2       ggforce_0.4.1      tzdb_0.3.0         timechange_0.2.0  
-## [29] emmeans_1.8.4-1    farver_2.1.1       generics_0.1.3     ellipsis_0.3.2    
-## [33] cachem_1.0.7       withr_2.5.0        geepack_1.3.9      cli_3.6.0         
-## [37] magrittr_2.0.3     estimability_1.4.1 evaluate_0.20      R.methodsS3_1.8.2 
-## [41] fansi_1.0.4        MASS_7.3-58.2      geeM_0.10.1        tools_4.2.2       
-## [45] hms_1.1.2          lifecycle_1.0.3    munsell_0.5.0      compiler_4.2.2    
-## [49] jquerylib_0.1.4    rlang_1.0.6        ggridges_0.5.4     grid_4.2.2        
-## [53] rstudioapi_0.14    mosaicCore_0.9.2.1 rmarkdown_2.20     boot_1.3-28       
-## [57] gtable_0.3.1       R6_2.5.1           knitr_1.42         fastmap_1.1.1     
-## [61] utf8_1.2.3         ggformula_0.10.2   stringi_1.7.12     Rcpp_1.0.10       
-## [65] vctrs_0.5.2        tidyselect_1.2.0   xfun_0.37          coda_0.19-4</code></pre>
-</div>
-<div id="not_in" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> <code>%not_in%</code><a href="preface.html#not_in" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This guide will also rely on this handy function, which you should add to your
-code:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="preface.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">%not_in%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">Negate</span>(<span class="st">`</span><span class="at">%in%</span><span class="st">`</span>)</span></code></pre></div>
-<p>This simple operator allows you to determine if an element does not appear in a
-target object.</p>
+<div id="raw-data-and-spike-sorted-traces-1" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Raw data and spike sorted traces<a href="raw-data-and-spike-sorted-traces-1.html#raw-data-and-spike-sorted-traces-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Coming soon</p>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="spike-sorting.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="spatiotemporal-tuning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="histological-verification.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

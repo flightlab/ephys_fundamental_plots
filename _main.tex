@@ -119,7 +119,7 @@
 
 \title{Fundamental plots for electrophysiological data}
 \author{Vikram B. Baliga}
-\date{2023-03-22}
+\date{2023-03-30}
 
 \begin{document}
 \maketitle
@@ -209,16 +209,18 @@ package listed below. Instead, the information below is meant to help you assess
 whether package versioning underlies any trouble you may encounter.
 
 \begin{verbatim}
-## R version 4.2.2 (2022-10-31)
-## Platform: x86_64-apple-darwin17.0 (64-bit)
-## Running under: macOS Big Sur ... 10.16
+## R version 4.2.2 (2022-10-31 ucrt)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 19045)
 ## 
 ## Matrix products: default
-## BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
-## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## [1] LC_COLLATE=English_United States.utf8 
+## [2] LC_CTYPE=English_United States.utf8   
+## [3] LC_MONETARY=English_United States.utf8
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.utf8    
 ## 
 ## attached base packages:
 ## [1] splines   stats     graphics  grDevices utils     datasets  methods  
@@ -238,17 +240,18 @@ whether package versioning underlies any trouble you may encounter.
 ##  [5] backports_1.4.1    lattice_0.20-45    glue_1.6.2         digest_0.6.31     
 ##  [9] polyclip_1.10-4    colorspace_2.1-0   htmltools_0.5.4    Matrix_1.5-1      
 ## [13] R.oo_1.25.0        pkgconfig_2.0.3    labelled_2.10.0    broom_1.0.3       
-## [17] haven_2.5.1        bookdown_0.32      mvtnorm_1.1-3      scales_1.2.1      
-## [21] tweenr_2.0.2       tzdb_0.3.0         ggforce_0.4.1      timechange_0.2.0  
-## [25] farver_2.1.1       generics_0.1.3     ellipsis_0.3.2     withr_2.5.0       
-## [29] geepack_1.3.9      cli_3.6.0          magrittr_2.0.3     evaluate_0.20     
-## [33] R.methodsS3_1.8.2  fansi_1.0.4        MASS_7.3-58.1      geeM_0.10.1       
-## [37] tools_4.2.2        hms_1.1.2          lifecycle_1.0.3    munsell_0.5.0     
-## [41] compiler_4.2.2     rlang_1.0.6        grid_4.2.2         ggridges_0.5.4    
-## [45] rstudioapi_0.14    mosaicCore_0.9.2.1 rmarkdown_2.20     boot_1.3-28       
-## [49] gtable_0.3.1       R6_2.5.1           knitr_1.42         fastmap_1.1.1     
-## [53] utf8_1.2.3         ggformula_0.10.2   stringi_1.7.12     Rcpp_1.0.10       
-## [57] vctrs_0.5.2        tidyselect_1.2.0   xfun_0.37
+## [17] haven_2.5.1        bookdown_0.32      xtable_1.8-4       mvtnorm_1.1-3     
+## [21] scales_1.2.1       tweenr_2.0.2       ggforce_0.4.1      tzdb_0.3.0        
+## [25] timechange_0.2.0   emmeans_1.8.4-1    farver_2.1.1       generics_0.1.3    
+## [29] ellipsis_0.3.2     withr_2.5.0        geepack_1.3.9      cli_3.6.0         
+## [33] magrittr_2.0.3     estimability_1.4.1 evaluate_0.20      R.methodsS3_1.8.2 
+## [37] fansi_1.0.4        MASS_7.3-58.2      geeM_0.10.1        tools_4.2.2       
+## [41] hms_1.1.2          lifecycle_1.0.3    munsell_0.5.0      compiler_4.2.2    
+## [45] rlang_1.0.6        grid_4.2.2         ggridges_0.5.4     rstudioapi_0.14   
+## [49] mosaicCore_0.9.2.1 rmarkdown_2.20     boot_1.3-28        gtable_0.3.1      
+## [53] R6_2.5.1           knitr_1.42         fastmap_1.1.1      utf8_1.2.3        
+## [57] ggformula_0.10.2   stringi_1.7.12     Rcpp_1.0.10        vctrs_0.5.2       
+## [61] tidyselect_1.2.0   xfun_0.37          coda_0.19-4
 \end{verbatim}
 
 \hypertarget{not_in}{%
@@ -688,8 +691,8 @@ Written by Eric Press, November 11, 2022
   \end{enumerate}
 \end{enumerate}
 
-\hypertarget{raw-data-and-spike-sorted-traces}{%
-\chapter{Raw data and spike sorted traces}\label{raw-data-and-spike-sorted-traces}}
+\hypertarget{quick-version---condensed-plots}{%
+\chapter{Quick version - condensed plots}\label{quick-version---condensed-plots}}
 
 Coming soon
 
@@ -837,9 +840,9 @@ Please see in-line comments for further guidance
 \end{Shaded}
 
 \begin{verbatim}
-##           used  (Mb) gc trigger  (Mb) limit (Mb) max used  (Mb)
-## Ncells 2390268 127.7    4239832 226.5         NA  4239832 226.5
-## Vcells 4201216  32.1   10146329  77.5      16384  7629421  58.3
+##           used  (Mb) gc trigger  (Mb) max used  (Mb)
+## Ncells 2426248 129.6    4179092 223.2  4179092 223.2
+## Vcells 4198206  32.1   10146329  77.5  8185131  62.5
 \end{verbatim}
 
 \begin{Shaded}
@@ -1231,7 +1234,7 @@ Please see in-line comments for further guidance
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.867266 mins
+## Time difference of 2.325644 mins
 \end{verbatim}
 
 \begin{Shaded}
@@ -1242,9 +1245,9 @@ Please see in-line comments for further guidance
 \end{Shaded}
 
 \begin{verbatim}
-##             used   (Mb) gc trigger   (Mb) limit (Mb)   max used    (Mb)
-## Ncells   5532394  295.5   16067233  858.1         NA   25105051  1340.8
-## Vcells 204491986 1560.2  915537421 6985.0      16384 1430527219 10914.1
+##             used   (Mb) gc trigger   (Mb)   max used    (Mb)
+## Ncells   5567281  297.4   16192312  864.8   25300487  1351.2
+## Vcells 204486851 1560.2  915533579 6985.0 1430521216 10914.1
 \end{verbatim}
 
 \begin{Shaded}
@@ -1373,9 +1376,9 @@ declared beforehand -- please pay attention.
 \end{Shaded}
 
 \begin{verbatim}
-##             used   (Mb) gc trigger   (Mb) limit (Mb)   max used    (Mb)
-## Ncells   5532499  295.5   16067233  858.1         NA   25105051  1340.8
-## Vcells 204484405 1560.1  732429937 5588.0      16384 1430527219 10914.1
+##             used   (Mb) gc trigger   (Mb)   max used    (Mb)
+## Ncells   5567387  297.4   16192312  864.8   25300487  1351.2
+## Vcells 204479268 1560.1  732426864 5588.0 1430521216 10914.1
 \end{verbatim}
 
 \begin{Shaded}
@@ -1535,7 +1538,7 @@ declared beforehand -- please pay attention.
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.292612 mins
+## Time difference of 2.058902 mins
 \end{verbatim}
 
 \begin{Shaded}
@@ -1545,9 +1548,9 @@ declared beforehand -- please pay attention.
 \end{Shaded}
 
 \begin{verbatim}
-##             used   (Mb) gc trigger   (Mb) limit (Mb)   max used    (Mb)
-## Ncells   5537435  295.8   16067233  858.1         NA   25105051  1340.8
-## Vcells 208833978 1593.3  585943950 4470.4      16384 1430527219 10914.1
+##             used   (Mb) gc trigger   (Mb)   max used    (Mb)
+## Ncells   5572323  297.6   16192312  864.8   25300487  1351.2
+## Vcells 208828836 1593.3  585941492 4470.4 1430521216 10914.1
 \end{verbatim}
 
 \begin{Shaded}
@@ -1584,20 +1587,20 @@ should look:
 \end{Shaded}
 
 \begin{verbatim}
-## $`90 Deg, 64 Deg/s`
+## $`180 Deg, 407 Deg/s`
 ## # A tibble: 3,507 x 16
 ##    Speed Spatial_F~1 Tempo~2 Direc~3   bin Trial Time_~4 Time_~5 Time_~6 Spike~7
 ##    <dbl>       <dbl>   <dbl>   <dbl> <int> <chr>   <dbl>   <dbl>   <dbl>   <dbl>
-##  1    64      0.0625       4      90     1 blank    73.9    73.9    73.9      0 
-##  2    64      0.0625       4      90     2 blank    73.9    73.9    73.9      0 
-##  3    64      0.0625       4      90     3 blank    73.9    73.9    73.9      0 
-##  4    64      0.0625       4      90     4 blank    73.9    73.9    73.9      0 
-##  5    64      0.0625       4      90     5 blank    73.9    73.9    73.9      0 
-##  6    64      0.0625       4      90     6 blank    73.9    73.9    73.9    111.
-##  7    64      0.0625       4      90     7 blank    73.9    73.9    73.9      0 
-##  8    64      0.0625       4      90     8 blank    73.9    73.9    73.9    111.
-##  9    64      0.0625       4      90     9 blank    74.0    73.9    74.0    111.
-## 10    64      0.0625       4      90    10 blank    74.0    74.0    74.0      0 
+##  1   407      0.0248    10.1     180     1 blank    160.    160.    160.      0 
+##  2   407      0.0248    10.1     180     2 blank    160.    160.    160.      0 
+##  3   407      0.0248    10.1     180     3 blank    160.    160.    160.      0 
+##  4   407      0.0248    10.1     180     4 blank    160.    160.    160.      0 
+##  5   407      0.0248    10.1     180     5 blank    160.    160.    160.      0 
+##  6   407      0.0248    10.1     180     6 blank    160.    160.    160.    111.
+##  7   407      0.0248    10.1     180     7 blank    160.    160.    160.    222.
+##  8   407      0.0248    10.1     180     8 blank    160.    160.    160.      0 
+##  9   407      0.0248    10.1     180     9 blank    160.    160.    160.      0 
+## 10   407      0.0248    10.1     180    10 blank    160.    160.    160.    111.
 ## # ... with 3,497 more rows, 6 more variables: Photod_mean <dbl>,
 ## #   Spikes_0 <dbl>, Time_stand <dbl>, Blank_end <dbl>, Static_end <dbl>,
 ## #   Replicate <int>, and abbreviated variable names 1: Spatial_Frequency,
@@ -1749,27 +1752,27 @@ You should have something similar to the following:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "./data//2023-02-16_001_unbinned.csv"
+## [1] "./data/2023-02-16_001_unbinned.csv"
 \end{verbatim}
 
 \begin{verbatim}
-## [1] "/2023-02-16_001"
+## [1] "2023-02-16_001"
 \end{verbatim}
 
 \begin{verbatim}
-## [1] "./data//2023-02-16_001_binsize10.csv"
+## [1] "./data/2023-02-16_001_binsize10.csv"
 \end{verbatim}
 
 \begin{verbatim}
-## [1] "/2023-02-16_001"
+## [1] "2023-02-16_001"
 \end{verbatim}
 
 \begin{verbatim}
-## [1] "./data//2023-02-16_001_binsize100.csv"
+## [1] "./data/2023-02-16_001_binsize100.csv"
 \end{verbatim}
 
 \begin{verbatim}
-## [1] "/2023-02-16_001"
+## [1] "2023-02-16_001"
 \end{verbatim}
 
 \hypertarget{raster-plot}{%
@@ -2109,70 +2112,62 @@ in the plots:
 \section{Data import and baseline rate measurement}\label{data-import-and-baseline-rate-measurement}}
 
 We will use the 10-ms binned data for these examples. We'll read in the
-file and then extract the baseline rate as defined above.
+file and then extract the baseline rate as defined above. The code will be
+written such that it can batch-process more than one file if desired.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\DocumentationTok{\#\# Read in the data}
-\DocumentationTok{\#\# Since there is only 1 example file, we\textquotesingle{}ll simplify things by just}
-\DocumentationTok{\#\# subsetting bin10\_filelist}
-\NormalTok{bin10\_data }\OtherTok{\textless{}{-}}
-  \FunctionTok{read\_csv}\NormalTok{(bin10\_filelist[}\DecValTok{1}\NormalTok{], }\AttributeTok{show\_col\_types =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{as\_tibble}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \DocumentationTok{\#\# Again, we will set Speed as an ordered factor to help control plotting}
-  \DocumentationTok{\#\# later on}
-  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}
-\NormalTok{    Speed,}
-\NormalTok{    factor,}
-    \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"1024"}\NormalTok{, }\StringTok{"644"}\NormalTok{, }\StringTok{"407"}\NormalTok{, }\StringTok{"256"}\NormalTok{, }\StringTok{"128"}\NormalTok{, }\StringTok{"64"}\NormalTok{, }\StringTok{"32"}\NormalTok{, }\StringTok{"16"}\NormalTok{, }\StringTok{"8"}\NormalTok{, }\StringTok{"4"}\NormalTok{)}
-\NormalTok{  ))}
+\NormalTok{bin10\_data }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{polar\_directions }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{baseline\_summary\_df }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(bin10\_filelist)) \{}
+  \DocumentationTok{\#\# Read in the data}
+\NormalTok{  bin10\_data[[i]] }\OtherTok{\textless{}{-}}
+    \FunctionTok{read\_csv}\NormalTok{(bin10\_filelist[i], }\AttributeTok{show\_col\_types =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{as\_tibble}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \DocumentationTok{\#\# Again, we will set Speed as an ordered factor to help control plotting}
+    \DocumentationTok{\#\# later on}
+    \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}
+\NormalTok{      Speed,}
+\NormalTok{      factor,}
+      \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"4"}\NormalTok{, }\StringTok{"8"}\NormalTok{, }\StringTok{"16"}\NormalTok{, }\StringTok{"32"}\NormalTok{, }\StringTok{"64"}\NormalTok{, }\StringTok{"128"}\NormalTok{, }\StringTok{"256"}\NormalTok{, }\StringTok{"407"}\NormalTok{, }\StringTok{"644"}\NormalTok{, }\StringTok{"1024"}\NormalTok{)}
+\NormalTok{    ))}
 
-\DocumentationTok{\#\# Extract all rows corresponding to our desired baseline epoch}
-\NormalTok{baseline\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  bin10\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}=}\NormalTok{ Blank\_end }\SpecialCharTok{+} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \DocumentationTok{\#\# 0.5 sec after blank end}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}=}\NormalTok{ Static\_end }\SpecialCharTok{{-}} \FloatTok{0.05}\NormalTok{)   }\DocumentationTok{\#\# 0.05 sec before static end}
+  \DocumentationTok{\#\# Determine unique directions}
+\NormalTok{  polar\_directions[[i]] }\OtherTok{\textless{}{-}}
+\NormalTok{    bin10\_data[[i]]}\SpecialCharTok{$}\NormalTok{Direction }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{unique}\NormalTok{()}
 
-\DocumentationTok{\#\# Compute the mean baseline}
-\NormalTok{global\_base }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(baseline\_df}\SpecialCharTok{$}\NormalTok{Spike\_rate)}
-\DocumentationTok{\#\# Compute the SE}
-\NormalTok{global\_base\_se }\OtherTok{\textless{}{-}}
-  \FunctionTok{sd}\NormalTok{(baseline\_df}\SpecialCharTok{$}\NormalTok{Spike\_rate) }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{length}\NormalTok{(baseline\_df}\SpecialCharTok{$}\NormalTok{Spike\_rate)}\CommentTok{\#/45}
-\NormalTok{  )}
+  \DocumentationTok{\#\# Extract all rows corresponding to our desired baseline epoch}
+\NormalTok{  baseline\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    bin10\_data[[i]] }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}=}\NormalTok{ Blank\_end }\SpecialCharTok{+} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \DocumentationTok{\#\# 0.5 sec after blank end}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}=}\NormalTok{ Static\_end }\SpecialCharTok{{-}} \FloatTok{0.05}\NormalTok{)   }\DocumentationTok{\#\# 0.05 sec before static end}
 
-\DocumentationTok{\#\# Construct a summary data frame}
-\NormalTok{baseline\_summary\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  baseline\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarize}\NormalTok{(}
-    \AttributeTok{speed\_specific\_baseline =} \FunctionTok{mean}\NormalTok{(Spike\_rate),}
-    \AttributeTok{speed\_specific\_baseline\_se =} \FunctionTok{sd}\NormalTok{(Spike\_rate)}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{length}\NormalTok{(Spike\_rate)),}
-    \AttributeTok{global\_baseline =}\NormalTok{ global\_base,}
-    \AttributeTok{global\_baseline\_se =}\NormalTok{ global\_base\_se}
-\NormalTok{  )}
+  \DocumentationTok{\#\# Compute the mean baseline}
+\NormalTok{  global\_base }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(baseline\_df}\SpecialCharTok{$}\NormalTok{Spike\_rate)}
+  \DocumentationTok{\#\# Compute the SE}
+\NormalTok{  global\_base\_se }\OtherTok{\textless{}{-}}
+    \FunctionTok{sd}\NormalTok{(baseline\_df}\SpecialCharTok{$}\NormalTok{Spike\_rate) }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{length}\NormalTok{(baseline\_df}\SpecialCharTok{$}\NormalTok{Spike\_rate)}
+\NormalTok{    )}
 
-\DocumentationTok{\#\# This tibble contains speed{-}specific baselines (and SE) along with the global}
-\DocumentationTok{\#\# mean baseline (and SE)}
-\NormalTok{baseline\_summary\_df}
+  \DocumentationTok{\#\# Construct a summary data frame}
+\NormalTok{  baseline\_summary\_df[[i]] }\OtherTok{\textless{}{-}}
+\NormalTok{    baseline\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}
+      \AttributeTok{speed\_specific\_baseline =} \FunctionTok{mean}\NormalTok{(Spike\_rate),}
+      \AttributeTok{speed\_specific\_baseline\_se =} \FunctionTok{sd}\NormalTok{(Spike\_rate)}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{length}\NormalTok{(Spike\_rate)),}
+      \AttributeTok{global\_baseline =}\NormalTok{ global\_base,}
+      \AttributeTok{global\_baseline\_se =}\NormalTok{ global\_base\_se}
+\NormalTok{    )}
+
+  \DocumentationTok{\#\# This tibble contains speed{-}specific baselines (and SE) along with the}
+  \DocumentationTok{\#\# global mean baseline (and SE)}
+\NormalTok{  baseline\_summary\_df[[i]]}
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 10 x 5
-##    Speed speed_specific_baseline speed_specific_baseline_se global_bas~1 globa~2
-##    <fct>                   <dbl>                      <dbl>        <dbl>   <dbl>
-##  1 1024                     4.44                      0.516         3.81   0.153
-##  2 644                      2.99                      0.441         3.81   0.153
-##  3 407                      4.18                      0.534         3.81   0.153
-##  4 256                      4.41                      0.521         3.81   0.153
-##  5 128                      4.58                      0.529         3.81   0.153
-##  6 64                       4.45                      0.523         3.81   0.153
-##  7 32                       3.57                      0.468         3.81   0.153
-##  8 16                       2.55                      0.390         3.81   0.153
-##  9 8                        3.86                      0.469         3.81   0.153
-## 10 4                        3.04                      0.425         3.81   0.153
-## # ... with abbreviated variable names 1: global_baseline, 2: global_baseline_se
-\end{verbatim}
 
 \hypertarget{using-the-full-3-sec-motion-epoch}{%
 \section{Using the full 3-sec motion epoch}\label{using-the-full-3-sec-motion-epoch}}
@@ -2182,13 +2177,137 @@ This will be referred to as the ``naive'' approach in the code below
 \begin{Shaded}
 \begin{Highlighting}[]
 \DocumentationTok{\#\# global baseline values, full 3{-}sec motion period}
-\NormalTok{naive\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  bin10\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}}\NormalTok{ Static\_end) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarize}\NormalTok{(}
-    \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
-\NormalTok{  )}
+\NormalTok{bin10\_polar\_naive }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(bin10\_filelist)) \{}
+\NormalTok{  naive\_df  }\OtherTok{\textless{}{-}}
+\NormalTok{    bin10\_data[[i]]  }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}}\NormalTok{ Static\_end) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}
+      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
+\NormalTok{    )}
+\NormalTok{  naive\_360 }\OtherTok{\textless{}{-}}
+\NormalTok{    naive\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+      \AttributeTok{Speed =}\NormalTok{ Speed,}
+      \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
+      \AttributeTok{Replicate =}\NormalTok{ Replicate,}
+      \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
+\NormalTok{  naive\_vecsum\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    naive\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \DocumentationTok{\#\# }\AlertTok{NOTE}\DocumentationTok{: FOLLOWING THE JNP AND CB PAPERS, WE ARE SUBTRACTING BASELINE HERE AND}
+    \DocumentationTok{\#\# THEN IF ANY AVERAGED FIRING RATES ARE NEGATIVE, THEY ARE SHIFTED SO THE}
+    \DocumentationTok{\#\# LOWEST ONE IS ZERO. THE GENERATED PLOTS STILL SHOW NON{-}BASELINE{-}SUBTRACTED}
+    \DocumentationTok{\#\# FIRING RATES (AND BASELINE AS A RED RING), BUT COMPUTATION OF VECTOR SUM}
+    \DocumentationTok{\#\# AND SI HAVE BEEN BASELINE SUBTRACTED (AND THE ENTIRE CURVE IS SHIFTED}
+    \DocumentationTok{\#\# UPWARDS IF ANY PART IS NEGATIVE)}
+    \FunctionTok{map}\NormalTok{(}
+\NormalTok{      summarize,}
+      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}
+            \FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+            \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate}
+\NormalTok{          )) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(}
+\NormalTok{      transmute,}
+      \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+      \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarise,}
+        \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
+        \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+\NormalTok{  naive\_si\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    naive\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(}
+\NormalTok{      summarize,}
+      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}
+            \FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+            \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate}
+\NormalTok{          )) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(}
+\NormalTok{      transmute,}
+      \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+      \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
+      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(}
+\NormalTok{      summarise,}
+      \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
+      \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
+      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
+      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+
+\NormalTok{  naive\_data }\OtherTok{\textless{}{-}}
+\NormalTok{    naive\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{(naive\_360) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(naive\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(naive\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
+\NormalTok{  naive\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(naive\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
+
+\NormalTok{  bin10\_polar\_naive[[i]] }\OtherTok{\textless{}{-}}
+\NormalTok{    naive\_data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df[[i]], }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{x =}\NormalTok{ Direction,}
+      \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
+      \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
+\NormalTok{    ),}
+    \AttributeTok{fill =} \StringTok{"darkgoldenrod1"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{,}
+                \AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x, }\FunctionTok{length}\NormalTok{(polar\_directions[[i]])),}
+                \AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{color =} \StringTok{"forestgreen"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"\#333132"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ naive\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
+               \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
+               \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}
+      \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
+      \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+      \CommentTok{\#trans = "sqrt",}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, naive\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Full 3{-}sec motion"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{ylab}\NormalTok{(}\StringTok{"Spike rate (spikes/sec)"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2197,116 +2316,6 @@ This will be referred to as the ``naive'' approach in the code below
 ## using the `.groups` argument.
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{naive\_360 }\OtherTok{\textless{}{-}}
-\NormalTok{  naive\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{transmute}\NormalTok{(}
-    \AttributeTok{Speed =}\NormalTok{ Speed,}
-    \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
-    \AttributeTok{Replicate =}\NormalTok{ Replicate,}
-    \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
-\NormalTok{naive\_vecsum\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  naive\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \DocumentationTok{\#\# }\AlertTok{NOTE}\DocumentationTok{: FOLLOWING THE JNP AND CB PAPERS, WE ARE SUBTRACTING BASELINE HERE AND}
-  \DocumentationTok{\#\# THEN IF ANY AVERAGED FIRING RATES ARE NEGATIVE, THEY ARE SHIFTED SO THE}
-  \DocumentationTok{\#\# LOWEST ONE IS ZERO. THE GENERATED PLOTS STILL SHOW NON{-}BASELINE{-}SUBTRACTED}
-  \DocumentationTok{\#\# FIRING RATES (AND BASELINE AS A RED RING), BUT COMPUTATION OF VECTOR SUM}
-  \DocumentationTok{\#\# AND SI HAVE BEEN BASELINE SUBTRACTED (AND THE ENTIRE CURVE IS SHIFTED}
-  \DocumentationTok{\#\# UPWARDS IF ANY PART IS NEGATIVE)}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
-      \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-\NormalTok{naive\_si\_df}\OtherTok{\textless{}{-}}
-\NormalTok{  naive\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
-      \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-
-\NormalTok{naive\_data }\OtherTok{\textless{}{-}}
-\NormalTok{  naive\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{(naive\_360) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(naive\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(naive\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
-\NormalTok{naive\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(naive\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
-
-\NormalTok{naive }\OtherTok{\textless{}{-}}
-\NormalTok{  naive\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
-  \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
-    \AttributeTok{x =}\NormalTok{ Direction,}
-    \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
-    \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
-\NormalTok{  ),}
-  \AttributeTok{fill =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{, }\AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x,}\DecValTok{8}\NormalTok{), }\AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ naive\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
-             \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
-             \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_continuous}\NormalTok{(}
-    \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
-    \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
-    \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
-\NormalTok{  )}\SpecialCharTok{+}
-  \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
-  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Full 3{-}sec motion"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Spike rate (spikes/sec)"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{theme\_minimal}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
 ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ## i Please use `linewidth` instead.
@@ -2314,7 +2323,7 @@ This will be referred to as the ``naive'' approach in the code below
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{naive}
+\NormalTok{bin10\_polar\_naive[[}\DecValTok{1}\NormalTok{]]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2326,14 +2335,122 @@ This will be referred to as the ``naive'' approach in the code below
 \begin{Shaded}
 \begin{Highlighting}[]
 \DocumentationTok{\#\# global baseline values, 40{-}200 msec motion period}
-\NormalTok{cbit\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  bin10\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.04}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarize}\NormalTok{(}
-    \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
-\NormalTok{  )}
+\NormalTok{bin10\_polar\_cbit }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(bin10\_filelist)) \{}
+\NormalTok{  cbit\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    bin10\_data[[i]] }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.04}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}
+      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
+\NormalTok{    )}
+\NormalTok{  cbit\_360 }\OtherTok{\textless{}{-}}
+\NormalTok{    cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+      \AttributeTok{Speed =}\NormalTok{ Speed,}
+      \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
+      \AttributeTok{Replicate =}\NormalTok{ Replicate,}
+      \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
+\NormalTok{  cbit\_vecsum\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarize,}
+        \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+                    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+        \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarise,}
+        \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
+        \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+\NormalTok{  cbit\_si\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarize,}
+        \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+                    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+        \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+        \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarise,}
+        \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
+        \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
+        \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+
+\NormalTok{  cbit\_data }\OtherTok{\textless{}{-}}
+\NormalTok{    cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{(cbit\_360) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(cbit\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(cbit\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
+\NormalTok{  cbit\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(cbit\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
+
+\NormalTok{  bin10\_polar\_cbit[[i]] }\OtherTok{\textless{}{-}}
+\NormalTok{    cbit\_data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df[[i]], }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{x =}\NormalTok{ Direction,}
+      \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
+      \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
+\NormalTok{    ),}
+    \AttributeTok{fill =} \StringTok{"darkgoldenrod1"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{,}
+                \AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x, }\FunctionTok{length}\NormalTok{(polar\_directions[[i]])),}
+                \AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{color =} \StringTok{"forestgreen"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"\#333132"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ cbit\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
+               \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
+               \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}
+      \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
+      \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+      \CommentTok{\#trans = "sqrt",}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, cbit\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"40{-}200 ms (initial transient) motion"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{ylab}\NormalTok{(}\StringTok{"Spike rate (spikes/sec)"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2344,109 +2461,13 @@ This will be referred to as the ``naive'' approach in the code below
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{cbit\_360 }\OtherTok{\textless{}{-}}
-\NormalTok{  cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{transmute}\NormalTok{(}
-    \AttributeTok{Speed =}\NormalTok{ Speed,}
-    \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
-    \AttributeTok{Replicate =}\NormalTok{ Replicate,}
-    \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
-\NormalTok{cbit\_vecsum\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
-      \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-\NormalTok{cbit\_si\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
-      \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-
-\NormalTok{cbit\_data }\OtherTok{\textless{}{-}}
-\NormalTok{  cbit\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{(cbit\_360) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(cbit\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(cbit\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
-\NormalTok{cbit\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(cbit\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
-
-\NormalTok{cb\_it }\OtherTok{\textless{}{-}}
-\NormalTok{  cbit\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
-  \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
-    \AttributeTok{x =}\NormalTok{ Direction,}
-    \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
-    \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
-\NormalTok{  ),}
-  \AttributeTok{fill =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{, }\AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x,}\DecValTok{8}\NormalTok{), }\AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ cbit\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
-             \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
-             \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_continuous}\NormalTok{(}
-    \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
-    \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
-    \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
-\NormalTok{  )}\SpecialCharTok{+}
-  \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
-  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"40{-}200 ms (initial transient) motion"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Spike rate (spikes/sec)"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{theme\_minimal}\NormalTok{()}
-
-\NormalTok{cb\_it}
+\NormalTok{bin10\_polar\_cbit[[}\DecValTok{1}\NormalTok{]]}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 149 rows containing missing values (`geom_smooth()`).
+\end{verbatim}
 
 \includegraphics{_main_files/figure-latex/cb_it-1.pdf}
 
@@ -2456,14 +2477,123 @@ This will be referred to as the ``naive'' approach in the code below
 \begin{Shaded}
 \begin{Highlighting}[]
 \DocumentationTok{\#\# global baseline values, second half of motion period}
-\NormalTok{cbss\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  bin10\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{1.5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}} \FloatTok{4.95}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarize}\NormalTok{(}
-    \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
-\NormalTok{  )}
+\NormalTok{bin10\_polar\_cbss }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(bin10\_filelist)) \{}
+\NormalTok{  cbss\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    bin10\_data[[i]] }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{1.5}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}} \FloatTok{4.95}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}
+      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
+\NormalTok{    )}
+\NormalTok{  cbss\_360 }\OtherTok{\textless{}{-}}
+\NormalTok{    cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+      \AttributeTok{Speed =}\NormalTok{ Speed,}
+      \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
+      \AttributeTok{Replicate =}\NormalTok{ Replicate,}
+      \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
+\NormalTok{  cbss\_vecsum\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarize,}
+        \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+                    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+        \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarise,}
+        \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
+        \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+\NormalTok{  cbss\_si\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarize,}
+        \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+                    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+        \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+        \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarise,}
+        \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
+        \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
+        \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+
+\NormalTok{  cbss\_data }\OtherTok{\textless{}{-}}
+\NormalTok{    cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{(cbss\_360) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(cbss\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(cbss\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
+\NormalTok{  cbss\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(cbss\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
+
+
+\NormalTok{  bin10\_polar\_cbss[[i]] }\OtherTok{\textless{}{-}}
+\NormalTok{    cbss\_data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df[[i]], }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{x =}\NormalTok{ Direction,}
+      \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
+      \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
+\NormalTok{    ),}
+    \AttributeTok{fill =} \StringTok{"darkgoldenrod1"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{,}
+                \AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x, }\FunctionTok{length}\NormalTok{(polar\_directions[[i]])),}
+                \AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{color =} \StringTok{"forestgreen"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"\#333132"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ cbss\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
+               \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
+               \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}
+      \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
+      \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+      \CommentTok{\#trans = "sqrt",}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, cbss\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"1500{-}3000 ms (steady state) motion"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{ylab}\NormalTok{(}\StringTok{"Spike rate (spikes/sec)"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2474,108 +2604,7 @@ This will be referred to as the ``naive'' approach in the code below
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{cbss\_360 }\OtherTok{\textless{}{-}}
-\NormalTok{  cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{transmute}\NormalTok{(}
-    \AttributeTok{Speed =}\NormalTok{ Speed,}
-    \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
-    \AttributeTok{Replicate =}\NormalTok{ Replicate,}
-    \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
-\NormalTok{cbss\_vecsum\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
-      \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-\NormalTok{cbss\_si\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
-      \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-
-\NormalTok{cbss\_data }\OtherTok{\textless{}{-}}
-\NormalTok{  cbss\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{(cbss\_360) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(cbss\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(cbss\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
-\NormalTok{cbss\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(cbss\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
-
-
-\NormalTok{cb\_ss }\OtherTok{\textless{}{-}}
-\NormalTok{  cbss\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
-  \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
-    \AttributeTok{x =}\NormalTok{ Direction,}
-    \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
-    \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
-\NormalTok{  ),}
-  \AttributeTok{fill =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{, }\AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x,}\DecValTok{8}\NormalTok{), }\AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ cbss\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
-             \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
-             \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_continuous}\NormalTok{(}
-    \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
-    \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
-    \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
-\NormalTok{  )}\SpecialCharTok{+}
-  \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
-  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"1500{-}3000 ms (steady state) motion"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Spike rate (spikes/sec)"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{theme\_minimal}\NormalTok{()}
-
-\NormalTok{cb\_ss}
+\NormalTok{bin10\_polar\_cbss[[}\DecValTok{1}\NormalTok{]]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2587,14 +2616,122 @@ This will be referred to as the ``naive'' approach in the code below
 \begin{Shaded}
 \begin{Highlighting}[]
 \DocumentationTok{\#\# global baseline values, 0{-}500 msec motion period}
-\NormalTok{arb\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  bin10\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.001}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.500}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarize}\NormalTok{(}
-    \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
-\NormalTok{  )}
+\NormalTok{bin10\_polar\_arb }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(bin10\_filelist)) \{}
+\NormalTok{  arb\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    bin10\_data[[i]] }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textgreater{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.001}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Time\_stand }\SpecialCharTok{\textless{}=}\NormalTok{ Static\_end }\SpecialCharTok{+} \FloatTok{0.500}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Speed, Direction, Replicate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}
+      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(Spike\_rate)}
+\NormalTok{    )}
+\NormalTok{  arb\_360 }\OtherTok{\textless{}{-}}
+\NormalTok{    arb\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+      \AttributeTok{Speed =}\NormalTok{ Speed,}
+      \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
+      \AttributeTok{Replicate =}\NormalTok{ Replicate,}
+      \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
+\NormalTok{  arb\_vecsum\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    arb\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarize,}
+        \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+                    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+        \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarise,}
+        \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
+        \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+\NormalTok{  arb\_si\_df }\OtherTok{\textless{}{-}}
+\NormalTok{    arb\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarize,}
+        \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}} \FunctionTok{unique}\NormalTok{(baseline\_summary\_df[[i]]}\SpecialCharTok{$}\NormalTok{global\_baseline),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(mutate,}
+        \AttributeTok{mean\_spike\_rate =}
+          \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
+                    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+        \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
+        \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(summarise,}
+        \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
+        \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
+        \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{map}\NormalTok{(transmute,}
+        \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
+        \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{()}
+
+\NormalTok{  arb\_data }\OtherTok{\textless{}{-}}
+\NormalTok{    arb\_df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{bind\_rows}\NormalTok{(arb\_360) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(arb\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(arb\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
+\NormalTok{  arb\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(arb\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
+
+\NormalTok{  bin10\_polar\_arb[[i]] }\OtherTok{\textless{}{-}}
+\NormalTok{    arb\_data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df[[i]], }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{x =}\NormalTok{ Direction,}
+      \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
+      \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
+\NormalTok{    ),}
+    \AttributeTok{fill =} \StringTok{"darkgoldenrod1"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{,}
+                \AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x, }\FunctionTok{length}\NormalTok{(polar\_directions[[i]])),}
+                \AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{color =} \StringTok{"forestgreen"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{color =} \StringTok{"\#333132"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ arb\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
+               \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
+               \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}
+      \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
+      \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+      \CommentTok{\#trans = "sqrt",}
+      \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, arb\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
+    \FunctionTok{ylab}\NormalTok{(}\StringTok{"Spike rate (spikes/sec)"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"0{-}500 msec motion"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2605,108 +2742,13 @@ This will be referred to as the ``naive'' approach in the code below
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{arb\_360 }\OtherTok{\textless{}{-}}
-\NormalTok{  arb\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(Direction }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{transmute}\NormalTok{(}
-    \AttributeTok{Speed =}\NormalTok{ Speed,}
-    \AttributeTok{Direction =} \DecValTok{360}\NormalTok{,}
-    \AttributeTok{Replicate =}\NormalTok{ Replicate,}
-    \AttributeTok{mean\_spike\_rate =}\NormalTok{ mean\_spike\_rate)}
-\NormalTok{arb\_vecsum\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  arb\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{x =} \FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{y =} \FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{x =} \FunctionTok{mean}\NormalTok{(x),}
-      \AttributeTok{y =} \FunctionTok{mean}\NormalTok{(y),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{vector\_sum =}\NormalTok{ (}\FunctionTok{atan2}\NormalTok{(y, x) }\SpecialCharTok{*} \DecValTok{180} \SpecialCharTok{/}\NormalTok{ pi) }\SpecialCharTok{\%\%} \DecValTok{360}\NormalTok{,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-\NormalTok{arb\_si\_df }\OtherTok{\textless{}{-}}
-\NormalTok{  arb\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_split}\NormalTok{(Speed) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(group\_by, Direction) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarize,}
-      \AttributeTok{mean\_spike\_rate =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{{-}}\NormalTok{ global\_base,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(mutate,}
-      \AttributeTok{mean\_spike\_rate =}
-        \FunctionTok{case\_when}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate) }\SpecialCharTok{\textless{}} \DecValTok{0} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate }\SpecialCharTok{+} \FunctionTok{abs}\NormalTok{(}\FunctionTok{min}\NormalTok{(mean\_spike\_rate)),}
-                  \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{a =}\NormalTok{ (}\FunctionTok{sin}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{b =}\NormalTok{ (}\FunctionTok{cos}\NormalTok{(Direction }\SpecialCharTok{*}\NormalTok{ pi }\SpecialCharTok{/} \DecValTok{180}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ mean\_spike\_rate),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(mean\_spike\_rate),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(summarise,}
-      \AttributeTok{a =} \FunctionTok{mean}\NormalTok{(a),}
-      \AttributeTok{b =} \FunctionTok{mean}\NormalTok{(b),}
-      \AttributeTok{c =} \FunctionTok{mean}\NormalTok{(c),}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{map}\NormalTok{(transmute,}
-      \AttributeTok{si =} \FunctionTok{sqrt}\NormalTok{(a }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{\^{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ c,}
-      \AttributeTok{Speed =} \FunctionTok{first}\NormalTok{(Speed)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{()}
-
-\NormalTok{arb\_data }\OtherTok{\textless{}{-}}
-\NormalTok{  arb\_df }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{bind\_rows}\NormalTok{(arb\_360) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(arb\_vecsum\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(arb\_si\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{drop\_na}\NormalTok{(mean\_spike\_rate)}
-\NormalTok{arb\_max\_y }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(arb\_data}\SpecialCharTok{$}\NormalTok{mean\_spike\_rate)}
-
-\NormalTok{arb }\OtherTok{\textless{}{-}}
-\NormalTok{  arb\_data }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{left\_join}\NormalTok{(baseline\_summary\_df, }\AttributeTok{by =} \StringTok{"Speed"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Direction, }\AttributeTok{y =}\NormalTok{ mean\_spike\_rate)) }\SpecialCharTok{+}
-  \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}
-    \AttributeTok{x =}\NormalTok{ Direction,}
-    \AttributeTok{ymin =}\NormalTok{ global\_baseline }\SpecialCharTok{{-}}\NormalTok{ global\_baseline\_se,}
-    \AttributeTok{ymax =}\NormalTok{ global\_baseline }\SpecialCharTok{+}\NormalTok{ global\_baseline\_se}
-\NormalTok{  ),}
-  \AttributeTok{fill =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{stat\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"glm"}\NormalTok{, }\AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{ns}\NormalTok{(x,}\DecValTok{8}\NormalTok{), }\AttributeTok{linewidth =} \FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_label}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{round}\NormalTok{(si, }\DecValTok{2}\NormalTok{) , }\AttributeTok{x =} \DecValTok{315}\NormalTok{, }\AttributeTok{y =}\NormalTok{ arb\_max\_y }\SpecialCharTok{*} \FloatTok{1.2}\NormalTok{),}
-             \AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_vline}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xintercept =}\NormalTok{ vector\_sum), }\AttributeTok{colour =} \StringTok{"grey30"}\NormalTok{,}
-             \AttributeTok{size =} \FloatTok{0.75}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{coord\_polar}\NormalTok{(}\AttributeTok{direction =} \DecValTok{1}\NormalTok{, }\AttributeTok{start =}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_continuous}\NormalTok{(}
-    \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{180}\NormalTok{, }\DecValTok{270}\NormalTok{),}
-    \AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{),}
-    \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{360}\NormalTok{)}
-\NormalTok{  )}\SpecialCharTok{+}
-  \FunctionTok{facet\_grid}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{vars}\NormalTok{(Speed)) }\SpecialCharTok{+}
-  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"0{-}500 msec motion"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{theme\_minimal}\NormalTok{()}
-
-\NormalTok{arb}
+\NormalTok{bin10\_polar\_arb[[}\DecValTok{1}\NormalTok{]] }
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 17 rows containing missing values (`geom_smooth()`).
+\end{verbatim}
 
 \includegraphics{_main_files/figure-latex/arb-1.pdf}
 
@@ -2717,11 +2759,27 @@ We can use the handy \texttt{cowplot} package to construct a multi-panel plot.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{cow\_polar }\OtherTok{\textless{}{-}}
-  \FunctionTok{plot\_grid}\NormalTok{(naive, cb\_it, cb\_ss, arb,}
-            \AttributeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\NormalTok{cow\_polar }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{cow\_polar[[i]] }\OtherTok{\textless{}{-}}
+  \FunctionTok{plot\_grid}\NormalTok{(bin10\_polar\_naive[[i]],}
+\NormalTok{            bin10\_polar\_cbit[[i]],}
+\NormalTok{            bin10\_polar\_cbss[[i]],}
+\NormalTok{            bin10\_polar\_arb[[i]],}
+            \AttributeTok{ncol =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-\NormalTok{cow\_polar}
+\begin{verbatim}
+## Warning: Removed 149 rows containing missing values (`geom_smooth()`).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 17 rows containing missing values (`geom_smooth()`).
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cow\_polar[[}\DecValTok{1}\NormalTok{]]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2731,19 +2789,26 @@ This plot can also be written directly to \texttt{PDF}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{pdf}\NormalTok{(}\AttributeTok{file =}
-      \FunctionTok{paste0}\NormalTok{(}\StringTok{"./path/to/directory/"}\NormalTok{,}
-\NormalTok{             bin10\_basenames[i],}
-             \StringTok{"\_polar\_set.pdf"}\NormalTok{),}
-    \AttributeTok{width =} \DecValTok{22}\NormalTok{, }\AttributeTok{height =} \DecValTok{17}\NormalTok{,}
-    \AttributeTok{pagecentre =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{colormodel =} \StringTok{"srgb"}\NormalTok{)}
-\FunctionTok{plot}\NormalTok{(cow\_polar)}
-\FunctionTok{dev.off}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(cow\_polar)) \{}
+  \FunctionTok{pdf}\NormalTok{(}\AttributeTok{file =}
+        \FunctionTok{paste0}\NormalTok{(}\StringTok{"./plot\_pdfs/"}\NormalTok{,}
+\NormalTok{               bin10\_basenames[i],}
+               \StringTok{"\_polar\_set.pdf"}\NormalTok{),}
+      \AttributeTok{width =} \DecValTok{22}\NormalTok{, }\AttributeTok{height =} \DecValTok{12}\NormalTok{,}
+      \AttributeTok{pagecentre =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{colormodel =} \StringTok{"srgb"}\NormalTok{)}
+  \FunctionTok{plot}\NormalTok{(cow\_polar[[i]])}
+  \FunctionTok{dev.off}\NormalTok{()}
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
 \hypertarget{spatiotemporal-tuning}{%
 \chapter{Spatiotemporal tuning}\label{spatiotemporal-tuning}}
+
+Coming soon
+
+\hypertarget{raw-data-and-spike-sorted-traces}{%
+\chapter{Raw data and spike sorted traces}\label{raw-data-and-spike-sorted-traces}}
 
 Coming soon
 
