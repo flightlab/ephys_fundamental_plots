@@ -69,14 +69,19 @@ for (i in 1:length(bin10_filelist)) {
   ## Read in the data
   bin10_data[[i]] <-
     read_csv(bin10_filelist[i], show_col_types = FALSE) %>%
-    as_tibble() %>%
-    ## Again, we will set Speed as an ordered factor to help control plotting
-    ## later on
-    mutate(across(
-      Speed,
-      factor,
-      levels = c("4", "8", "16", "32", "64", "128", "256", "407", "644", "1024")
-    ))
+    as_tibble()
+
+  ## get unique speeds
+  sorted_speeds <-
+    bin10_data[[i]]$Speed %>% unique %>% sort(decreasing = TRUE)
+
+  ## Again, we will set Speed as an ordered factor to help control plotting
+  ## later on
+  bin10_data[[i]] <-
+    bin10_data[[i]] %>%
+    mutate(
+      Speed = factor(Speed,
+                     levels = sorted_speeds))
 
   ## Determine unique directions
   polar_directions[[i]] <-
@@ -634,12 +639,14 @@ We can use the handy `cowplot` package to construct a multi-panel plot.
 
 ```{r polar_cows, fig.height=8, fig.width=10}
 cow_polar <- NULL
-cow_polar[[i]] <-
-  plot_grid(bin10_polar_naive[[i]],
-            bin10_polar_cbit[[i]],
-            bin10_polar_cbss[[i]],
-            bin10_polar_arb[[i]],
-            ncol = 1)
+for (i in 1:length(bin10_basenames)) {
+  cow_polar[[i]] <-
+    plot_grid(bin10_polar_naive[[i]],
+              bin10_polar_cbit[[i]],
+              bin10_polar_cbss[[i]],
+              bin10_polar_arb[[i]],
+              ncol = 1)
+}
 
 cow_polar[[1]]
 ```

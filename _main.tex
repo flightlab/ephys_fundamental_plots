@@ -101,6 +101,14 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{booktabs}
+
+% DEFINE PHYSICAL DOCUMENT SETTINGS HD
+% media settings
+\usepackage[paperwidth=11in, paperheight=11in]{geometry}
+\geometry{left=.5in}
+\geometry{right=.5in}
+\geometry{bottom=.75in}
+\geometry{top=.75in}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -841,8 +849,8 @@ Please see in-line comments for further guidance
 
 \begin{verbatim}
 ##           used  (Mb) gc trigger  (Mb) max used  (Mb)
-## Ncells 2426248 129.6    4179092 223.2  4179092 223.2
-## Vcells 4198206  32.1   10146329  77.5  8185131  62.5
+## Ncells 2429332 129.8    3950158 211.0  3950158 211.0
+## Vcells 4205900  32.1   10146329  77.5  6931116  52.9
 \end{verbatim}
 
 \begin{Shaded}
@@ -1234,7 +1242,7 @@ Please see in-line comments for further guidance
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.325644 mins
+## Time difference of 2.278541 mins
 \end{verbatim}
 
 \begin{Shaded}
@@ -1246,8 +1254,8 @@ Please see in-line comments for further guidance
 
 \begin{verbatim}
 ##             used   (Mb) gc trigger   (Mb)   max used    (Mb)
-## Ncells   5567281  297.4   16192312  864.8   25300487  1351.2
-## Vcells 204486851 1560.2  915533579 6985.0 1430521216 10914.1
+## Ncells   5570939  297.6   16214835  866.0   25335678  1353.1
+## Vcells 204495495 1560.2  915538917 6985.1 1430529557 10914.1
 \end{verbatim}
 
 \begin{Shaded}
@@ -1377,8 +1385,8 @@ declared beforehand -- please pay attention.
 
 \begin{verbatim}
 ##             used   (Mb) gc trigger   (Mb)   max used    (Mb)
-## Ncells   5567387  297.4   16192312  864.8   25300487  1351.2
-## Vcells 204479268 1560.1  732426864 5588.0 1430521216 10914.1
+## Ncells   5571046  297.6   16214835  866.0   25335678  1353.1
+## Vcells 204487912 1560.2  732431134 5588.1 1430529557 10914.1
 \end{verbatim}
 
 \begin{Shaded}
@@ -1538,7 +1546,7 @@ declared beforehand -- please pay attention.
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 2.058902 mins
+## Time difference of 2.036113 mins
 \end{verbatim}
 
 \begin{Shaded}
@@ -1549,8 +1557,8 @@ declared beforehand -- please pay attention.
 
 \begin{verbatim}
 ##             used   (Mb) gc trigger   (Mb)   max used    (Mb)
-## Ncells   5572323  297.6   16192312  864.8   25300487  1351.2
-## Vcells 208828836 1593.3  585941492 4470.4 1430521216 10914.1
+## Ncells   5575982  297.8   16214835  866.0   25335678  1353.1
+## Vcells 208837480 1593.4  585944908 4470.5 1430529557 10914.1
 \end{verbatim}
 
 \begin{Shaded}
@@ -1587,21 +1595,21 @@ should look:
 \end{Shaded}
 
 \begin{verbatim}
-## $`180 Deg, 407 Deg/s`
-## # A tibble: 3,507 x 16
+## $`90 Deg, 1024 Deg/s`
+## # A tibble: 4,008 x 16
 ##    Speed Spatial_F~1 Tempo~2 Direc~3   bin Trial Time_~4 Time_~5 Time_~6 Spike~7
 ##    <dbl>       <dbl>   <dbl>   <dbl> <int> <chr>   <dbl>   <dbl>   <dbl>   <dbl>
-##  1   407      0.0248    10.1     180     1 blank    160.    160.    160.      0 
-##  2   407      0.0248    10.1     180     2 blank    160.    160.    160.      0 
-##  3   407      0.0248    10.1     180     3 blank    160.    160.    160.      0 
-##  4   407      0.0248    10.1     180     4 blank    160.    160.    160.      0 
-##  5   407      0.0248    10.1     180     5 blank    160.    160.    160.      0 
-##  6   407      0.0248    10.1     180     6 blank    160.    160.    160.    111.
-##  7   407      0.0248    10.1     180     7 blank    160.    160.    160.    222.
-##  8   407      0.0248    10.1     180     8 blank    160.    160.    160.      0 
-##  9   407      0.0248    10.1     180     9 blank    160.    160.    160.      0 
-## 10   407      0.0248    10.1     180    10 blank    160.    160.    160.    111.
-## # ... with 3,497 more rows, 6 more variables: Photod_mean <dbl>,
+##  1  1024      0.0156      16      90     1 blank    33.3    33.3    33.3      0 
+##  2  1024      0.0156      16      90     2 blank    33.3    33.3    33.3      0 
+##  3  1024      0.0156      16      90     3 blank    33.3    33.3    33.4      0 
+##  4  1024      0.0156      16      90     4 blank    33.4    33.4    33.4      0 
+##  5  1024      0.0156      16      90     5 blank    33.4    33.4    33.4      0 
+##  6  1024      0.0156      16      90     6 blank    33.4    33.4    33.4      0 
+##  7  1024      0.0156      16      90     7 blank    33.4    33.4    33.4      0 
+##  8  1024      0.0156      16      90     8 blank    33.4    33.4    33.4    222.
+##  9  1024      0.0156      16      90     9 blank    33.4    33.4    33.4    111.
+## 10  1024      0.0156      16      90    10 blank    33.4    33.4    33.4      0 
+## # ... with 3,998 more rows, 6 more variables: Photod_mean <dbl>,
 ## #   Spikes_0 <dbl>, Time_stand <dbl>, Blank_end <dbl>, Static_end <dbl>,
 ## #   Replicate <int>, and abbreviated variable names 1: Spatial_Frequency,
 ## #   2: Temporal_Frequency, 3: Direction, 4: Time_bin_mid, 5: Time_bin_begin,

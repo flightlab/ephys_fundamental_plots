@@ -26,7 +26,7 @@ data. Developed by the Alshuler Lab at the University of British Columbia.</p>" 
 <meta name="author" content="Vikram B. Baliga" />
 
 
-<meta name="date" content="2023-03-30" />
+<meta name="date" content="2023-04-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -278,48 +278,53 @@ written such that it can batch-process more than one file if desired.</p>
 <span id="cb46-5"><a href="direction-tuning.html#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Read in the data</span></span>
 <span id="cb46-6"><a href="direction-tuning.html#cb46-6" aria-hidden="true" tabindex="-1"></a>  bin10_data[[i]] <span class="ot">&lt;-</span></span>
 <span id="cb46-7"><a href="direction-tuning.html#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(bin10_filelist[i], <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-8"><a href="direction-tuning.html#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb46-9"><a href="direction-tuning.html#cb46-9" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Again, we will set Speed as an ordered factor to help control plotting</span></span>
-<span id="cb46-10"><a href="direction-tuning.html#cb46-10" aria-hidden="true" tabindex="-1"></a>    <span class="do">## later on</span></span>
-<span id="cb46-11"><a href="direction-tuning.html#cb46-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
-<span id="cb46-12"><a href="direction-tuning.html#cb46-12" aria-hidden="true" tabindex="-1"></a>      Speed,</span>
-<span id="cb46-13"><a href="direction-tuning.html#cb46-13" aria-hidden="true" tabindex="-1"></a>      factor,</span>
-<span id="cb46-14"><a href="direction-tuning.html#cb46-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;4&quot;</span>, <span class="st">&quot;8&quot;</span>, <span class="st">&quot;16&quot;</span>, <span class="st">&quot;32&quot;</span>, <span class="st">&quot;64&quot;</span>, <span class="st">&quot;128&quot;</span>, <span class="st">&quot;256&quot;</span>, <span class="st">&quot;407&quot;</span>, <span class="st">&quot;644&quot;</span>, <span class="st">&quot;1024&quot;</span>)</span>
-<span id="cb46-15"><a href="direction-tuning.html#cb46-15" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb46-16"><a href="direction-tuning.html#cb46-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-17"><a href="direction-tuning.html#cb46-17" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Determine unique directions</span></span>
-<span id="cb46-18"><a href="direction-tuning.html#cb46-18" aria-hidden="true" tabindex="-1"></a>  polar_directions[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb46-19"><a href="direction-tuning.html#cb46-19" aria-hidden="true" tabindex="-1"></a>    bin10_data[[i]]<span class="sc">$</span>Direction <span class="sc">%&gt;%</span></span>
-<span id="cb46-20"><a href="direction-tuning.html#cb46-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unique</span>()</span>
+<span id="cb46-8"><a href="direction-tuning.html#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>()</span>
+<span id="cb46-9"><a href="direction-tuning.html#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="direction-tuning.html#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## get unique speeds</span></span>
+<span id="cb46-11"><a href="direction-tuning.html#cb46-11" aria-hidden="true" tabindex="-1"></a>  sorted_speeds <span class="ot">&lt;-</span></span>
+<span id="cb46-12"><a href="direction-tuning.html#cb46-12" aria-hidden="true" tabindex="-1"></a>    bin10_data[[i]]<span class="sc">$</span>Speed <span class="sc">%&gt;%</span> unique <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-13"><a href="direction-tuning.html#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-14"><a href="direction-tuning.html#cb46-14" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Again, we will set Speed as an ordered factor to help control plotting</span></span>
+<span id="cb46-15"><a href="direction-tuning.html#cb46-15" aria-hidden="true" tabindex="-1"></a>  <span class="do">## later on</span></span>
+<span id="cb46-16"><a href="direction-tuning.html#cb46-16" aria-hidden="true" tabindex="-1"></a>  bin10_data[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb46-17"><a href="direction-tuning.html#cb46-17" aria-hidden="true" tabindex="-1"></a>    bin10_data[[i]] <span class="sc">%&gt;%</span></span>
+<span id="cb46-18"><a href="direction-tuning.html#cb46-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb46-19"><a href="direction-tuning.html#cb46-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">Speed =</span> <span class="fu">factor</span>(Speed,</span>
+<span id="cb46-20"><a href="direction-tuning.html#cb46-20" aria-hidden="true" tabindex="-1"></a>                     <span class="at">levels =</span> sorted_speeds))</span>
 <span id="cb46-21"><a href="direction-tuning.html#cb46-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-22"><a href="direction-tuning.html#cb46-22" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Extract all rows corresponding to our desired baseline epoch</span></span>
-<span id="cb46-23"><a href="direction-tuning.html#cb46-23" aria-hidden="true" tabindex="-1"></a>  baseline_df <span class="ot">&lt;-</span></span>
-<span id="cb46-24"><a href="direction-tuning.html#cb46-24" aria-hidden="true" tabindex="-1"></a>    bin10_data[[i]] <span class="sc">%&gt;%</span></span>
-<span id="cb46-25"><a href="direction-tuning.html#cb46-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Time_stand <span class="sc">&gt;=</span> Blank_end <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span> <span class="do">## 0.5 sec after blank end</span></span>
-<span id="cb46-26"><a href="direction-tuning.html#cb46-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Time_stand <span class="sc">&lt;=</span> Static_end <span class="sc">-</span> <span class="fl">0.05</span>)   <span class="do">## 0.05 sec before static end</span></span>
-<span id="cb46-27"><a href="direction-tuning.html#cb46-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-28"><a href="direction-tuning.html#cb46-28" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the mean baseline</span></span>
-<span id="cb46-29"><a href="direction-tuning.html#cb46-29" aria-hidden="true" tabindex="-1"></a>  global_base <span class="ot">&lt;-</span> <span class="fu">mean</span>(baseline_df<span class="sc">$</span>Spike_rate)</span>
-<span id="cb46-30"><a href="direction-tuning.html#cb46-30" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the SE</span></span>
-<span id="cb46-31"><a href="direction-tuning.html#cb46-31" aria-hidden="true" tabindex="-1"></a>  global_base_se <span class="ot">&lt;-</span></span>
-<span id="cb46-32"><a href="direction-tuning.html#cb46-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sd</span>(baseline_df<span class="sc">$</span>Spike_rate) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(baseline_df<span class="sc">$</span>Spike_rate)</span>
-<span id="cb46-33"><a href="direction-tuning.html#cb46-33" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb46-34"><a href="direction-tuning.html#cb46-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-35"><a href="direction-tuning.html#cb46-35" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Construct a summary data frame</span></span>
-<span id="cb46-36"><a href="direction-tuning.html#cb46-36" aria-hidden="true" tabindex="-1"></a>  baseline_summary_df[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb46-37"><a href="direction-tuning.html#cb46-37" aria-hidden="true" tabindex="-1"></a>    baseline_df <span class="sc">%&gt;%</span></span>
-<span id="cb46-38"><a href="direction-tuning.html#cb46-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Speed) <span class="sc">%&gt;%</span></span>
-<span id="cb46-39"><a href="direction-tuning.html#cb46-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
-<span id="cb46-40"><a href="direction-tuning.html#cb46-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">speed_specific_baseline =</span> <span class="fu">mean</span>(Spike_rate),</span>
-<span id="cb46-41"><a href="direction-tuning.html#cb46-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">speed_specific_baseline_se =</span> <span class="fu">sd</span>(Spike_rate)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(Spike_rate)),</span>
-<span id="cb46-42"><a href="direction-tuning.html#cb46-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">global_baseline =</span> global_base,</span>
-<span id="cb46-43"><a href="direction-tuning.html#cb46-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">global_baseline_se =</span> global_base_se</span>
-<span id="cb46-44"><a href="direction-tuning.html#cb46-44" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb46-45"><a href="direction-tuning.html#cb46-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-46"><a href="direction-tuning.html#cb46-46" aria-hidden="true" tabindex="-1"></a>  <span class="do">## This tibble contains speed-specific baselines (and SE) along with the</span></span>
-<span id="cb46-47"><a href="direction-tuning.html#cb46-47" aria-hidden="true" tabindex="-1"></a>  <span class="do">## global mean baseline (and SE)</span></span>
-<span id="cb46-48"><a href="direction-tuning.html#cb46-48" aria-hidden="true" tabindex="-1"></a>  baseline_summary_df[[i]]</span>
-<span id="cb46-49"><a href="direction-tuning.html#cb46-49" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb46-22"><a href="direction-tuning.html#cb46-22" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Determine unique directions</span></span>
+<span id="cb46-23"><a href="direction-tuning.html#cb46-23" aria-hidden="true" tabindex="-1"></a>  polar_directions[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb46-24"><a href="direction-tuning.html#cb46-24" aria-hidden="true" tabindex="-1"></a>    bin10_data[[i]]<span class="sc">$</span>Direction <span class="sc">%&gt;%</span></span>
+<span id="cb46-25"><a href="direction-tuning.html#cb46-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unique</span>()</span>
+<span id="cb46-26"><a href="direction-tuning.html#cb46-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-27"><a href="direction-tuning.html#cb46-27" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Extract all rows corresponding to our desired baseline epoch</span></span>
+<span id="cb46-28"><a href="direction-tuning.html#cb46-28" aria-hidden="true" tabindex="-1"></a>  baseline_df <span class="ot">&lt;-</span></span>
+<span id="cb46-29"><a href="direction-tuning.html#cb46-29" aria-hidden="true" tabindex="-1"></a>    bin10_data[[i]] <span class="sc">%&gt;%</span></span>
+<span id="cb46-30"><a href="direction-tuning.html#cb46-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Time_stand <span class="sc">&gt;=</span> Blank_end <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span> <span class="do">## 0.5 sec after blank end</span></span>
+<span id="cb46-31"><a href="direction-tuning.html#cb46-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Time_stand <span class="sc">&lt;=</span> Static_end <span class="sc">-</span> <span class="fl">0.05</span>)   <span class="do">## 0.05 sec before static end</span></span>
+<span id="cb46-32"><a href="direction-tuning.html#cb46-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-33"><a href="direction-tuning.html#cb46-33" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the mean baseline</span></span>
+<span id="cb46-34"><a href="direction-tuning.html#cb46-34" aria-hidden="true" tabindex="-1"></a>  global_base <span class="ot">&lt;-</span> <span class="fu">mean</span>(baseline_df<span class="sc">$</span>Spike_rate)</span>
+<span id="cb46-35"><a href="direction-tuning.html#cb46-35" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the SE</span></span>
+<span id="cb46-36"><a href="direction-tuning.html#cb46-36" aria-hidden="true" tabindex="-1"></a>  global_base_se <span class="ot">&lt;-</span></span>
+<span id="cb46-37"><a href="direction-tuning.html#cb46-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sd</span>(baseline_df<span class="sc">$</span>Spike_rate) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(baseline_df<span class="sc">$</span>Spike_rate)</span>
+<span id="cb46-38"><a href="direction-tuning.html#cb46-38" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb46-39"><a href="direction-tuning.html#cb46-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-40"><a href="direction-tuning.html#cb46-40" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Construct a summary data frame</span></span>
+<span id="cb46-41"><a href="direction-tuning.html#cb46-41" aria-hidden="true" tabindex="-1"></a>  baseline_summary_df[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb46-42"><a href="direction-tuning.html#cb46-42" aria-hidden="true" tabindex="-1"></a>    baseline_df <span class="sc">%&gt;%</span></span>
+<span id="cb46-43"><a href="direction-tuning.html#cb46-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Speed) <span class="sc">%&gt;%</span></span>
+<span id="cb46-44"><a href="direction-tuning.html#cb46-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
+<span id="cb46-45"><a href="direction-tuning.html#cb46-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">speed_specific_baseline =</span> <span class="fu">mean</span>(Spike_rate),</span>
+<span id="cb46-46"><a href="direction-tuning.html#cb46-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">speed_specific_baseline_se =</span> <span class="fu">sd</span>(Spike_rate)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">length</span>(Spike_rate)),</span>
+<span id="cb46-47"><a href="direction-tuning.html#cb46-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">global_baseline =</span> global_base,</span>
+<span id="cb46-48"><a href="direction-tuning.html#cb46-48" aria-hidden="true" tabindex="-1"></a>      <span class="at">global_baseline_se =</span> global_base_se</span>
+<span id="cb46-49"><a href="direction-tuning.html#cb46-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb46-50"><a href="direction-tuning.html#cb46-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-51"><a href="direction-tuning.html#cb46-51" aria-hidden="true" tabindex="-1"></a>  <span class="do">## This tibble contains speed-specific baselines (and SE) along with the</span></span>
+<span id="cb46-52"><a href="direction-tuning.html#cb46-52" aria-hidden="true" tabindex="-1"></a>  <span class="do">## global mean baseline (and SE)</span></span>
+<span id="cb46-53"><a href="direction-tuning.html#cb46-53" aria-hidden="true" tabindex="-1"></a>  baseline_summary_df[[i]]</span>
+<span id="cb46-54"><a href="direction-tuning.html#cb46-54" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="using-the-full-3-sec-motion-epoch" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Using the full 3-sec motion epoch<a href="direction-tuning.html#using-the-full-3-sec-motion-epoch" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -842,12 +847,14 @@ written such that it can batch-process more than one file if desired.</p>
 <h2><span class="header-section-number">7.6</span> Construct a multi-panel plot<a href="direction-tuning.html#construct-a-multi-panel-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can use the handy <code>cowplot</code> package to construct a multi-panel plot.</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="direction-tuning.html#cb62-1" aria-hidden="true" tabindex="-1"></a>cow_polar <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb62-2"><a href="direction-tuning.html#cb62-2" aria-hidden="true" tabindex="-1"></a>cow_polar[[i]] <span class="ot">&lt;-</span></span>
-<span id="cb62-3"><a href="direction-tuning.html#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_grid</span>(bin10_polar_naive[[i]],</span>
-<span id="cb62-4"><a href="direction-tuning.html#cb62-4" aria-hidden="true" tabindex="-1"></a>            bin10_polar_cbit[[i]],</span>
-<span id="cb62-5"><a href="direction-tuning.html#cb62-5" aria-hidden="true" tabindex="-1"></a>            bin10_polar_cbss[[i]],</span>
-<span id="cb62-6"><a href="direction-tuning.html#cb62-6" aria-hidden="true" tabindex="-1"></a>            bin10_polar_arb[[i]],</span>
-<span id="cb62-7"><a href="direction-tuning.html#cb62-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
+<span id="cb62-2"><a href="direction-tuning.html#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(bin10_basenames)) {</span>
+<span id="cb62-3"><a href="direction-tuning.html#cb62-3" aria-hidden="true" tabindex="-1"></a>  cow_polar[[i]] <span class="ot">&lt;-</span></span>
+<span id="cb62-4"><a href="direction-tuning.html#cb62-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_grid</span>(bin10_polar_naive[[i]],</span>
+<span id="cb62-5"><a href="direction-tuning.html#cb62-5" aria-hidden="true" tabindex="-1"></a>              bin10_polar_cbit[[i]],</span>
+<span id="cb62-6"><a href="direction-tuning.html#cb62-6" aria-hidden="true" tabindex="-1"></a>              bin10_polar_cbss[[i]],</span>
+<span id="cb62-7"><a href="direction-tuning.html#cb62-7" aria-hidden="true" tabindex="-1"></a>              bin10_polar_arb[[i]],</span>
+<span id="cb62-8"><a href="direction-tuning.html#cb62-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">ncol =</span> <span class="dv">1</span>)</span>
+<span id="cb62-9"><a href="direction-tuning.html#cb62-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <pre><code>## Warning: Removed 149 rows containing missing values (`geom_smooth()`).</code></pre>
 <pre><code>## Warning: Removed 17 rows containing missing values (`geom_smooth()`).</code></pre>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="direction-tuning.html#cb65-1" aria-hidden="true" tabindex="-1"></a>cow_polar[[<span class="dv">1</span>]]</span></code></pre></div>

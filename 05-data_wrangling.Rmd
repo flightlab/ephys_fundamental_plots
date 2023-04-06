@@ -132,6 +132,25 @@ for (i in 1:nrow(csv_mat_filejoin)) {
       Cycles_Per_Pixel = `Cycles Per Pixel`
     )
 
+  ## Determine if spatial frequencies need to be transformed
+  sfs <- csv_data_sets[[i]]$Spatial_Frequency %>% unique() %>% sort()
+  cpps <- c(0.000668, 0.001336, 0.002670, 0.005300, 0.010600, 0.021200)
+  if (all(sfs == cpps)) {
+    ## If true, convert to cpd using the following mapping:
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.000668] <-
+      2^-6
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.001336] <-
+      2^-5
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.00267]  <-
+      2^-4
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.0053]   <-
+      2^-3
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.0106]   <-
+      2^-2
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.0212]   <-
+      2^-1
+  }
+
   ## The log file does not have time = 0, so set up a separate tibble to
   ## add this info in later. Some of the metadata will just be filler for now.
   initial <- tibble(
@@ -478,6 +497,7 @@ for (i in 1:nrow(csv_mat_filejoin)) {
   message("File ", i, ": ", csv_mat_filejoin[i,"basename"], " imported")
   gc()
 }
+
 
 endtime <- Sys.time()
 endtime - starttime ## Total elapsed time

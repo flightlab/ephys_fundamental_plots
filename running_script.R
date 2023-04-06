@@ -106,6 +106,25 @@ for (i in 1:nrow(csv_mat_filejoin)) {
       Cycles_Per_Pixel = `Cycles Per Pixel`
     )
 
+  ## Determine if spatial frequencies need to be transformed
+  sfs <- csv_data_sets[[i]]$Spatial_Frequency %>% unique() %>% sort()
+  cpps <- c(0.000668, 0.001336, 0.002670, 0.005300, 0.010600, 0.021200)
+  if (all(sfs == cpps)) {
+    ## If true, convert to cpd using the following mapping:
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.000668] <-
+      2^-6
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.001336] <-
+      2^-5
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.00267]  <-
+      2^-4
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.0053]   <-
+      2^-3
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.0106]   <-
+      2^-2
+    csv_data_sets[[i]]$Spatial_Frequency[csv_data_sets[[i]]$Spatial_Frequency == 0.0212]   <-
+      2^-1
+  }
+
   ## The log file does not have time = 0, so set up a separate tibble to
   ## add this info in later. Some of the metadata will just be filler for now.
   initial <- tibble(
@@ -783,6 +802,10 @@ for (i in 1:length(unbinned_filelist)) {
   ## determine the max number of replicates
   max_reps <- max(unbinned_data$Replicate)
 
+  ## get unique speeds
+  sorted_speeds <-
+    unbinned_data$Speed %>% unique %>% sort(decreasing = TRUE)
+
   ## Generate the code for the ggplot and save it as rasterplots[[i]]
   rasterplots[[i]] <-
     unbinned_data %>%
@@ -794,7 +817,7 @@ for (i in 1:length(unbinned_filelist)) {
       Trial = factor(Trial,
                      levels = c("blank", "stationary", "moving")),
       Speed = factor(Speed,
-                     levels = c(1024, 644, 407, 256, 128, 64, 32, 16, 8, 4))) %>%
+                     levels = sorted_speeds)) %>%
     ggplot(aes(x = Time_stand, y = Replicate)) +
     ## The next three blocks will undershade each subplot according to stimulus
     ## phase (i.e., blank, stationary, moving)
@@ -823,7 +846,7 @@ for (i in 1:length(unbinned_filelist)) {
     ## choice.
     geom_point(pch = '|', size = 1.5) +
     xlab("Time (sec)") +
-    ggtitle(paste0(unbinned_basenames[1], " raster")) +
+    ggtitle(paste0(unbinned_basenames[i], " raster")) +
     ## Use facet_grid() to create a grid of subplots. Rows will correspond to
     ## Speeds, and columns correspond to Directions
     facet_grid(rows = vars(Speed), cols = vars(Direction)) +
@@ -848,9 +871,16 @@ for (i in 1:length(bin100_filelist)) {
     read_csv(bin100_filelist[i]) %>%
     as_tibble()
 
+  ## get unique speeds
+  sorted_speeds <-
+    bin100_data$Speed %>% unique %>% sort(decreasing = TRUE)
+
   ## Compute SE and other metrics and add this to our data set
   dataslices_100 <-
     bin100_data %>%
+    mutate(
+      Speed = factor(Speed,
+                     levels = sorted_speeds)) %>%
     ## Split by direction and speed, because we will use those to define each
     ## subplot
     group_split(Direction, Speed) %>%
@@ -873,14 +903,7 @@ for (i in 1:length(bin100_filelist)) {
                Photod_SE = sd(Photod_mean)/sqrt(n())
     ) %>%
     purrr::map(ungroup) %>%
-    bind_rows() %>%
-    ## We'll manually set the levels of the "Speed" column to ensure they plot in
-    ## a desired order (fastest = highest, slowest = lowest)
-    mutate(across(
-      Speed,
-      factor,
-      levels = c("1024", "644", "407", "256", "128", "64", "32", "16", "8", "4")
-    ))
+    bind_rows()
 
   ## Generate the mean spike rate plot using ggplot
   bin100_msr_plots[[i]] <-
@@ -911,7 +934,7 @@ for (i in 1:length(bin100_filelist)) {
     ## the SE traces
     geom_line(linewidth = 0.05) +
     ## Add a title to help us know what cell this is
-    ggtitle(bin100_basenames[1]) +
+    ggtitle(bin100_basenames[i], " mean spike rate (100-ms bins)") +
     xlab("Time (sec)") +
     ylab("Spike rate (spikes/sec)") +
     ## To sub-plot by Speed and Direction, I typically use `facet_grid()`. This
@@ -929,20 +952,29 @@ for (i in 1:length(bin100_filelist)) {
 ## Use the `pdf()` function to start the graphics device driver for producing
 ## PDFs
 ## Aspects such as page size and centering mode can be adjusted
-pdf(
-  file = "./path/to/directory/filename.pdf",
-  width = 10.5,
-  height = 8,
-  title = "2023-02-16_001 raster",
-  paper = "USr",
-  bg = "white",
-  pagecentre = TRUE,
-  colormodel = "srgb"
-)
-## Now add the plot to the PDF simply by calling plot()
-plot(rasterplot)
-## To declare an end to this PDF writing session, use `dev.off()`
-dev.off()
+for (i in 1:length(rasterplots)) {
+  pdf(file =
+        paste0("./plot_pdfs/",
+               unbinned_basenames[i],
+               "_raster.pdf"),
+      width = 22, height = 12,
+      pagecentre = TRUE, colormodel = "srgb")
+  ## Now add the plot to the PDF simply by calling plot()
+  plot(rasterplots[[i]])
+  ## To declare an end to this PDF writing session, use `dev.off()`
+  dev.off()
+}
+
+for (i in 1:length(bin100_msr_plots)) {
+  pdf(file =
+        paste0("./plot_pdfs/",
+               bin100_basenames[i],
+               "_raster.pdf"),
+      width = 22, height = 12,
+      pagecentre = TRUE, colormodel = "srgb")
+  plot(bin100_msr_plots[[i]])
+  dev.off()
+}
 
 
 #### 7 Polar direction tuning plots ####
@@ -956,14 +988,19 @@ for (i in 1:length(bin10_filelist)) {
   ## Read in the data
   bin10_data[[i]] <-
     read_csv(bin10_filelist[i], show_col_types = FALSE) %>%
-    as_tibble() %>%
-    ## Again, we will set Speed as an ordered factor to help control plotting
-    ## later on
-    mutate(across(
-      Speed,
-      factor,
-      levels = c("4", "8", "16", "32", "64", "128", "256", "407", "644", "1024")
-    ))
+    as_tibble()
+
+  ## get unique speeds
+  sorted_speeds <-
+    bin10_data[[i]]$Speed %>% unique %>% sort(decreasing = TRUE)
+
+  ## Again, we will set Speed as an ordered factor to help control plotting
+  ## later on
+  bin10_data[[i]] <-
+    bin10_data[[i]] %>%
+    mutate(
+      Speed = factor(Speed,
+                     levels = sorted_speeds))
 
   ## Determine unique directions
   polar_directions[[i]] <-
@@ -1498,12 +1535,14 @@ for (i in 1:length(bin10_filelist)) {
 
 #### 7.6 Construct a multi-panel plot ####
 cow_polar <- NULL
-cow_polar[[i]] <-
-  plot_grid(bin10_polar_naive[[i]],
-            bin10_polar_cbit[[i]],
-            bin10_polar_cbss[[i]],
-            bin10_polar_arb[[i]],
-            ncol = 1)
+for (i in 1:length(bin10_basenames)) {
+  cow_polar[[i]] <-
+    plot_grid(bin10_polar_naive[[i]],
+              bin10_polar_cbit[[i]],
+              bin10_polar_cbss[[i]],
+              bin10_polar_arb[[i]],
+              ncol = 1)
+}
 
 for (i in 1:length(cow_polar)) {
   pdf(file =
